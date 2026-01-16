@@ -1,0 +1,133 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6e2075987ee8ab47ab0bff1a520d85a, type: 3}
+  m_Name: Status_0
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: StatusList
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[NFramework.Module.Combat.ChildStatus,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: EffectList
+      Entry: 7
+      Data: 1|System.Collections.Generic.List`1[[NFramework.Module.Combat.Effect,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 2|NFramework.Module.Combat.CustomEffect, Assembly-CSharp
+    - Name: IsSkillEffect
+      Entry: 5
+      Data: false
+    - Name: IsExecutionEffect
+      Entry: 5
+      Data: false
+    - Name: IsItemEffect
+      Entry: 5
+      Data: false
+    - Name: Enabled
+      Entry: 5
+      Data: true
+    - Name: EffectTriggerType
+      Entry: 3
+      Data: 0
+    - Name: ConditionType
+      Entry: 3
+      Data: 0
+    - Name: ActionPointType
+      Entry: 3
+      Data: 0
+    - Name: IntervalValueFormula
+      Entry: 6
+      Data: 
+    - Name: ConditioNValueFormula
+      Entry: 6
+      Data: 
+    - Name: DecoratorList
+      Entry: 7
+      Data: 3|System.Collections.Generic.List`1[[NFramework.Module.Combat.EffectDecorator,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: EffectTypeName
+      Entry: 1
+      Data: "(\u6DFB\u52A0\u6548\u679C\u4FEE\u9970)"
+    - Name: CustomEffectType
+      Entry: 6
+      Data: 
+    - Name: ParamsDict
+      Entry: 7
+      Data: 4|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.String,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 5|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+        mscorlib]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  Id: 0
+  Name: 
+  StatusType: 0
+  Duration: 0
+  SHowInStatusSlot: 0
+  CanStack: 0
+  MaxStack: 0
+  EnableChildStatus: 0
+  EffectTypeName: "(\u6DFB\u52A0\u6548\u679C)"
+  ParticleEffectName: 
+  AudioClipName: 
+  StatusDescription: 

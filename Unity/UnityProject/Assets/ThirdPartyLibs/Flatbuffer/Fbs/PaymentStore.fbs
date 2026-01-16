@@ -1,0 +1,10 @@
+// Auto-generated FBS file
+// Source: PaymentStore.xlsx
+// Sheet: Sheet1
+
+namespace ExcelConfig;
+
+struct Sheet1 {
+ : 
+}
+

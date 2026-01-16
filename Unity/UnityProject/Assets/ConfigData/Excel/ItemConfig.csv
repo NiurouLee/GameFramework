@@ -1,0 +1,12 @@
+﻿ID@All,Name@Lan,Description@Lan,Type@All,Rarity@All,Price@Client,DropRate@Server,Properties@All,Stackable@All
+int,string,string,int,int,int,float,map<string;int>,bool
+物品ID,物品名称,物品描述,物品类型,稀有度,价格,掉落率,属性加成,可堆叠
+0,"","",1,1,0,0.0,"",true
+3001,铁剑,普通的铁制长剑,1,1,100,0.1,ATK:10;DUR:50,false
+3002,生命药水,恢复50点生命值,2,1,50,0.3,HP:50,true
+3003,魔法药水,恢复30点魔法值,2,1,40,0.3,MP:30,true
+3004,钢铁盔甲,坚固的钢铁护甲,3,2,500,0.05,DEF:25;DUR:100,false
+3005,传说之剑,传说中的神器,1,5,10000,0.001,ATK:100;CRI:20;DUR:500,false
+3006,魔法戒指,增加魔法力的戒指,4,3,800,0.02,INT:15;MP:20,false
+3007,敏捷靴,提升移动速度的靴子,5,2,300,0.08,AGI:12;SPD:10,false
+3008,复活卷轴,复活倒下的队友,6,4,2000,0.005,REVIVE:1,true

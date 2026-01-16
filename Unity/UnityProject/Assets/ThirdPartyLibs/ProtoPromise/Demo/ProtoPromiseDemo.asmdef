@@ -1,0 +1,15 @@
+{
+    "name": "ProtoPromiseDemo",
+    "references": [
+        "ProtoPromise",
+        "ProtoPromise.UnityHelpers.2018.3"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}

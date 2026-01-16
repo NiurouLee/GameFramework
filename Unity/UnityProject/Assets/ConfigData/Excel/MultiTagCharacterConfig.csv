@@ -1,0 +1,7 @@
+﻿ID@All,Name@Client@Lan,Description@Client@Lan,ServerData@Server,SkillId@Client@Ref,AdminNotes@PM,Level@Server@Ref,Equipment@All@Ref
+int,string,string,string,int,string,int,repeated int
+角色ID,角色名称（客户端+多语言）,角色描述（客户端+多语言）,服务端数据,技能ID（客户端+引用）,管理员备注（不生成代码）,等级（服务端+引用）,装备列表（全部+引用）
+0,"","","",0,"",1,""
+1001,战士,"强大的近战职业，适合新手玩家","internal_warrior_data",2001,"这是管理员的内部备注",10,"3001;3004;3007"
+1002,法师,"精通魔法的职业，需要策略思考","internal_mage_data",2004,"法师职业平衡性需要调整",8,"3002;3003;3006"
+1003,弓箭手,"远程攻击专家，灵活机动","internal_archer_data",2007,"弓箭手的攻击距离可能需要调整",9,"3001;3007;3008"

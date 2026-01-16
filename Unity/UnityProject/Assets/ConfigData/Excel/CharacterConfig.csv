@@ -1,0 +1,8 @@
+﻿ID@All,Name@Lan,Description@Client,Level@Server,SkillId@ref_skill,HP,MP,Skills@ref_skill,Attributes@All,InternalNotes@PM
+int,string,string,int,int,int,int,repeated int,map<string;int>,string
+角色唯一ID,角色名称（多语言）,角色描述（仅客户端）,角色等级（仅服务端）,默认技能ID（引用Skill表）,生命值,魔法值,技能列表（引用Skill表）,属性映射,内部备注（不生成代码）
+0,,"",1,0,100,50,"","",""
+1001,战士,强大的近战职业；擅长近身作战,10,2001,150,30,2001;2002;2003,STR:20;DEF:15;AGI:8,主要职业之一
+1002,法师,精通各种魔法的职业；远程攻击专家,8,2004,80,120,2004;2005;2006,INT:25;DEF:5;AGI:12,魔法系职业
+1003,弓箭手,远程物理攻击专家；敏捷型职业,9,2007,100,60,2007;2008;2009,AGI:22;STR:12;DEF:8,敏捷系职业
+1004,牧师,治疗和辅助专家；团队不可缺少,7,2010,90,100,2010;2011;2012,INT:18;DEF:12;AGI:10,辅助系职业

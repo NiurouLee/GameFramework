@@ -1,0 +1,7 @@
+﻿ID@All,Name@Client@Lan,Description@Client@Lan,Price@Client,DropRate@Server,AdminPrice@Server@PM,Properties@All,RequiredLevel@Client@Ref
+int,string,string,int,float,int,map<string;int>,int
+物品ID,物品名称（客户端+多语言）,物品描述（客户端+多语言）,客户端价格,服务端掉落率,管理员价格（服务端+不生成代码）,属性加成,需求等级（客户端+引用）
+0,"","",0,0.0,0,"",1
+4001,魔法剑,"注入了魔法力量的神秘武器",1500,0.02,500,"ATK:50;MAG:20;DUR:200",15
+4002,治疗药剂,"快速恢复生命值的珍贵药剂",200,0.15,50,"HP:100;HEAL_SPEED:2",5
+4003,隐身斗篷,"让穿戴者能够隐身的神奇斗篷",3000,0.005,1000,"STEALTH:60;AGI:15;DUR:150",20

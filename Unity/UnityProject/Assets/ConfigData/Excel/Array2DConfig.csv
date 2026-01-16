@@ -1,0 +1,7 @@
+﻿ID@All,Matrix@All,GameBoard@Client,ServerGrid@Server,StringMatrix@All@Lan
+int,int[][],repeated repeated int,float[][],string[][]
+配置ID,整数矩阵,游戏棋盘（客户端）,服务端网格,字符串矩阵（多语言）
+0,"","","",""
+1001,"1,2,3;4,5,6;7,8,9","0,0,1;0,1,0;1,0,0","1.0,2.5;3.2,4.8","A,B;C,D"
+1002,"10,20;30,40","1,1,1;1,1,1;1,1,1","0.1,0.2,0.3;0.4,0.5,0.6","Hello,World;你好,世界"
+1003,"100;200;300","2,2,2;2,2,2","10.5,20.5","Title,Content;标题,内容"
