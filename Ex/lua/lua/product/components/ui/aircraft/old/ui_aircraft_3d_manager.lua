@@ -1,0 +1,165 @@
+-- ---@class UIAircraft3DManager:Object
+-- _class("UIAircraft3DManager", Object)
+-- UIAircraft3DManager = UIAircraft3DManager
+-- function UIAircraft3DManager:Constructor()
+--     ---@type boolean
+--     self._inited = false
+--     ---@type UIAircraftController
+--     self._UIAircraftController = nil
+--     ---@type AircraftInputManager 输入管理器
+--     self._inputManager = AircraftInputManager:New()
+--     ---@type AircraftCameraManager 相机管理器
+--     self._cameraManager = AircraftCameraManager:New(self)
+--     ---@type AircraftSceneManager 风船视图场景管理器
+--     self._sceneManager = AircraftSceneManager:New(self)
+--     self.roomParent = nil
+--     self.shipParent = nil
+--     self.uiParent = nil
+--     --进入房间时保存当前房间，用于刷新房间内星灵
+--     self.curRoom = nil
+-- end
+-- ---@param uiAircraftController UIAircraftController
+-- function UIAircraft3DManager:Init(uiAircraftController)
+--     self._UIAircraftController = uiAircraftController
+--     if not self._inputManager:Init() then
+--         return false
+--     end
+--     if not self._cameraManager:Init() then
+--         return false
+--     end
+--     if not self._sceneManager:Init() then
+--         return false
+--     end
+--     self.roomParent = UnityEngine.GameObject.Find("fj")
+--     -- self.uiParent = UnityEngine.GameObject.Find("fj_tmmb_new")
+--     self.shipParent = UnityEngine.GameObject.Find("fengchuan")
+--     if not self.roomParent or not self.shipParent then
+--         Log.fatal("[aircraft] cant find go in scene")
+--     end
+--     self._inited = true
+-- end
+-- function UIAircraft3DManager:Destory()
+--     self._sceneManager:Dispose()
+--     self._cameraManager:Dispose()
+--     self._inputManager:Dispose()
+-- end
+-- ---@param deltaTimeMS number
+-- function UIAircraft3DManager:Update(deltaTimeMS)
+--     if not self._inited then
+--         return
+--     end
+--     self._inputManager:Update(deltaTimeMS)
+--     self._cameraManager:Update(deltaTimeMS)
+--     self._sceneManager:Update(deltaTimeMS)
+-- end
+-- ---@param room AircraftRoom
+-- ---@param targetPet AircraftPet
+-- function UIAircraft3DManager:SwitchToInteractiveView(room, targetPet)
+--     GameGlobal.TaskManager():StartTask(self.SwitchToInteractiveViewProcess, self, room, targetPet)
+-- end
+-- ---@param room AircraftRoom
+-- ---@param targetPet AircraftPet
+-- function UIAircraft3DManager:SwitchToInteractiveViewProcess(TT, room, targetPet)
+--     self._inputManager:SetEnable(false)
+--     targetPet:EnterInteractiveState()
+--     self._cameraManager:SwitchToInteractiveView(TT, room, targetPet)
+--     GameGlobal.EventDispatcher():Dispatch(GameEventType.AircraftShowInteractiveUI, room, targetPet)
+--     self._inputManager:SetEnable(true)
+-- end
+-- ---@param room AircraftRoom
+-- function UIAircraft3DManager:InteractiveViewSwitchToRoomView(room, targetPet)
+--     GameGlobal.TaskManager():StartTask(self.InteractiveViewSwitchToRoomViewProcess, self, room, targetPet)
+-- end
+-- ---@param room AircraftRoom
+-- function UIAircraft3DManager:InteractiveViewSwitchToRoomViewProcess(TT, room, targetPet)
+--     self._inputManager:SetEnable(false)
+--     targetPet:ExitInteractiveState()
+--     self._cameraManager:InteractiveViewSwitchToRoomView(TT, room)
+--     GameGlobal.EventDispatcher():Dispatch(GameEventType.InteractiveViewSwitchToRoomViewComplete)
+--     self._inputManager:SetEnable(true)
+-- end
+-- ---@param room AircraftRoom
+-- ---@param spaceGameObject UnityEngine.GameObject
+-- function UIAircraft3DManager:EnterRoom(room, spaceGameObject)
+--     self.curRoom = room
+--     self.curRoom:OnEnter()
+--     self._sceneManager:ClickRoom(room:SpaceID())
+--     self:EnterRoomProcess(nil, room)
+--     -- GameGlobal.TaskManager():StartTask(self.EnterRoomProcess, self, room)
+-- end
+-- ---@param room AircraftRoom
+-- function UIAircraft3DManager:EnterRoomProcess(TT, room)
+--     --self.shipParent:SetActive(false)
+--     -- self._inputManager:SetEnable(false)
+--     -- self._UIAircraftController:ShowCurUIState(false)
+--     self._UIAircraftController:StartTransformToRoom()
+--     -- self._cameraManager:EnterRoom(TT, room)
+--     self.curRoom:OnFocus()
+--     self._UIAircraftController:FinishTransformToRoom(room)
+--     -- self._inputManager:SetEnable(true)
+-- end
+-- ---@param _spaceId number
+-- function UIAircraft3DManager:CleanSpace(_spaceId)
+--     self._UIAircraftController:ShowSpcaceClean(_spaceId)
+-- end
+-- function UIAircraft3DManager:BuildRoom(_spaceId)
+--     self._UIAircraftController:BuildRoom(_spaceId)
+-- end
+-- function UIAircraft3DManager:SpeedUpRoom(spaceID, _option)
+--     self._UIAircraftController:BuildOrUpgradeSpeedup(spaceID, _option)
+-- end
+-- function UIAircraft3DManager:LeaveRoom(playCloseDoorAni)
+--     -- GameGlobal.TaskManager():StartTask(self.LeaveRoomProcess, self, playCloseDoorAni)
+--     self:LeaveRoomProcess(nil, playCloseDoorAni)
+-- end
+-- function UIAircraft3DManager:LeaveRoomProcess(TT, playCloseDoorAni)
+--     -- self._inputManager:SetEnable(false)
+--     -- self._UIAircraftController:StartTransformToMain()
+--     -- self._cameraManager:SwitchToMainView(TT)
+--     -- self._cameraManager:ExitRoom(TT, self.curRoom, playCloseDoorAni)
+--     self._sceneManager:ExitRoom(self.curRoom:SpaceID())
+--     -- self._UIAircraftController:FinishTransformToMain()
+--     -- self._inputManager:SetEnable(true)
+--     -- self.shipParent:SetActive(true)
+--     if playCloseDoorAni then
+--         GameGlobal.EventDispatcher():Dispatch(GameEventType.AircraftPlayCloseDoor, self.curRoom._roomLogicData._spaceid)
+--     end
+--     GameGlobal.EventDispatcher():Dispatch(GameEventType.FinishGuideStep, GuideType.OpenUI)
+--     self.curRoom:OnExit()
+--     self.curRoom = nil
+-- end
+-- function UIAircraft3DManager:CurrentRoomPetChanged()
+--     self._sceneManager:RefreshAllRoomPets()
+--     if self.curRoom then
+--         self._UIAircraftController:ShowRoomUI(self.curRoom, false)
+--     end
+--     -- if self.curRoom then
+--     --     self.curRoom:RefreshPets()
+--     -- else
+--     --     Log.warn("[aircraft] cant refresh pets, current room is nil")
+--     -- end
+-- end
+-- function UIAircraft3DManager:SetOtherRoomActive(active)
+--     self._sceneManager:SetRoomActiveExcept(active, self.curRoom:GetRoomGameObject())
+-- end
+-- function UIAircraft3DManager:SetPressSlider(active, worldPos)
+--     self._sceneManager:SetPressSlider(active, worldPos)
+-- end
+-- function UIAircraft3DManager:SetPressSliderValue(value)
+--     self._sceneManager:SetPressSliderValue(value)
+-- end
+-- ---@return AircraftInputManager
+-- function UIAircraft3DManager:InputManager()
+--     return self._inputManager
+-- end
+-- ---@return AircraftSceneManager
+-- function UIAircraft3DManager:SceneManager()
+--     return self._sceneManager
+-- end
+-- function UIAircraft3DManager:CameraManager()
+--     return self._cameraManager
+-- end
+-- ---@return UIAircraftController
+-- function UIAircraft3DManager:UIController()
+--     return self._UIAircraftController
+-- end

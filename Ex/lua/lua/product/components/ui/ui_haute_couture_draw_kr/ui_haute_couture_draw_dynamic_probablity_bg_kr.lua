@@ -1,0 +1,6 @@
+---@class UIHauteCoutureDrawDynamicProbabilityBgKR:UICustomWidget
+_class("UIHauteCoutureDrawDynamicProbabilityBgKR", UICustomWidget)
+UIHauteCoutureDrawDynamicProbabilityBgKR = UIHauteCoutureDrawDynamicProbabilityBgKR
+
+function UIHauteCoutureDrawDynamicProbabilityBgKR:Constructor()
+end

@@ -1,0 +1,43 @@
+---@class INTL.INTLChannel : object
+---@field INTL string
+---@field Guest string
+---@field CustomAccount string
+---@field Facebook string
+---@field GameCenter string
+---@field Google string
+---@field Apple string
+---@field Line string
+---@field Twitter string
+---@field PlayFab string
+---@field Firebase string
+---@field Adjust string
+---@field AppsFlyer string
+---@field CrashSight string
+---@field Garena string
+---@field System string
+---@field Steam string
+---@field Epic string
+---@field IEGPassport string
+---@field EGame string
+---@field VK string
+---@field GameFriends string
+---@field BeeTalk string
+---@field Q string
+---@field W string
+---@field Dmm string
+---@field Discord string
+---@field SquareEnix string
+---@field Supercell string
+---@field KaKao2 string
+---@field KaKao string
+---@field VNG string
+---@field Instagram string
+---@field WhatsApp string
+---@field GooglePGS string
+---@field EA string
+---@field Nintendo string
+---@field LI string
+local m = {}
+INTL = {}
+INTL.INTLChannel = m
+return m

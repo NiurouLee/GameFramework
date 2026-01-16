@@ -1,0 +1,220 @@
+---@class UIN26LineMapNode : UICustomWidget
+_class("UIN26LineMapNode", UICustomWidget)
+UIN26LineMapNode = UIN26LineMapNode
+
+function UIN26LineMapNode:OnShow(uiParams)
+    self:InitWidget()
+end
+
+function UIN26LineMapNode:InitWidget()
+    --generated--
+    ---@type UnityEngine.UI.Image
+    self.bg = self:GetUIComponent("Image", "bg")
+    ---@type UILocalizationText
+    self.name = self:GetUIComponent("UILocalizationText", "name")
+    self.name2 = self:GetUIComponent("UILocalizationText", "name_boss")
+    self.star = self:GetGameObject("star")
+
+    --generated end--
+    ---@type UnityEngine.UI.Image
+    self.star1 = self:GetUIComponent("Image", "Star1")
+    ---@type UnityEngine.UI.Image
+    self.star2 = self:GetUIComponent("Image", "Star2")
+    ---@type UnityEngine.UI.Image
+    self.star3 = self:GetUIComponent("Image", "Star3")
+
+    self._rectTransform = self:GetGameObject():GetComponent("RectTransform")
+    self._stars =
+    {
+        self.star1,
+        self.star2,
+        self.star3
+    }
+
+    self._atlas = nil
+    self._anim = self:GetUIComponent("Animation", "Anim")
+    self._bgGo = self:GetGameObject("bg")
+    self._maskGo = self:GetGameObject("mask")
+end
+
+function UIN26LineMapNode:GetNodeCfg()
+    local NodeCfg =
+    {
+        SLeval = 111111, --s关枚举id
+        Passed = 888, --通关后文本和阴影颜色
+    }
+
+    NodeCfg[DiscoveryStageType.FightNormal] =
+    {
+        [1] = {
+            normal = "n26_xxg_spot01",
+            press = "",
+            lock = "",
+            textColor = Color(65 / 255, 40 / 255, 17 / 255), -- 不使用
+            textShadow = Color(0 / 255, 0 / 255, 0 / 255), -- 不使用
+            normalStar = "",
+            passStar = "n26_xxg_star01"
+        }, --普通样式
+        [2] = {
+            normal = "",
+            press = "",
+            lock = "",
+            textColor = Color(241 / 255, 255 / 255, 117 / 255),
+            textShadow = Color(111 / 255, 52 / 255, 25 / 255),
+            normalStar = "",
+            passStar = ""
+        } --高难样式
+    }
+    NodeCfg[DiscoveryStageType.FightBoss] =
+    {
+        [1] = {
+            normal = "n26_xxg_spot03",
+            press = "",
+            lock = "",
+            textColor = Color.New(212 / 255, 148 / 255, 91 / 255), -- 不使用
+            textShadow = Color.New(255 / 255, 255 / 255, 255 / 255), -- 不使用
+            normalStar = "",
+            passStar = "n26_xxg_star02"
+        }, --普通样式
+        [2] = {
+            normal = "",
+            press = "",
+            lock = "",
+            textColor = Color.New(255 / 255, 255 / 255, 255 / 255),
+            textShadow = Color.New(238 / 255, 0 / 255, 34 / 255),
+            normalStar = "",
+            passStar = ""
+        } --高难样式
+    }
+    NodeCfg[DiscoveryStageType.Plot] =
+    {
+        [1] = {
+            normal = "n26_xxg_spot02",
+            press = "",
+            lock = "",
+            textColor = Color.New(65 / 255, 40 / 255, 17 / 255), -- 不使用
+            textShadow = Color.New(0 / 255, 0 / 255, 0 / 255) -- 不使用
+        }, --普通样式
+        [2] = {
+            normal = "",
+            press = "",
+            lock = "",
+            textColor = Color.New(241 / 255, 255 / 255, 117 / 255),
+            textShadow = Color.New(111 / 255, 52 / 255, 25 / 255)
+        } --高难样式
+    }
+    NodeCfg[NodeCfg.SLeval] =
+    {
+        [1] = {
+            normal = "",
+            press = "",
+            lock = "",
+            textColor = Color.New(255 / 255, 255 / 255, 255 / 255),
+            textShadow = Color.New(22 / 255, 42 / 255, 61 / 255),
+            normalStar = "",
+            passStar = ""
+        }, --普通样式
+        [2] = {
+            normal = "",
+            press = "",
+            lock = "",
+            textColor = Color.New(255 / 255, 255 / 255, 255 / 255),
+            textShadow = Color.New(22 / 255, 42 / 255, 61 / 255),
+            normalStar = "",
+            passStar = ""
+        } --高难样式
+    }
+
+    return NodeCfg
+end
+
+function UIN26LineMapNode:SetAtlas(atlas)
+    self._atlas = atlas
+end
+
+---@param passInfo cam_mission_info
+function UIN26LineMapNode:SetData(lineCfg, passInfo, cb)
+    self._missionID = lineCfg.CampaignMissionId
+    self._onClick = cb
+    self._rectTransform.anchorMax = Vector2(0, 0.5)
+    self._rectTransform.anchorMin = Vector2(0, 0.5)
+    self._rectTransform.sizeDelta = Vector2.zero
+    self._rectTransform.anchoredPosition = Vector2(lineCfg.MapPosX, lineCfg.MapPosY)
+    local missionCfg = Cfg.cfg_campaign_mission[self._missionID]
+    if not missionCfg then
+        Log.exception("cfg_campaign_mission中找不到配置:", self._missionID)
+    end
+
+    self.name:SetText(StringTable.Get(missionCfg.Name))
+    self.name2:SetText(StringTable.Get(missionCfg.Name))
+    self.name.gameObject:SetActive(missionCfg.Type ~= DiscoveryStageType.FightBoss)
+    self.name2.gameObject:SetActive(missionCfg.Type == DiscoveryStageType.FightBoss)
+
+    local NodeCfg = self:GetNodeCfg()
+
+    --1是普通关，2是困难关
+    local hardParam = 1
+    local typeCfg = nil
+    if lineCfg.WayPointType == 4 then
+        --S关
+        typeCfg = NodeCfg[NodeCfg.SLeval]
+    else
+        --战斗、剧情、boss
+        --普通战斗关卡=1
+        --Boss战斗关卡=2
+        --剧情关=3
+        typeCfg = NodeCfg[missionCfg.Type]
+    end
+    local bg = nil
+    -- local mask = typeCfg[hardParam].press
+    local textColor, shadowColor
+    if passInfo then
+        --已通关
+        textColor = typeCfg[hardParam].textColor
+        -- shadowColor = typeCfg[hardParam].textShadow
+        local module = self:GetModule(MissionModule)
+        local stars = module:ParseStarInfo(passInfo.star)
+        bg = typeCfg[hardParam].normal
+        for i = 1, 3 do
+            local pass = i <= stars
+            local url = pass and typeCfg[hardParam].passStar or typeCfg[hardParam].normalStar
+            self._stars[i].sprite = self._atlas:GetSprite(url)
+            self._stars[i].gameObject:SetActive(not string.isnullorempty(url))
+        end
+        self.star:SetActive(missionCfg.Type ~= DiscoveryStageType.Plot)
+    else
+        --没有通关数据则视为当前关
+        textColor = typeCfg[hardParam].textColor
+        -- shadowColor = typeCfg[hardParam].textShadow
+        bg = typeCfg[hardParam].normal
+        local stars = 0
+        for i = 1, 3 do
+            local pass = i <= stars
+            local url = pass and typeCfg[hardParam].passStar or typeCfg[hardParam].normalStar
+            self._stars[i].sprite = self._atlas:GetSprite(url)
+            self._stars[i].gameObject:SetActive(not string.isnullorempty(url))
+        end
+        self.star:SetActive(missionCfg.Type ~= DiscoveryStageType.Plot)
+    end
+    self:_SetRed(false)
+    self.bg.sprite = self._atlas:GetSprite(bg)
+
+    -- self.name.color = textColor
+    --剧情路点点击后为了截屏而滚动
+    self._isStoryNode = missionCfg.Type == DiscoveryStageType.Plot
+
+    if lineCfg.MapPosY >= 0 then
+        self._anim:Play("uieff_N26LineController_MapNode_up")
+    else
+        self._anim:Play("uieff_N26LineController_MapNode_down")
+    end
+end
+
+function UIN26LineMapNode:_SetRed(isShow)
+    local redObj = self:GetGameObject("red")
+    redObj:SetActive(isShow)
+end
+
+function UIN26LineMapNode:BtnOnClick(go)
+    self._onClick(self._missionID, self._isStoryNode, self._rectTransform.position)
+end

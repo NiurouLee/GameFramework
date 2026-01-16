@@ -1,0 +1,39 @@
+---@class INTL.INTLAccountResult : INTL.INTLBaseResult
+---@field Profile INTL.AccountProfile
+---@field ChannelID int
+---@field Channel string
+---@field SeqID string
+---@field Username string
+---@field Uid string
+---@field Token string
+---@field Expiretime long
+---@field IsRegister int
+---@field IsSetPassword int
+---@field IsReceiveEmail int
+---@field VerifyCodeExpireTime long
+---@field RequestIsLogin bool
+---@field CanBind int
+---@field IsUserNameAvailable int
+---@field TosAcceptanceVersion string
+---@field PpAcceptanceVersion string
+---@field TosAcceptanceTime long
+---@field PpAcceptanceTime long
+---@field LoginDays int
+---@field HasGameSaccUid bool
+---@field GameSaccUid string
+---@field HasGameSaccOpenId bool
+---@field GameSaccOpenId string
+---@field HasLIUid bool
+---@field LIUid string
+---@field HasLIOpenId bool
+---@field LIOpenId string
+---@field NeedNotify bool
+---@field UserAgreedGameTos string
+---@field UserAgreedGamePP string
+---@field UserAgreedLiPP string
+---@field UserAgreedLiDt string
+---@field UserAgreedLiTos string
+local m = {}
+INTL = {}
+INTL.INTLAccountResult = m
+return m

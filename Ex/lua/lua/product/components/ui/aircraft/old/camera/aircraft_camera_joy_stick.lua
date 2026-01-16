@@ -1,0 +1,90 @@
+-- ---@class AircraftCameraJoyStick:Object
+-- _class("AircraftCameraJoyStick", Object)
+-- AircraftCameraJoyStick = AircraftCameraJoyStick
+-- ---@type UnityEngine.UI.ScrollRect
+-- function AircraftCameraJoyStick:Constructor(camera)
+--     self._camera = camera
+--     self._transform = camera.transform
+--     self._rotation = Quaternion.identity
+--     self._rate = Cfg.cfg_aircraft_camera["joyStickDragParam"].Value
+--     self._angleY = Cfg.cfg_aircraft_camera["joyStickAngleVertical"].Value
+--     self._angleX = Cfg.cfg_aircraft_camera["joyStickAngleHorizontal"].Value
+--     self._x = 0
+--     self._y = 0
+--     --获取聚焦点
+--     -- self.GetTarget = targetGetter
+--     self:Reset()
+-- end
+-- function AircraftCameraJoyStick:Init(pos)
+--     -- self._position = pos
+-- end
+-- ---@param stick UIAircraftJoyStick
+-- function AircraftCameraJoyStick:SetStick(stick)
+--     -- ---@type UIAircraftJoyStick
+--     -- self._stick = stick
+--     -- self._stick.onBegin = function()
+--     --     self._target = self.GetTarget()
+--     --     self._x = self._transform.rotation.eulerAngles.y
+--     --     self._y = -self._transform.rotation.eulerAngles.x
+--     --     self._distance = Vector3.Distance(self._target, self._transform.position)
+--     --     self:OnValueChanged(Vector3.zero)
+--     -- end
+--     -- self._stick.onDrag = function(pos)
+--     --     self:OnValueChanged(pos)
+--     -- end
+--     -- self._stick.onReset = function()
+--     --     self:Reset()
+--     -- end
+-- end
+-- function AircraftCameraJoyStick:Dispose()
+--     -- self._stick:Dispose()
+-- end
+-- function AircraftCameraJoyStick:Update(deltaTimeMS)
+--     -- self._stick:Update()
+-- end
+-- function AircraftCameraJoyStick:OnBegin(target)
+--     self._target = target
+--     self._x = self._transform.rotation.eulerAngles.y
+--     self._y = -self._transform.rotation.eulerAngles.x
+--     self._distance = Vector3.Distance(self._target, self._transform.position)
+--     self:OnValueChanged(Vector3.zero)
+-- end
+-- function AircraftCameraJoyStick:OnEnd()
+-- end
+-- function AircraftCameraJoyStick:OnValueChanged(value)
+--     local x = value.x * self._rate
+--     local y = value.y * self._rate
+--     self._x = self._x + x
+--     self._y = self._y + y
+--     if self._x < -180 then
+--         self._x = self._x + 360
+--     elseif self._x > 180 then
+--         self._x = self._x - 360
+--     end
+--     if self._y < -180 then
+--         self._y = self._y + 360
+--     elseif self._y > 180 then
+--         self._y = self._y - 360
+--     end
+--     self._x = Mathf.Clamp(self._x, -self._angleX, self._angleX)
+--     self._y = Mathf.Clamp(self._y, -self._angleY, self._angleY)
+--     local rotation = Quaternion.Euler(-self._y, self._x, 0)
+--     local target = rotation * Vector3(0, 0, -self._distance) + self._target
+--     self._rotation = rotation
+--     self._position = target
+-- end
+-- function AircraftCameraJoyStick:SetPosition(p)
+--     self._position = p
+-- end
+-- function AircraftCameraJoyStick:Reset()
+--     self._rotation = Quaternion.identity
+--     self._x = 0
+--     self._y = 0
+--     self._position = Vector3.zero
+-- end
+-- function AircraftCameraJoyStick:GetRot()
+--     return self._rotation
+-- end
+-- function AircraftCameraJoyStick:GetPos()
+--     return self._position
+-- end

@@ -1,0 +1,307 @@
+-- --[[
+--     风船主界面摄像机，被两种控制器共同控制
+-- ]]
+-- ---@class AircraftMainCamera:Object
+-- _class("AircraftMainCamera", Object)
+-- AircraftMainCamera = AircraftMainCamera
+-- function AircraftMainCamera:Constructor()
+--     self._lerpValue = Cfg.cfg_aircraft_camera["lerpParam"].Value
+--     self._clickPetPosZ = Cfg.cfg_aircraft_camera["clickPetPosZ"].Value
+--     self._backPosZ = Cfg.cfg_aircraft_camera["backPosZ"].Value
+--     self._showFocus = false
+-- end
+-- function AircraftMainCamera:Init(camera, input, clickCallback)
+--     ---@type UnityEngine.Camera
+--     self._camera = camera
+--     ---@type AircraftInputManager
+--     self._input = input
+--     self._clickCB = clickCallback
+--     ---@type AircraftCameraGesture
+--     self._gesture = AircraftCameraGesture:New()
+--     self._gesture:Init(self._camera, self._input)
+--     ---@type AircraftCameraJoyStick
+--     self._joyStick = AircraftCameraJoyStick:New(camera)
+--     self._joyStick:Init()
+--     --初始化一次位置
+--     self._currentPos = self._gesture:ClampPos(self._camera.transform.position)
+--     self._currentRot = self._camera.transform.rotation
+--     self:RefreshTarget()
+--     self._active = true
+--     --相机动画
+--     ---@type AircraftMainCameraAnim
+--     self._anim = nil
+-- end
+-- --更新相机目标点
+-- function AircraftMainCamera:RefreshTarget()
+--     local pos = self._currentPos
+--     local p1 = Vector3(pos.x, pos.y, 0)
+--     local dir = self._camera.transform.forward
+--     local nor = Vector3(0, 0, -1)
+--     local n =
+--         (nor.x * p1.x - nor.x * pos.x + nor.y * p1.y - nor.y * pos.y + nor.z * p1.z - nor.z * pos.z) /
+--         (nor.x * dir.x + nor.y * dir.y + nor.z * dir.z)
+--     self._cameraTarget = pos + dir * n
+-- end
+-- ---@param stick UIAircraftJoyStick
+-- function AircraftMainCamera:SetStick(stick, onStart, focus, onEnd)
+--     ---@type UIAircraftJoyStick
+--     self._stick = stick
+--     stick.onBegin = function()
+--         self:RefreshTarget()
+--         self._gesture:OnStartJoyStick(self._currentPos.z)
+--         self._joyStick:OnBegin(self._cameraTarget)
+--     end
+--     stick.onEnd = function()
+--         self._joyStick:OnEnd()
+--     end
+--     stick.onReset = function()
+--         self._joyStick:Reset()
+--         self._gesture:OnReset(self._currentPos.z)
+--         self._currentPos =
+--             self._gesture:ClampPos(Vector3(self._cameraTarget.x, self._cameraTarget.y, self._currentPos.z))
+--         self._currentRot = Quaternion.identity
+--     end
+--     self._gesture:SetFocusCb(focus)
+--     self._onFocusStart = onStart
+--     self._onFocusEnd = onEnd
+-- end
+-- function AircraftMainCamera:Dispose()
+--     self._gesture:Dispose()
+--     self._joyStick:Dispose()
+-- end
+-- function AircraftMainCamera:SetActive(active)
+--     self._active = active
+-- end
+-- function AircraftMainCamera:Update(deltaTimeMS)
+--     if not self._active then
+--         return
+--     end
+--     if self._anim then
+--         -- if self._anim:IsComplete() then
+--         --     self._anim:CallBack()
+--         --     self._anim = nil
+--         -- else
+--         --     local pos = self._anim:Update(deltaTimeMS)
+--         --     self._controller:StepMove(pos)
+--         -- end
+--         self._anim:Update(deltaTimeMS)
+--         self._currentPos = self._anim:Pos()
+--         self._currentRot = self._anim:Rot()
+--         if self._anim:IsComplete() then
+--             self._anim = nil
+--         end
+--     else
+--         -- self:GetTarget()
+--         -- self._controller:Update(deltaTimeMS)
+--         -- self._joyStickController:Update(deltaTimeMS)
+--         -- --两种控制器的位置和旋转叠加
+--         -- local pos1 = self._controller:GetPos()
+--         -- local pos2 = self._joyStickController:GetPos()
+--         -- self._currentPos = pos1 + pos2 + self._cameraTarget
+--         -- local mr = self._controller:GetRot()
+--         -- local jr = self._joyStickController:GetRot()
+--         -- self._currentRot = mr * jr
+--         self._stick:Update(deltaTimeMS)
+--         --点击
+--         local clicked, clickPos = self._input:GetClick()
+--         --缩放
+--         local scaling, scaleLength, scaleCenterPos = self._input:GetScale()
+--         --拖拽
+--         local dragging, dragStartPos, dragEndPos = self._input:GetDrag()
+--         --摇杆
+--         local sticking, offset = self._stick:GetDrag()
+--         if clicked then
+--             local clickRay = self._camera:ScreenPointToRay(clickPos)
+--             local layers = AircraftLayer.Default | (1 << AircraftLayer.Award)
+--             if self._currentPos.z > self._clickPetPosZ then
+--                 --超过配置才能点击到星灵
+--                 layers = layers | (1 << AircraftLayer.Pet)
+--             end
+--             local results = UnityEngine.Physics.RaycastAll(clickRay, 1000, layers)
+--             if results and results.Length > 0 then
+--                 local t = {}
+--                 for i = 1, results.Length do
+--                     t[i] = results[i - 1]
+--                 end
+--                 table.sort(
+--                     t,
+--                     function(a, b)
+--                         return a.distance < b.distance
+--                     end
+--                 )
+--                 self._clickCB(t)
+--                 return
+--             end
+--         end
+--         if scaling then
+--             local oz = self._currentPos.z
+--             local pos, off = self._gesture:OnZoom(scaleLength, self._currentPos:Clone())
+--             self._currentPos = pos
+--             if off then
+--                 --本次缩放超出边界，需要改变相机目标点
+--                 local deltaZ = math.abs(pos.z - oz)
+--                 local far = math.abs(self._gesture:FarPoint().z)
+--                 local z = math.abs(oz)
+--                 local t = deltaZ / (far - z)
+--                 self._currentRot = Quaternion.Lerp(self._currentRot, Quaternion.identity, t)
+--             end
+--         elseif dragging then
+--             --拖拽会改变相机中心点
+--             self._currentPos = self._gesture:OnDrag(dragEndPos - dragStartPos, self._currentPos)
+--             self:RefreshTarget()
+--         elseif sticking then
+--             self._joyStick:OnValueChanged(offset)
+--             local pos = self._joyStick:GetPos()
+--             local inEdge = self._gesture:IsInEdge(pos)
+--             if inEdge then
+--                 self._currentPos = pos
+--             else
+--                 self._currentPos = self._gesture:ClampPos(pos)
+--                 self._joyStick:SetPosition(self._currentPos:Clone())
+--             end
+--             self._currentRot = Quaternion.LookRotation(self._cameraTarget - self._currentPos, Vector3.up)
+--         end
+--     end
+--     local cur = self._camera.transform.position:Clone()
+--     cur = Vector3.Lerp(cur, self._currentPos, self._lerpValue)
+--     self._camera.transform.position = cur
+--     if cur.z > self._gesture:NearZ() - 0.1 and not self._showFocus then
+--         self._onFocusStart()
+--         self._showFocus = true
+--     elseif cur.z < self._gesture:NearZ() - 0.1 and self._showFocus then
+--         self._onFocusEnd()
+--         self._showFocus = false
+--     end
+--     local curRot = self._camera.transform.rotation
+--     curRot = Quaternion.Lerp(curRot, self._currentRot, self._lerpValue)
+--     self._camera.transform.rotation = curRot
+-- end
+-- ---@return AircraftCameraGesture
+-- function AircraftMainCamera:MainController()
+--     return self._gesture
+-- end
+-- ---@return AircraftCameraJoyStick
+-- function AircraftMainCamera:JoyStickController()
+--     return self._joyStick
+-- end
+-- function AircraftMainCamera:MoveAnim(target, callback, time)
+--     -- self._anim = AircraftLerpAnim:New(self._controller:GetFieldPos(), target, 700, callback)
+--     if self._anim then
+--         Log.exception("重复的相机动画:", debug.traceback())
+--     else
+--         AirLog("相机动画", debug.traceback())
+--     end
+--     if time then
+--         self._anim = AircraftMainCameraAnim:New(self, target, time, callback)
+--     else
+--         self._anim = AircraftMainCameraAnim:New(self, target, 700, callback)
+--     end
+--     -- local curRot = self._joyStickController:GetRot()
+--     -- self._joyStickController:Reset()
+--     -- local tarRot = self._joyStickController:GetRot()
+--     -- self._rotAnim = AircraftRotLerpAnim:New(curRot, tarRot, 700)
+-- end
+-- --摄像机拉近时返回
+-- function AircraftMainCamera:MoveBack(z)
+--     AirLog("相机动画，返回")
+--     local pos = self._gesture:GetFieldPos()
+--     pos.z = z - 0.05
+--     -- self._anim = AircraftLerpAnim:New(self._controller:GetFieldPos(), Vector3(pos.x, pos.y, z), 700)
+--     -- local curRot = self._joyStickController:GetRot()
+--     -- self._joyStickController:Reset()
+--     -- local tarRot = self._joyStickController:GetRot()
+--     -- self._rotAnim = AircraftRotLerpAnim:New(curRot, tarRot, 700)
+--     self._anim = AircraftMainCameraAnim:New(self, pos, 700)
+-- end
+-- --摄像机返回最远处
+-- function AircraftMainCamera:MoveToFar(callback)
+--     -- self._anim = AircraftLerpAnim:New(self._controller:GetFieldPos(), self._controller:FarPoint(), 700, callback)
+--     -- local curRot = self._joyStickController:GetRot()
+--     -- self._joyStickController:Reset()
+--     -- local tarRot = self._joyStickController:GetRot()
+--     -- self._rotAnim = AircraftRotLerpAnim:New(curRot, tarRot, 700)
+--     AirLog("相机动画，移向最远处")
+--     self._anim = AircraftMainCameraAnim:New(self, self._gesture:FarPoint(), 700, callback)
+-- end
+-- -------------------------------------------------------------------
+-- --[[
+--     相机控制器动画
+-- ]]
+-- ---@class AircraftMainCameraAnim:Object
+-- _class("AircraftMainCameraAnim", Object)
+-- AircraftMainCameraAnim = AircraftMainCameraAnim
+-- ---@param mainCam AircraftMainCamera
+-- function AircraftMainCameraAnim:Constructor(mainCam, target, duration, onFinish)
+--     --所有摄像机动画加锁
+--     GameGlobal.EventDispatcher():Dispatch(GameEventType.AircraftUILock, true, "AircraftMainCameraAnim")
+--     self._controller = mainCam:MainController()
+--     self._joyStickController = mainCam:JoyStickController()
+--     self._mainCam = mainCam
+--     -- self._startPos1 = self._controller:GetFieldPos()
+--     -- self._targetPos1 = target
+--     -- self._startPos2 = self._joyStickController:GetPos()
+--     -- self._startRot2 = self._joyStickController:GetRot()
+--     -- self._joyStickController:Reset()
+--     -- self._targetPos2 = self._joyStickController:GetPos()
+--     -- self._targetRot2 = self._joyStickController:GetRot()
+--     self._fromPos = mainCam._currentPos
+--     self._fromRot = mainCam._currentRot
+--     local pos, riseUp = self._controller:ClampPos(target)
+--     self._targetPos = pos
+--     self._targetRot = Quaternion.LookRotation(Vector3(0, -riseUp, -pos.z), Vector3.up)
+--     self._duration = duration
+--     self._onfinish = onFinish
+--     self._timer = 0
+--     self._completed = false
+--     self._pos = nil
+--     self._rot = nil
+-- end
+-- function AircraftMainCameraAnim:Update(deltaTimeMS)
+--     if self._completed then
+--         return
+--     end
+--     if self._timer < self._duration then
+--         local t = self._timer / self._duration
+--         self._timer = self._timer + deltaTimeMS
+--         -- local l1 = Vector3.Lerp(self._startPos1, self._targetPos1, t)
+--         -- self._controller:StepMove(l1)
+--         -- local p1 = self._controller:GetPos()
+--         -- local r1 = self._controller:GetRot()
+--         -- ---
+--         -- local p2 = Vector3.Lerp(self._startPos2, self._targetPos2, t)
+--         -- local r2 = Quaternion.Lerp(self._startRot2, self._targetRot2, t)
+--         -- self._pos = p1 + p2 + self._cameraTarget
+--         -- self._rot = r1 * r2
+--         self._pos = Vector3.Lerp(self._fromPos, self._targetPos, t)
+--         self._rot = Quaternion.Lerp(self._fromRot, self._targetRot, t)
+--     else
+--         -- local l1 = Vector3.Lerp(self._startPos1, self._targetPos1, 1)
+--         -- self._controller:StepMove(l1)
+--         -- local p1 = self._controller:GetPos()
+--         -- local r1 = self._controller:GetRot()
+--         -- ---
+--         -- local p2 = Vector3.Lerp(self._startPos2, self._targetPos2, 1)
+--         -- local r2 = Quaternion.Lerp(self._startRot2, self._targetRot2, 1)
+--         -- self._pos = p1 + p2 + self._cameraTarget
+--         -- self._rot = r1 * r2
+--         self._pos = self._targetPos
+--         self._rot = self._targetRot
+--         self._completed = true
+--         self._mainCam:RefreshTarget()
+--         self._controller:ClampXY(self._targetPos.z)
+--         if self._onfinish then
+--             self._onfinish()
+--         end
+--         --动画结束，解锁
+--         GameGlobal.EventDispatcher():Dispatch(GameEventType.AircraftUILock, false, "AircraftMainCameraAnim")
+--     end
+-- end
+-- function AircraftMainCameraAnim:IsComplete()
+--     return self._completed
+-- end
+-- function AircraftMainCameraAnim:Pos()
+--     return self._pos
+-- end
+-- function AircraftMainCameraAnim:Rot()
+--     return self._rot
+-- end

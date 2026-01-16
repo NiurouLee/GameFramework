@@ -1,0 +1,3 @@
+---@class UISakuraTaskControllerWrapper:UIActivityEveSinsaTaskController
+_class("UISakuraTaskControllerWrapper", UIActivityEveSinsaTaskController)
+UISakuraTaskControllerWrapper = UISakuraTaskControllerWrapper

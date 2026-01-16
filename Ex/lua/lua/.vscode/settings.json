@@ -1,0 +1,8 @@
+{
+    "redis-console.host": "localhost",
+    "redis-console.port": 6379,
+    "redis-console.password": "",
+    "redis-console.hostIpFamily": 4,
+    "cmake.configureOnOpen": false,
+    "Lua.workspace.maxPreload": 10000
+}

@@ -1,0 +1,16 @@
+MedalWallConfig = {}
+MedalWallConfig.XMin = -1.5 --横向移动最小偏移
+MedalWallConfig.XMax = 1.5 --横向移动最大偏移
+MedalWallConfig.YMin = -0.5 --纵向移动最小偏移
+MedalWallConfig.YMax = 0.5 --纵向移动最大偏移
+MedalWallConfig.ScaleMin = -4 --前后移动最近偏移
+MedalWallConfig.ScaleMax = 4 --前后移动最远偏移
+MedalWallConfig.SpeedMin = 3 --最近偏移时像机移速
+MedalWallConfig.SpeedMax = 10 --最远偏移时像机移速
+MedalWallConfig.WheelFactor = 5 --鼠标滚轮缩放系数
+MedalWallConfig.HomelandMedalWallWidth = 5.08 --家园中勋章墙模型的宽度
+MedalWallConfig.MedalOffset = 0.0001 --家园勋章墙上，摆放在相同位置勋章间的位移差
+MedalWallConfig.MobileWheelFactor = 0.01 --移动端缩放系数
+MedalWallConfig.MobileMoveXFactor = 0.002 --移动端横向平移系数
+MedalWallConfig.MobileMoveYFactor = 0.001 --移动端纵向平移系数
+MedalWallConfig.CameraResetPosTime = 0.3 --退出查看模式时相机归位的时间

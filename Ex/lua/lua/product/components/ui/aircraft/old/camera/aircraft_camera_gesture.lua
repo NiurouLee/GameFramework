@@ -1,0 +1,238 @@
+-- --[[
+--     风船手势操作摄像机控制器
+-- ]]
+-- ---@class AircraftCameraGesture:Object
+-- _class("AircraftCameraGesture", Object)
+-- AircraftCameraGesture = AircraftCameraGesture
+-- function AircraftCameraGesture:Constructor()
+--     self._dragParamFar = Cfg.cfg_aircraft_camera["mainDragParamFar"].Value
+--     self._dragParamNear = Cfg.cfg_aircraft_camera["mainDragParamNear"].Value
+--     self._zoomParam = Cfg.cfg_aircraft_camera["mainZoomParam"].Value
+--     self._nearDistance = Cfg.cfg_aircraft_camera["mainNearDistance"].Value
+--     self._topDistance = Cfg.cfg_aircraft_camera["mainTopDistance"].Value
+--     --抬起
+--     self._riseUpDistance = Cfg.cfg_aircraft_camera["riseUpDistance"].Value
+--     self._riseUpMaxY = Cfg.cfg_aircraft_camera["riseUpMaxY"].Value
+--     --fov
+--     self._minFov = Cfg.cfg_aircraft_camera["minFov"].Value
+--     self._maxFov = Cfg.cfg_aircraft_camera["maxFov"].Value
+--     self._riseUpY = 0
+--     self._up = Vector3(0, 1, 0)
+-- end
+-- function AircraftCameraGesture:Init(camera, input)
+--     ---@type AircraftInputManager
+--     self._input = input
+--     self._camera = camera
+--     self._cameraT = camera.transform
+--     self._fov = self._maxFov
+--     camera.fieldOfView = self._fov
+--     self._aspect = UnityEngine.Screen.width / UnityEngine.Screen.height
+--     self._fieldHeight = self._topDistance * 2
+--     self._tan = math.tan(math.rad(self._fov / 2))
+--     local z = -self._fieldHeight / 2 / self._tan
+--     self._farPoint = Vector3(0, 0, z)
+--     self._pos = camera.transform.position:Clone()
+--     self._originRot = camera.transform.rotation
+--     self._y = self._fieldHeight / 2 - self._tan * math.abs(self._pos.z)
+--     self._x = self._y * self._aspect
+--     self._pos.x = Mathf.Clamp(self._pos.x, -self._x, self._x)
+--     self._pos.y = Mathf.Clamp(self._pos.y, -self._y, self._y)
+--     self._dragParam = self:_CalDragParam(self._pos.z)
+--     --抬起
+--     self._rot = Quaternion.identity
+--     self._zooming = true
+--     ---
+--     --fov参数
+--     self._fovParam = 0.2
+--     self._fovT = 1
+--     ---
+-- end
+-- function AircraftCameraGesture:Dispose()
+--     self._input = nil
+-- end
+-- function AircraftCameraGesture:GetPos()
+--     return self._pos + Vector3(0, self._riseUpY, 0)
+-- end
+-- function AircraftCameraGesture:GetRot()
+--     return self._rot
+-- end
+-- function AircraftCameraGesture:GetFieldPos()
+--     return self._pos:Clone()
+-- end
+-- function AircraftCameraGesture:FarPoint()
+--     return self._farPoint
+-- end
+-- --摇杆发生拖拽之后，相机锥形返回会扩大
+-- function AircraftCameraGesture:OnStartJoyStick(z)
+--     local top = self._topDistance + 10
+--     self._fieldHeight = top * 2
+--     self._tan = top / math.abs(self._farPoint.z)
+--     self._y = self._fieldHeight / 2 - self._tan * math.abs(z)
+--     self._x = self._y * self._aspect
+-- end
+-- function AircraftCameraGesture:OnReset(z)
+--     self._fieldHeight = self._topDistance * 2
+--     self._tan = math.tan(math.rad(self._fov / 2))
+--     self._y = self._fieldHeight / 2 - self._tan * math.abs(z)
+--     self._x = self._y * self._aspect
+-- end
+-- -- function AircraftCameraGesture:Update(deltaTimeMS)
+-- --     --缩放
+-- --     local scaling, scaleLength, scaleCenterPos = self._input:GetScale()
+-- --     --拖拽
+-- --     local dragging, dragStartPos, dragEndPos = self._input:GetDrag()
+-- --     if scaling then
+-- --         local delta = self._cameraT.forward * (scaleLength * self._zoomParam)
+-- --         delta = self._pos + delta
+-- --         if delta.z < -self._nearDistance then
+-- --             self._pos = delta:Clone()
+-- --             self:_zoom(self._pos.z)
+-- --         end
+-- --     elseif dragging then
+-- --         local pos = self._pos - (dragEndPos - dragStartPos) * self._dragParam
+-- --         -- self._pos.x = Mathf.Clamp(self._pos.x, -self._x, self._x)
+-- --         -- self._pos.y = Mathf.Clamp(self._pos.y, -self._y, self._y)
+-- --         self:_clampXY(pos.x, pos.y)
+-- --     end
+-- -- end
+-- function AircraftCameraGesture:NearZ()
+--     return -self._nearDistance
+-- end
+-- function AircraftCameraGesture:OnZoom(scaleLength, cur)
+--     local offEdge = false
+--     if self._zooming then
+--         local pos = self._cameraT.forward * (scaleLength * self._zoomParam)
+--         pos = cur + pos
+--         offEdge = not self:IsInEdge(pos)
+--         if pos.z < -self._nearDistance then
+--             pos.z = Mathf.Clamp(pos.z, self._farPoint.z, -self._nearDistance)
+--             self._y = self._fieldHeight / 2 - self._tan * math.abs(pos.z)
+--             self._x = self._y * self._aspect
+--             pos.x = Mathf.Clamp(pos.x, -self._x, self._x)
+--             pos.y = Mathf.Clamp(pos.y, -self._y, self._y)
+--             self._dragParam = self:_CalDragParam(pos.z)
+--             --抬起
+--             local delta = pos.z + self._riseUpDistance
+--             local riseUp = 0
+--             if delta < 0 then
+--                 riseUp = 0
+--             else
+--                 local dis = -(pos.z + self._nearDistance)
+--                 riseUp = (1 - dis / (self._riseUpDistance - self._nearDistance)) * self._riseUpMaxY
+--             end
+--             return pos, offEdge
+--         else
+--             self._zooming = false
+--             cur.z = -self._nearDistance
+--         end
+--     else
+--         local delta = scaleLength * self._fovParam
+--         self._fovT = Mathf.Clamp01(self._fovT - delta)
+--         local fov = Mathf.Lerp(self._minFov, self._maxFov, self._fovT)
+--         self._camera.fieldOfView = fov
+--         self._focusing(self._fovT)
+--         if delta < 0 and self._fovT >= 1 then
+--             self._zooming = true
+--         end
+--     end
+--     return cur, offEdge
+-- end
+-- function AircraftCameraGesture:OnDrag(delta, cur)
+--     local pos = cur - delta * self._dragParam
+--     pos.x = Mathf.Clamp(pos.x, -self._x, self._x)
+--     pos.y = Mathf.Clamp(pos.y, -self._y, self._y)
+--     return pos
+-- end
+-- function AircraftCameraGesture:ClampXY(z)
+--     z = Mathf.Clamp(z, self._farPoint.z, -self._nearDistance)
+--     self._y = self._fieldHeight / 2 - self._tan * math.abs(z)
+--     self._x = self._y * self._aspect
+-- end
+-- function AircraftCameraGesture:_zoom(z)
+--     self._pos.z = z
+--     self._pos.z = Mathf.Clamp(self._pos.z, self._farPoint.z, -self._nearDistance)
+--     self._y = self._fieldHeight / 2 - self._tan * math.abs(self._pos.z)
+--     self._x = self._y * self._aspect
+--     self._pos.x = Mathf.Clamp(self._pos.x, -self._x, self._x)
+--     self._pos.y = Mathf.Clamp(self._pos.y, -self._y, self._y)
+--     self._dragParam = self:_CalDragParam()
+--     --抬起
+--     local delta = self._pos.z + self._riseUpDistance
+--     if delta < 0 then
+--         self._riseUpY = 0
+--     else
+--         local dis = -(self._pos.z + self._nearDistance)
+--         self._riseUpY = (1 - dis / (self._riseUpDistance - self._nearDistance)) * self._riseUpMaxY
+--     end
+--     self._rot = Quaternion.LookRotation(Vector3(0, -self._riseUpY, -self._pos.z), self._up)
+-- end
+-- function AircraftCameraGesture:_clampXY(x, y)
+--     self._pos.x = Mathf.Clamp(x, -self._x, self._x)
+--     self._pos.y = Mathf.Clamp(y, -self._y, self._y)
+-- end
+-- --根据摄像机距离，计算拖拽参数
+-- function AircraftCameraGesture:_CalDragParam(z)
+--     local rate = (self._dragParamFar - self._dragParamNear) / (math.abs(self._farPoint.z) - self._nearDistance)
+--     return (math.abs(z) - self._nearDistance) * rate + self._dragParamNear
+-- end
+-- function AircraftCameraGesture:StepMove(pos)
+--     -- self._pos.x = pos.x
+--     -- self._pos.y = pos.y
+--     self:_zoom(pos.z)
+--     self:_clampXY(pos.x, pos.y)
+-- end
+-- --将1个目标点裁剪进相机的锥形范围内
+-- function AircraftCameraGesture:ClampPos(pos)
+--     local z = Mathf.Clamp(pos.z, self._farPoint.z, -self._nearDistance)
+--     local _y = self._fieldHeight / 2 - self._tan * math.abs(z)
+--     local _x = _y * self._aspect
+--     local x = Mathf.Clamp(pos.x, -_x, _x)
+--     local y = Mathf.Clamp(pos.y, -_y, _y)
+--     --抬起
+--     local delta = z + self._riseUpDistance
+--     local riseUp = 0
+--     if delta < 0 then
+--         riseUp = 0
+--     else
+--         local dis = -(z + self._nearDistance)
+--         riseUp = (1 - dis / (self._riseUpDistance - self._nearDistance)) * self._riseUpMaxY
+--     end
+--     return Vector3(x, y + riseUp, z), riseUp
+-- end
+-- function AircraftCameraGesture:SetFocusCb(focus)
+--     self._focusing = focus
+-- end
+-- function AircraftCameraGesture:IsInEdge(pos)
+--     if pos.z > self._farPoint.z and pos.z < -self._nearDistance then
+--         local _y = self._fieldHeight / 2 - self._tan * math.abs(pos.z)
+--         local _x = _y * self._aspect
+--         if pos.x > -_x and pos.x < _x then
+--             if pos.y > -_y and pos.y < _y then
+--                 return true
+--             end
+--         end
+--     end
+--     return false
+-- end
+-- --判定1个点超过了哪个边界
+-- function AircraftCameraGesture:GetPosOffInfo(pos)
+--     local x, y, z = nil
+--     if pos.z < self._farPoint.z then
+--         z = self._farPoint.z
+--     elseif pos.z > -self._nearDistance then
+--         z = -self._nearDistance
+--     end
+--     local _y = self._fieldHeight / 2 - self._tan * math.abs(pos.z)
+--     local _x = _y * self._aspect
+--     if pos.x < -_x then
+--         x = -_x
+--     elseif pos.x > _x then
+--         x = _x
+--     end
+--     if pos.y < -_y then
+--         y = -_y
+--     elseif pos.y > _y then
+--         y = _y
+--     end
+--     return x, y, z
+-- end

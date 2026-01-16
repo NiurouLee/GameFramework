@@ -1,0 +1,6 @@
+---@class UIHauteCoutureDuplicateRewardBgKR:UICustomWidget
+_class("UIHauteCoutureDuplicateRewardBgKR", UICustomWidget)
+UIHauteCoutureDuplicateRewardBgKR = UIHauteCoutureDuplicateRewardBgKR
+
+function UIHauteCoutureDuplicateRewardBgKR:Constructor()
+end

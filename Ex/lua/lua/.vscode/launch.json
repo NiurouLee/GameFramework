@@ -1,0 +1,63 @@
+{
+    // 使用 IntelliSense 了解相关属性。
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "emmylua_new",
+            "request": "launch",
+            "name": "EmmyLua New Debug",
+            "host": "localhost",
+            "port": 9966,
+            "ext": [
+                ".lua",
+                ".lua.txt",
+                ".lua.bytes"
+            ],
+            "ideConnectDebugger": true
+        },
+        {
+            "type": "emmylua_attach",
+            "request": "attach",
+            "name": "通过进程ID附加",
+            "pid": 0
+        }
+        // ,
+        // {
+        //     "type": "lua",
+        //     "request": "launch",
+        //     "name": "LuaPanda", //配置名，正常调试
+        //     "program": "${workspaceFolder}",
+        //     "cwd": "${workspaceFolder}", //工作路径
+        //     "TempFilePath": "${workspaceFolder}", //临时文件存放路径
+        //     "luaFileExtension": "lua", //被调试文件后缀
+        //     "pathCaseSensitivity": true, //路径是否大小写敏感
+        //     "stopOnEntry": true, //是否在开始调试时停止
+        //     "connectionPort": 8818, //连接端口号，默认8818
+        //     "logLevel": 1, //日志等级
+        //     "useCHook": true, //是否使用C lib库
+        //     "luaPath": "" //执行lua文件时，lua命令的路径
+        // }
+        // ,
+        // {
+        //     "type": "lua",
+        //     "request": "launch",
+        //     "internalConsoleOptions": "neverOpen",
+        //     "name": "LuaPanda-DebugFile", //配置名，调试单文件
+        //     "program": "${workspaceFolder}",
+        //     "cwd": "${workspaceFolder}",
+        //     "TempFilePath": "${workspaceFolder}",
+        //     "luaFileExtension": "",
+        //     "pathCaseSensitivity": true,
+        //     "connectionPort": 8818,
+        //     "stopOnEntry": true,
+        //     "useCHook": true,
+        //     "logLevel": 1,
+        //     "luaPath": "", //执行lua文件时，lua命令的路径
+        //     "packagePath": [
+        //         "./doc1/?.lua"
+        //     ] //执行lua文件时，加入package.path的路径
+        // }
+    ]
+}
