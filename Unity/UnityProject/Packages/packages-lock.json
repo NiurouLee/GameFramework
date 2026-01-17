@@ -35,6 +35,15 @@
         "com.unity.testtools.codecoverage": "1.2.6"
       }
     },
+    "com.unity.ide.antigravity": {
+      "version": "https://github.com/HarineshS/com.unity.ide.antigravity.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.test-framework": "1.1.9"
+      },
+      "hash": "794679caff96a62f747bb08bff8fe85bb0d0fc92"
+    },
     "com.unity.ide.cursor": {
       "version": "https://github.com/boxqkrtm/com.unity.ide.cursor.git",
       "depth": 0,
@@ -150,12 +159,6 @@
         "com.unity.modules.jsonserialize": "1.0.0"
       },
       "url": "https://packages.unity.com"
-    },
-    "com.unity.modules.accessibility": {
-      "version": "1.0.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {}
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",

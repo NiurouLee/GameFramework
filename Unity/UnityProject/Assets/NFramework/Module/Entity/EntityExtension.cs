@@ -1,5 +1,11 @@
+using NFramework.Module.LogModule;
+
 namespace NFramework.Module.EntityModule
 {
+    using Log = NFramework.Module.LogModule.Log;
+    using Error = NFramework.Module.LogModule.Error;
+    using Warning = NFramework.Module.LogModule.Warning;
+
     public partial class Entity
     {
         public FM GetFM<FM>() where FM : IFrameWorkModule

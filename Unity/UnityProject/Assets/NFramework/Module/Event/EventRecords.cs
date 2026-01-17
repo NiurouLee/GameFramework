@@ -35,7 +35,7 @@ namespace NFramework.Module.EventModule
 
         public void UnSubscribe<T>(RefAction<T> callback) where T : IEvent
         {
-            var register = GetFrameworkModule<ObjectPoolM>().Alloc<NormalRegister>();
+            var register = GetFM<ObjectPoolM>().Alloc<NormalRegister>();
             register.EventType = typeof(T);
             register.CallBack = callback;
             register.EventSchedule = this.EventSchedule;
@@ -45,7 +45,7 @@ namespace NFramework.Module.EventModule
 
         public void UnSubscribe<T>(RefAction<T> callback, RefFunc<T> condition) where T : IEvent
         {
-            var register = GetFrameworkModule<ObjectPoolM>().Alloc<ConditionRegister>();
+            var register = GetFM<ObjectPoolM>().Alloc<ConditionRegister>();
             register.EventType = typeof(T);
             register.CallBack = callback;
             register.Condition = condition;
@@ -56,7 +56,7 @@ namespace NFramework.Module.EventModule
 
         public void UnSubscribe<T>(RefAction<T> callback, string channel) where T : IEvent
         {
-            var register = GetFrameworkModule<ObjectPoolM>().Alloc<ChannelRegister>();
+            var register = GetFM<ObjectPoolM>().Alloc<ChannelRegister>();
             register.EventType = typeof(T);
             register.CallBack = callback;
             register.Channel = channel;
