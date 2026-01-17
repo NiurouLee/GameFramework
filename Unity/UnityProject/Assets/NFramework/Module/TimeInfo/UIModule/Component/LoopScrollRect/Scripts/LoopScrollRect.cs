@@ -484,12 +484,10 @@ namespace NFramework.Module.UIModule
 
             if (m_Coroutine != null)
             {
-                NFROOT.Instance.GetModule<NFramework.Module.Coroutine.co>().StopCoroutine(m_Coroutine);
+                NFROOT.Instance.StopCoroutine(m_Coroutine);
             }
 
-            m_Coroutine =
-                CoroutineM.Instance.StartCoroutine(
-                    ScrollToCellCoroutine(index, speed, pos));
+            m_Coroutine = NFROOT.Instance.StartCoroutine(ScrollToCellCoroutine(index, speed, pos));
         }
 
         IEnumerator ScrollToCellCoroutine(int index, float speed, int pos)
@@ -1288,7 +1286,7 @@ namespace NFramework.Module.UIModule
             m_Velocity = Vector2.zero;
             if (m_Coroutine != null)
             {
-                CoroutineManager.StopCoroutine(m_Coroutine);
+                NFROOT.Instance.StopCoroutine(m_Coroutine);
                 m_Coroutine = null;
             }
         }
@@ -2301,7 +2299,7 @@ namespace NFramework.Module.UIModule
             // add by bao~ 23/1/4 销毁时，此协程可能还会被调用
             if (m_Coroutine != null)
             {
-                Nframwork.module..StopCoroutine(m_Coroutine);
+                NFROOT.Instance.StopCoroutine(m_Coroutine);
                 //Debug.Log($"{nameof(LoopScrollRect)} ----> {Ez.Core.TransformUtil.GetTransformPath(transform)}");
             }
 
@@ -2487,7 +2485,7 @@ namespace NFramework.Module.UIModule
 
         protected void LogWarning(string message)
         {
-            Debug.LogWarning(message + " , path: " + Ez.Core.TransformUtil.GetTransformPath(this.transform));
+           
         }
     }
 }
