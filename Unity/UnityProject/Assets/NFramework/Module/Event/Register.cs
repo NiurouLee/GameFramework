@@ -27,9 +27,9 @@ namespace NFramework.Module.EventModule
             this.EventType = null;
         }
 
-        public T GerFrameworkModule<T>() where T : IFrameWorkModule
+        public T GerFrameworkModule<T>() where T : FrameworkModule
         {
-            return Framework.I.G<T>();
+            return NFROOT.I.G<T>();
         }
 
 

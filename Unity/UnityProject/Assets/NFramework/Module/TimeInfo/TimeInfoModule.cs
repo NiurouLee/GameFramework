@@ -2,7 +2,7 @@
 
 namespace NFramework.Module.TimeInfoModule
 {
-    public class TimeInfoM : IFrameWorkModule
+    public class TimeInfoM : FrameworkModule
     {
         private DateTime dt1970;
         private DateTime dt;

@@ -19,7 +19,7 @@ namespace NFramework.Module.EventModule
         public BaseRegister Subscribe<T>(RefAction<T> callback) where T : IEvent
         {
             var type = typeof(T);
-            var register = GetFrameworkModule<ObjectPoolM>().Alloc<NormalRegister>();
+            var register = GetM<ObjectPoolM>().Alloc<NormalRegister>();
             register.EventType = type;
             register.CallBack = callback;
             register.EventSchedule = this;
@@ -29,7 +29,7 @@ namespace NFramework.Module.EventModule
         public BaseRegister Subscribe<T>(RefAction<T> callback, RefFunc<T> condition) where T : IEvent
         {
             var type = typeof(T);
-            var register = GetFrameworkModule<ObjectPoolM>().Alloc<ConditionRegister>();
+            var register = GetM<ObjectPoolM>().Alloc<ConditionRegister>();
             register.EventType = type;
             register.CallBack = callback;
             register.EventSchedule = this;
@@ -40,7 +40,7 @@ namespace NFramework.Module.EventModule
         public BaseRegister Subscribe<T>(RefAction<T> callback, string channel) where T : IEvent
         {
             var type = typeof(T);
-            var subscribe = GetFrameworkModule<ObjectPoolM>().Alloc<ChannelRegister>();
+            var subscribe = GetM<ObjectPoolM>().Alloc<ChannelRegister>();
 
             subscribe.EventType = type;
             subscribe.CallBack = callback;
@@ -52,7 +52,7 @@ namespace NFramework.Module.EventModule
         public void UnSubscribe<T>(RefAction<T> callback) where T : IEvent
         {
             var type = typeof(T);
-            var register = GetFrameworkModule<ObjectPoolM>().Alloc<NormalRegister>();
+            var register = GetM<ObjectPoolM>().Alloc<NormalRegister>();
             register.EventType = type;
             register.CallBack = callback;
             register.EventSchedule = this;
@@ -62,7 +62,7 @@ namespace NFramework.Module.EventModule
         public void UnSubscribe<T>(RefAction<T> callback, RefFunc<T> condition) where T : IEvent
         {
             var type = typeof(T);
-            var register = GetFrameworkModule<ObjectPoolM>().Alloc<ConditionRegister>();
+            var register = GetM<ObjectPoolM>().Alloc<ConditionRegister>();
             register.EventType = type;
             register.CallBack = callback;
             register.Condition = condition;
@@ -73,7 +73,7 @@ namespace NFramework.Module.EventModule
         public void UnSubscribe<T>(RefAction<T> callback, string channel) where T : IEvent
         {
             var type = typeof(T);
-            var subscribe = GetFrameworkModule<ObjectPoolM>().Alloc<ChannelRegister>();
+            var subscribe = GetM<ObjectPoolM>().Alloc<ChannelRegister>();
 
             subscribe.EventType = type;
             subscribe.CallBack = callback;
@@ -94,7 +94,7 @@ namespace NFramework.Module.EventModule
         public bool Check<T>(RefAction<T> callback) where T : IEvent
         {
             var type = typeof(T);
-            var register = GetFrameworkModule<ObjectPoolM>().Alloc<NormalRegister>();
+            var register = GetM<ObjectPoolM>().Alloc<NormalRegister>();
             register.EventType = type;
             register.CallBack = callback;
             register.EventSchedule = this;
@@ -104,7 +104,7 @@ namespace NFramework.Module.EventModule
         public bool Check<T>(RefAction<T> callback, RefFunc<T> condition) where T : IEvent
         {
             var type = typeof(T);
-            var register = GetFrameworkModule<ObjectPoolM>().Alloc<ConditionRegister>();
+            var register = GetM<ObjectPoolM>().Alloc<ConditionRegister>();
             register.EventType = type;
             register.CallBack = callback;
             register.Condition = condition;
@@ -115,7 +115,7 @@ namespace NFramework.Module.EventModule
         public bool Check<T>(RefAction<T> callback, string channel) where T : IEvent
         {
             var type = typeof(T);
-            var subscribe = GetFrameworkModule<ObjectPoolM>().Alloc<ChannelRegister>();
+            var subscribe = GetM<ObjectPoolM>().Alloc<ChannelRegister>();
             subscribe.EventType = type;
             subscribe.CallBack = callback;
             subscribe.Channel = channel;

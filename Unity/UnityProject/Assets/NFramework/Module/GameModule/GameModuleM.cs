@@ -3,7 +3,7 @@ namespace NFramework.Module.GameModule
     /// <summary>
     /// 游戏业务模块中心
     /// </summary>
-    public class GameModuleM : IFrameWorkModule
+    public class GameModuleM : FrameworkModule
     {
         public void Awake()
         {

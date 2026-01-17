@@ -1,4 +1,5 @@
 using System;
+using NFramework.Core.Live;
 using NFramework.Module.ObjectPoolModule;
 
 namespace NFramework.Module.TimerModule
@@ -6,19 +7,19 @@ namespace NFramework.Module.TimerModule
     /// <summary>
     /// https://www.zhihu.com/question/52968810/answer/1929456142423163724
     /// </summary>
-    public class TimerM : IFrameWorkModule
+    public class TimerM : FrameworkModule, IRendererUpdateSystem
     {
         private HireachicalTimerWheel hireachicalTimerWheel;
+
         public override void Awake()
         {
             base.Awake();
             hireachicalTimerWheel = new();
         }
 
-        public override void Update(float elapseSeconds, float realElapseSeconds)
+        public void RendererUpdate(float deltaTime)
         {
-            base.Update(elapseSeconds, realElapseSeconds);
-            this.hireachicalTimerWheel?.OnUpdate(realElapseSeconds);
+            this.hireachicalTimerWheel?.OnUpdate(deltaTime);
         }
 
 
@@ -27,7 +28,8 @@ namespace NFramework.Module.TimerModule
             return AddTimer(inTime, 1, inAction);
         }
 
-        public long AddTimer(float inIntervalInSec, uint inRepateCount, Action inIntervalCallback, Action inStartCallback = null, Action inEndCallback = null)
+        public long AddTimer(float inIntervalInSec, uint inRepateCount, Action inIntervalCallback,
+            Action inStartCallback = null, Action inEndCallback = null)
         {
             if (inIntervalInSec <= 0 && inRepateCount == 1)
             {
@@ -36,10 +38,13 @@ namespace NFramework.Module.TimerModule
                 inEndCallback?.Invoke();
                 return 0;
             }
+
             ulong _intervalInMs = (ulong)(inIntervalInSec * 1000);
-            _intervalInMs = _intervalInMs > this.hireachicalTimerWheel.MaxInterval ? this.hireachicalTimerWheel.MaxInterval : _intervalInMs;
+            _intervalInMs = _intervalInMs > this.hireachicalTimerWheel.MaxInterval
+                ? this.hireachicalTimerWheel.MaxInterval
+                : _intervalInMs;
             ulong _totalInMS = _intervalInMs * inRepateCount;
-            var _task = Framework.I.G<ObjectPoolM>().Alloc<TimerTask>();
+            var _task = NFROOT.I.G<ObjectPoolM>().Alloc<TimerTask>();
             _task.Init(_intervalInMs, _totalInMS, inStartCallback, inIntervalCallback, inEndCallback);
             return this.hireachicalTimerWheel.AddTimerTask(_task);
         }

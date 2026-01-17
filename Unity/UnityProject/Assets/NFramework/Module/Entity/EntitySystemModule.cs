@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using NFramework.Core.Collections;
-using NFramework.Core.ILiveing;
+using NFramework.Core.Live;
 using NFramework.Module.LogModule;
 
 namespace NFramework.Module.EntityModule
 {
-    public class EntitySystemM : IFrameWorkModule
+    public class EntitySystemM : FrameworkModule
     {
         private class OneTypeSystems
         {
@@ -63,7 +63,6 @@ namespace NFramework.Module.EntityModule
         private readonly Queue<long> startQueue = new Queue<long>();
 
 
-
         public EntitySystemM()
         {
             for (int i = 0; i < this.queues.Length; i++)
@@ -71,10 +70,10 @@ namespace NFramework.Module.EntityModule
                 this.queues[i] = new Queue<long>();
             }
 
-            EngineLoop.Instance.AddFixedUpdate(FixedUpdate);
-            EngineLoop.Instance.AddUpdate(RendererUpdate);
-            EngineLoop.Instance.AddUpdate(LogicUpdate);
-            EngineLoop.Instance.AddLateUpdate(LateUpdate);
+            NFROOT.Instance.AddFixedUpdateCallback(FixedUpdate);
+            NFROOT.Instance.AddUpdateCallback(RendererUpdate);
+            NFROOT.Instance.AddUpdateCallback(LogicUpdate);
+            NFROOT.Instance.AddLateUpdateCallback(LateUpdate);
         }
 
         private const float logicUpdateTime = 1 / 15f;
@@ -183,7 +182,7 @@ namespace NFramework.Module.EntityModule
                     }
                     catch (Exception e)
                     {
-                        GetFrameWorkModule<LoggerM>()?.Err($"报错信息：{component.GetType().FullName} \n {e}");
+                        GetM<LoggerM>()?.Err($"报错信息：{component.GetType().FullName} \n {e}");
                     }
                 }
             }
@@ -228,6 +227,7 @@ namespace NFramework.Module.EntityModule
                 var entity = this.entities[startQueue.Dequeue()];
                 (entity as IStartSystem)?.Start();
             }
+
             Queue<long> queue = this.queues[(int)InstanceQueueIndex.RendererUpdate];
             int count = queue.Count;
             while (count-- > 0)

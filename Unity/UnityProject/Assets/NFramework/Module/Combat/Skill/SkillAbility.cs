@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using NFramework.Core.ILiveing;
+using NFramework.Core.Live;
 using NFramework.Module.EntityModule;
 using NFramework.Module.ResModule;
 
@@ -16,7 +16,7 @@ namespace NFramework.Module.Combat
         {
             SkillConfigObject = a as SkillConfigObject;
             AddComponent<AbilityEffectComponent, List<Effect>>(SkillConfigObject.EffectList);
-            ExecutionConfigObject = Framework.I.G<ResM>().Load<ExecutionConfigObject>(string.Empty);
+            ExecutionConfigObject = NFROOT.I.G<ResM>().Load<ExecutionConfigObject>(string.Empty);
         }
 
         public void ActivateAbility()

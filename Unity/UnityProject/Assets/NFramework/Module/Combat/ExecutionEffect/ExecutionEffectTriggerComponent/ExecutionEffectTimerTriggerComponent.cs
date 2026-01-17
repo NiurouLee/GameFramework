@@ -1,5 +1,5 @@
 using System.Threading;
-using NFramework.Core.ILiveing;
+using NFramework.Core.Live;
 using NFramework.Module.EntityModule;
 using NFramework.Module.TimerModule;
 
@@ -15,7 +15,7 @@ namespace NFramework.Module.Combat
         {
             if (this.startTime > 0)
             {
-                this.startTimer = Framework.I.G<TimerM>().NewOnceTimer(startTime, GetParent<ExecutionEffect>().StartTriggerEffect);
+                this.startTimer = NFROOT.I.G<TimerM>().NewOnceTimer(startTime, GetParent<ExecutionEffect>().StartTriggerEffect);
             }
             else
             {
@@ -23,14 +23,14 @@ namespace NFramework.Module.Combat
             }
             if (endTime > 0)
             {
-                endTimer = Framework.I.G<TimerM>().NewOnceTimer(endTime, GetParent<ExecutionEffect>().EndEffect);
+                endTimer = NFROOT.I.G<TimerM>().NewOnceTimer(endTime, GetParent<ExecutionEffect>().EndEffect);
             }
         }
 
         public void Destroy()
         {
-            Framework.I.G<TimerM>().RemoveTimer(startTimer);
-            Framework.I.G<TimerM>().RemoveTimer(endTimer);
+            NFROOT.I.G<TimerM>().RemoveTimer(startTimer);
+            NFROOT.I.G<TimerM>().RemoveTimer(endTimer);
         }
     }
 }

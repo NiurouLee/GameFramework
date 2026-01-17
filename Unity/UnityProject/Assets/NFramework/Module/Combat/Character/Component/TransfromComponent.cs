@@ -1,6 +1,6 @@
 using UnityEngine;
 using NFramework.Module.EntityModule;
-using NFramework.Core.ILiveing;
+using NFramework.Core.Live;
 using NFramework.Module.EventModule;
 
 namespace NFramework.Module.Combat
@@ -91,7 +91,7 @@ namespace NFramework.Module.Combat
         public void SyncTransform()
         {
             var syncTransform = new SyncTransform(GetParent<Combat>().Id, _position, _rotation, _localScale);
-            Framework.I.G<EventM>().D.Fire(ref syncTransform);
+            NFROOT.I.G<EventM>().D.Fire(ref syncTransform);
 
         }
 

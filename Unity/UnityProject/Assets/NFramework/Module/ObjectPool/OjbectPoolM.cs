@@ -3,7 +3,7 @@ using NFramework.Core.ObjectPool;
 
 namespace NFramework.Module.ObjectPoolModule
 {
-    public class ObjectPoolM : IFrameWorkModule
+    public class ObjectPoolM : FrameworkModule
     {
         private List<IFreeToPool> _tempList = new List<IFreeToPool>();
         private ObjectPool pool;

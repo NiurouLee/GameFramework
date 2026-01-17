@@ -1,7 +1,7 @@
 
 using System.Collections.Generic;
 using NFramework.Core.Collections;
-using NFramework.Core.ILiveing;
+using NFramework.Core.Live;
 using NFramework.Module.EntityModule;
 using NFramework.Module.ResModule;
 
@@ -14,7 +14,7 @@ namespace NFramework.Module.Combat
 
         public ItemAbility AttachItem(int itemID)
         {
-            ItemConfigObject itemConfigObject = Framework.I.G<ResM>().Load<ItemConfigObject>(string.Empty);
+            ItemConfigObject itemConfigObject = NFROOT.I.G<ResM>().Load<ItemConfigObject>(string.Empty);
             if (itemConfigObject == null)
             {
                 return null;

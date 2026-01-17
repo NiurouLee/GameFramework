@@ -5,7 +5,7 @@ using NFramework.Module.LogModule;
 
 namespace NFramework.Module.ConfigModule
 {
-    public class ConfigM : IFrameWorkModule
+    public class ConfigM : FrameworkModule
     {
         private ConfigDataLoader _dataLoader;
         private IConfigDataProvider _dataProvider;
@@ -23,7 +23,7 @@ namespace NFramework.Module.ConfigModule
             }
             catch (Exception ex)
             {
-                Framework.Instance.GetModule<LoggerM>()?.Err($"ConfigM::GetCfg - Error loading {typeof(T).Name} with id {id}: {ex.Message}");
+                NFROOT.Instance.GetModule<LoggerM>()?.Err($"ConfigM::GetCfg - Error loading {typeof(T).Name} with id {id}: {ex.Message}");
                 return null;
             }
         }

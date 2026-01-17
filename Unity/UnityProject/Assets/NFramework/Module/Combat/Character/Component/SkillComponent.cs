@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using NFramework.Core.ILiveing;
+using NFramework.Core.Live;
 using NFramework.Module.EntityModule;
 using NFramework.Module.ResModule;
 
@@ -11,7 +11,7 @@ namespace NFramework.Module.Combat
         public Dictionary<int, SkillAbility> skillDict = new Dictionary<int, SkillAbility>();
         public SkillAbility AttachSkill(int skillId)
         {
-            SkillConfigObject skillConfigObject = Framework.I.G<ResM>().Load<SkillConfigObject>(string.Empty);
+            SkillConfigObject skillConfigObject = NFROOT.I.G<ResM>().Load<SkillConfigObject>(string.Empty);
             if (skillConfigObject == null)
             {
                 return null;

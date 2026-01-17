@@ -1,6 +1,6 @@
 using NFramework.Module.EntityModule;
 using NFramework.Module.TimerModule;
-using NFramework.Core.ILiveing;
+using NFramework.Core.Live;
 
 namespace NFramework.Module.Combat
 {
@@ -10,12 +10,12 @@ namespace NFramework.Module.Combat
         public void Awake()
         {
             long lifeTime = GetParent<StatusAbility>().duration;
-            LifeTimer = Framework.Instance.GetModule<TimerM>().NewOnceTimer(lifeTime, GetParent<StatusAbility>().EndAbility);
+            LifeTimer = NFROOT.Instance.GetModule<TimerM>().NewOnceTimer(lifeTime, GetParent<StatusAbility>().EndAbility);
         }
 
         public void Destroy()
         {
-            Framework.Instance.GetModule<TimerM>().RemoveTimer(LifeTimer);
+            NFROOT.Instance.GetModule<TimerM>().RemoveTimer(LifeTimer);
         }
 
     }

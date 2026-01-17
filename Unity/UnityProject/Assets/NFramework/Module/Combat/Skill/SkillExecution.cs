@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using NFramework.Core.ILiveing;
+using NFramework.Core.Live;
 using NFramework.Module.EntityModule;
 using NFramework.Module.TimerModule;
 using UnityEngine;
@@ -27,7 +27,7 @@ namespace NFramework.Module.Combat
         public void LoadExecutionEffect()
         {
             AddComponent<ExecutionEffectComponent>();
-            Framework.Instance.GetModule<TimerM>().NewOnceTimer((long)executionConfigObject.TotalTime * 1000, this.EndExecute);
+            NFROOT.Instance.GetModule<TimerM>().NewOnceTimer((long)executionConfigObject.TotalTime * 1000, this.EndExecute);
         }
 
         public void BeginExecute()

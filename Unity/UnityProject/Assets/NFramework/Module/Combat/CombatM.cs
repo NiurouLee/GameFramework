@@ -1,8 +1,8 @@
-using NFramework.Core.ILiveing;
+using NFramework.Core.Live;
 
 namespace NFramework.Module.Combat
 {
-    public class CombatM : IFrameWorkModule
+    public class CombatM : FrameworkModule
     {
 
         public CombatContext CombatContext;

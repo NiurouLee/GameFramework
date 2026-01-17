@@ -2,7 +2,7 @@ using System;
 
 namespace NFramework.Module.EntityModule
 {
-    public class EntityPoolM : IFrameWorkModule
+    public class EntityPoolM : FrameworkModule
     {
         public T Fetch<T>() where T : Entity, new()
         {

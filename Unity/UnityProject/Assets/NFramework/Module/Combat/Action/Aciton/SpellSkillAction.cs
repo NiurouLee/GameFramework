@@ -1,5 +1,5 @@
 using NFramework.Module.EntityModule;
-using NFramework.Core.ILiveing;
+using NFramework.Core.Live;
 using UnityEngine;
 
 namespace NFramework.Module.Combat

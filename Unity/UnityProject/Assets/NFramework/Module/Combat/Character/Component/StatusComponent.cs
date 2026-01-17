@@ -14,7 +14,7 @@ namespace NFramework.Module.Combat
 
         public StatusAbility AttachStatus(int StatusId)
         {
-            StatusConfigObject statusConfigObject = Framework.Instance.GetModule<ResM>().Load<StatusConfigObject>(string.Empty);
+            StatusConfigObject statusConfigObject = NFROOT.Instance.GetModule<ResM>().Load<StatusConfigObject>(string.Empty);
             if (statusConfigObject == null)
             {
                 return null;

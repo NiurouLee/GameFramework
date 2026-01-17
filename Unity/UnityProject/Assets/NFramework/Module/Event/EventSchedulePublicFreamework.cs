@@ -4,9 +4,9 @@ namespace NFramework.Module.EventModule
 {
     public partial class EventSchedule
     {
-        public TM GetFrameworkModule<TM>() where TM : IFrameWorkModule
+        public TM GetM<TM>() where TM : FrameworkModule
         {
-            return Framework.I.G<TM>();
+            return NFROOT.I.G<TM>();
         }
     }
 }

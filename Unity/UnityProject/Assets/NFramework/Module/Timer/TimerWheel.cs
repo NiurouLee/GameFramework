@@ -91,7 +91,7 @@ namespace NFramework.Module.TimerModule
                 var _task = _taskList[i];
                 if (_task.ID == inTimerTaskID)
                 {
-                    Framework.I.GetModule<ObjectPoolM>().Free(_task);
+                    NFROOT.I.GetModule<ObjectPoolM>().Free(_task);
                     _taskList.RemoveAt(i);
                     return true;
                 }

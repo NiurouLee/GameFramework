@@ -1,4 +1,4 @@
-using NFramework.Core.ILiveing;
+using NFramework.Core.Live;
 using NFramework.Module.EntityModule;
 using NFramework.Module.EventModule;
 using NFramework.Module.Math;
@@ -18,7 +18,7 @@ namespace NFramework.Module.Combat
         {
             AbilityExecution = a;
             var @event = new SyncCreateAbilityItem(this.Id);
-            Framework.Instance.GetModule<EventM>().D.Fire(ref @event);
+            NFROOT.Instance.GetModule<EventM>().D.Fire(ref @event);
             AddComponent<TransformComponent>();
             AddComponent<AbilityItemCollisionExecuteComponent, ExecuteClipData>(b);
             AABB aabb = new AABB(new Vector2(-1, -1), new Vector2(1, 1));

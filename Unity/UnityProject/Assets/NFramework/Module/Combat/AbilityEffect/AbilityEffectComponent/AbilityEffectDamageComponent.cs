@@ -1,4 +1,4 @@
-using NFramework.Core.ILiveing;
+using NFramework.Core.Live;
 using NFramework.Module.EntityModule;
 using UnityEngine;
 using NFramework.Utils;

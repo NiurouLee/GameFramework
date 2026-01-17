@@ -41,7 +41,7 @@ namespace NFramework.Module.TimerModule
 
         public long AddTimerTask(TimerTask inTask)
         {
-            var _taskTimerInfo = Framework.I.G<ObjectPoolM>().Alloc<TaskTimerInfo>();
+            var _taskTimerInfo = NFROOT.I.G<ObjectPoolM>().Alloc<TaskTimerInfo>();
             if (AddTimerTaskInteral(inTask, _taskTimerInfo, true))
             {
                 inTask.OnTaskStart();
@@ -93,7 +93,7 @@ namespace NFramework.Module.TimerModule
                 var _wheelIndex = taskTimerInfo.WheelIndex;
                 var _wheelSlotIndex = taskTimerInfo.WheelSlotIndex;
                 var _timerTaskID = taskTimerInfo.TaskID;
-                Framework.I.G<ObjectPoolM>().Free(taskTimerInfo);
+                NFROOT.I.G<ObjectPoolM>().Free(taskTimerInfo);
                 if (_wheelIndex >= 0 && _wheelIndex < wheelArrLength)
                 {
                     wheelArr[_wheelIndex].RemoveTimerTask(_wheelSlotIndex, _timerTaskID);
@@ -133,7 +133,7 @@ namespace NFramework.Module.TimerModule
                     }
                     else
                     {
-                        Framework.I.G<ObjectPoolM>().Free(_task);
+                        NFROOT.I.G<ObjectPoolM>().Free(_task);
                     }
                 }
             }

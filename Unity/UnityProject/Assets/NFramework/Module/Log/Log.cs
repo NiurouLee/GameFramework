@@ -27,7 +27,7 @@ namespace NFramework.Module.LogModule
     }
 
 
-    public class LoggerM : IFrameWorkModule
+    public class LoggerM : FrameworkModule
     {
         public Error? Error { get; private set; }
         public Warning? Warning { get; private set; }

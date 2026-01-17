@@ -1,16 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace NFramework.Module.Coroutine
 {
     public interface ICoroutine
     {
     }
-    internal class CoroutineM : IFrameWorkModule
+
+    internal class CoroutineM : FrameworkModule
     {
-        private Dictionary<ICoroutine, List<CoroutineHandler>> _coroutineDict = new Dictionary<ICoroutine, List<CoroutineHandler>>();
+        private Dictionary<ICoroutine, List<CoroutineHandler>> _coroutineDict =
+            new Dictionary<ICoroutine, List<CoroutineHandler>>();
 
         public CoroutineHandler StartCoroutine(ICoroutine owner, IEnumerator coroutine)
         {
@@ -67,6 +68,7 @@ namespace NFramework.Module.Coroutine
                     var item = list[i];
                     item.Stop();
                 }
+
                 _coroutineDict.Remove(owner);
             }
         }
@@ -83,18 +85,21 @@ namespace NFramework.Module.Coroutine
                     item1.Stop();
                 }
             }
+
             _coroutineDict.Clear();
         }
     }
+
     public static class CoroutineExtension
     {
         public static CoroutineHandler StartCoroutine(this ICoroutine owner, IEnumerator coroutine)
         {
-            return Framework.Instance.GetModule<CoroutineM>().StartCoroutine(owner, coroutine);
+            return NFROOT.Instance.GetModule<CoroutineM>().StartCoroutine(owner, coroutine);
         }
+
         public static void StopAllCoroutines(this ICoroutine owner)
         {
-            Framework.Instance.GetModule<CoroutineM>().StopAllCoroutines(owner);
+            NFROOT.Instance.GetModule<CoroutineM>().StopAllCoroutines(owner);
         }
     }
 }

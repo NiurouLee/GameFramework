@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using NFramework.Core.ILiveing;
+using NFramework.Core.Live;
 using NFramework.Module.EntityModule;
 using NFramework.Module.EventModule;
 using Sirenix.OdinInspector;
@@ -66,7 +66,7 @@ namespace NFramework.Module.Combat
             var numeric = Parent.AddChild<FloatNumeric, NumericEntity, AttributeType>(numericEntity, attributeType);
             _attributeDict.Add(attributeType, numeric);
             var syncAttribute = new SyncAttribute(parent.Id, attributeType);
-            Framework.Instance.GetModule<EventM>().D.Publish(ref syncAttribute);
+            NFROOT.Instance.GetModule<EventM>().D.Publish(ref syncAttribute);
             numeric.BaseValue = baseValue;
             return numeric;
         }

@@ -1,5 +1,5 @@
 using System;
-using NFramework.Core.ILiveing;
+using NFramework.Core.Live;
 using NFramework.Module.EntityModule;
 using NFramework.Module.EventModule;
 using NFramework.Module.Math;
@@ -28,7 +28,7 @@ namespace NFramework.Module.Combat
         public void Awake()
         {
             var @event = new SyncCreateCombat(Id);
-            Framework.Instance.GetModule<EventM>().D.Publish(ref @event);
+            NFROOT.Instance.GetModule<EventM>().D.Publish(ref @event);
             AddComponent<TransformComponent>();
             AddComponent<OrcaComponent>();
             AddComponent<AnimationComponent>();
@@ -68,14 +68,14 @@ namespace NFramework.Module.Combat
             {
                 var damageAction = e as DamageAction;
                 var syncDamage = new SyncDamage(this.Id, damageAction.DamageValue);
-                Framework.Instance.GetModule<EventM>().D.Publish(ref syncDamage);
+                NFROOT.Instance.GetModule<EventM>().D.Publish(ref syncDamage);
             });
 
             ListenActionPoint(ActionPointType.PostReceiveCure, e =>
             {
                 var cureAction = e as CureAction;
                 var syncCure = new SyncCure(this.Id, cureAction.CureValue);
-                Framework.Instance.GetModule<EventM>().D.Publish(ref syncCure);
+                NFROOT.Instance.GetModule<EventM>().D.Publish(ref syncCure);
             });
         }
 
@@ -83,7 +83,7 @@ namespace NFramework.Module.Combat
         public void Dead()
         {
             var syncDeleteCombat = new SyncDeleteCombat(this.Id);
-            Framework.Instance.GetModule<EventM>().D.Publish(ref syncDeleteCombat);
+            NFROOT.Instance.GetModule<EventM>().D.Publish(ref syncDeleteCombat);
             GetParent<CombatContext>().RemoveCombat(this.Id);
         }
 

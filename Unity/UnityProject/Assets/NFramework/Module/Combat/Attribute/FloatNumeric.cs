@@ -1,6 +1,6 @@
 using NFramework.Module.EventModule;
 using NFramework.Module.EntityModule;
-using NFramework.Core.ILiveing;
+using NFramework.Core.Live;
 
 namespace NFramework.Module.Combat
 {
@@ -18,7 +18,7 @@ namespace NFramework.Module.Combat
             {
                 m_NumericEntity.Set(m_Type * 10 + 1, value);
                 var syncAttribute = new SyncModifyAttribute(Parent.Id, m_Type, 1, value);
-                Framework.Instance.GetModule<EventM>().D.Fire(ref syncAttribute);
+                NFROOT.Instance.GetModule<EventM>().D.Fire(ref syncAttribute);
             }
         }
 
@@ -33,7 +33,7 @@ namespace NFramework.Module.Combat
             {
                 m_NumericEntity.Set(m_Type * 10 + 2, value);
                 var syncAttribute = new SyncModifyAttribute(Parent.Id, m_Type, 2, value);
-                Framework.Instance.GetModule<EventM>().D.Fire(ref syncAttribute);
+                NFROOT.Instance.GetModule<EventM>().D.Fire(ref syncAttribute);
             }
         }
 
@@ -47,7 +47,7 @@ namespace NFramework.Module.Combat
             {
                 m_NumericEntity.Set(m_Type * 10 + 3, value);
                 var syncAttribute = new SyncModifyAttribute(Parent.Id, m_Type, 3, value);
-                Framework.Instance.GetModule<EventM>().D.Fire(ref syncAttribute);
+                NFROOT.Instance.GetModule<EventM>().D.Fire(ref syncAttribute);
             }
         }
 
@@ -61,7 +61,7 @@ namespace NFramework.Module.Combat
             {
                 m_NumericEntity.Set(m_Type * 10 + 4, value);
                 var syncAttribute = new SyncModifyAttribute(Parent.Id, m_Type, 4, value);
-                Framework.Instance.GetModule<EventM>().D.Fire(ref syncAttribute);
+                NFROOT.Instance.GetModule<EventM>().D.Fire(ref syncAttribute);
             }
         }
 
@@ -75,7 +75,7 @@ namespace NFramework.Module.Combat
             {
                 m_NumericEntity.Set(m_Type * 10 + 5, value);
                 var syncAttribute = new SyncModifyAttribute(Parent.Id, m_Type, 5, value);
-                Framework.Instance.GetModule<EventM>().D.Fire(ref syncAttribute);
+                NFROOT.Instance.GetModule<EventM>().D.Fire(ref syncAttribute);
             }
         }
 
