@@ -86,12 +86,12 @@ namespace NFramework.Module.UIModule
     {
         public static bool RegisterSubEvent<T>(this View inView, UI2ParentEvent<T> inHandle) where T : IView2ParentEvent
         {
-            var component = ViewComponentUtils.CheckAndAdd<ViewPopEvent2ParentComponent>(inView);
+            var component = UIUtils.CheckAndAdd<ViewPopEvent2ParentComponent>(inView);
             return component.RegisterSubEvent(inHandle);
         }
         public static void PopEvent2Parent<T>(this View inView, ref T inEvent) where T : IView2ParentEvent
         {
-            var component = ViewComponentUtils.CheckAndAdd<ViewPopEvent2ParentComponent>(inView);
+            var component = UIUtils.CheckAndAdd<ViewPopEvent2ParentComponent>(inView);
             component.PopEvent2Parent(ref inEvent);
         }
     }

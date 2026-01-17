@@ -23,6 +23,10 @@ namespace NFramework.Module.UIModule
             throw new System.NotImplementedException();
         }
 
+        public UIFacade Alloc(string inViewID)
+        {
+            return null;
+        }
         public void Destroy()
         {
         }
@@ -41,5 +45,6 @@ namespace NFramework.Module.UIModule
         {
             throw new System.NotImplementedException();
         }
+
     }
 }

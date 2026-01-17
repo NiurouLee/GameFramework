@@ -32,8 +32,5 @@ namespace NFramework.Module.UIModule
 
         }
 
-        public void LockLayer(UIlayer inLayer)
-        { }
-
     }
 }

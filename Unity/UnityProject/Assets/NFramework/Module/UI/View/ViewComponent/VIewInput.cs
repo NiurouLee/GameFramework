@@ -10,9 +10,9 @@ namespace NFramework.Module.UIModule
 
     public static class ViewInputComponentExtension
     {
-        public static void BindInput<T>(this View inView, T inComponent, Action<T> inCallback) where T : IUIInputComponent ,IUIInputTrigger<T>
+        public static void BindInput<T>(this View inView, T inComponent, Action<T> inCallback) where T : IUIInputComponent, IUIInputTrigger<T>
         {
-            var component = ViewComponentUtils.CheckAndAdd<ViewInput>(inView);
+            var component = UIUtils.CheckAndAdd<ViewInput>(inView);
             // component.BindInput<T>(inCallback);
         }
 

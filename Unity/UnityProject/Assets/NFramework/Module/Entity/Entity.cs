@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NFramework.Core;
 using NFramework.Core.Collections;
 using NFramework.Core.ILiveing;
 using NFramework.Module.LogModule;
@@ -8,7 +9,7 @@ using NFramework.Module.IDGeneratorModule;
 
 namespace NFramework.Module.EntityModule
 {
-    public partial class Entity : IDisposable
+    public partial class Entity : NObject, IDisposable
     {
         [Flags]
         public enum EntityFlagsSlot : int

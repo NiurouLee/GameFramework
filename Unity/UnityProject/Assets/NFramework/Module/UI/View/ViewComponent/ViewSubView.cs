@@ -37,7 +37,7 @@ namespace NFramework.Module.UIModule
         #region  只有provider
         public static T AddSubViewSync<T>(this View inParentView, IUIFacadeProvider inProvider) where T : View, new()
         {
-            var component = ViewComponentUtils.CheckAndAdd<ViewSubViewComponent>(inParentView);
+            var component = UIUtils.CheckAndAdd<ViewSubViewComponent>(inParentView);
             var facade = inProvider.Alloc<T>();
             var view = inParentView.GetFM<UIM>().CreateView<T>();
             return component.ViewRecords.AddSubViewByFacade<T>(view, facade, inProvider);
@@ -45,7 +45,7 @@ namespace NFramework.Module.UIModule
 
         public static T AddSubViewSync<T, D>(this View inParentView, IUIFacadeProvider inProvider, D inData) where T : View, IViewSetData<D>, new()
         {
-            var component = ViewComponentUtils.CheckAndAdd<ViewSubViewComponent>(inParentView);
+            var component = UIUtils.CheckAndAdd<ViewSubViewComponent>(inParentView);
             var facade = inProvider.Alloc<T>();
             var view = inParentView.GetFM<UIM>().CreateView<T>();
             return component.ViewRecords.AddSubViewByFacade<T, D>(view, facade, inProvider, inData);
@@ -57,7 +57,7 @@ namespace NFramework.Module.UIModule
             inParentView.AddPromise(deferred);
             var facade = await deferred.Promise;
             var view = inParentView.GetFM<UIM>().CreateView<T>();
-            var component = ViewComponentUtils.CheckAndAdd<ViewSubViewComponent>(inParentView);
+            var component = UIUtils.CheckAndAdd<ViewSubViewComponent>(inParentView);
             return component.ViewRecords.AddSubViewByFacade<T>(view, facade, inProvider);
         }
 
@@ -68,7 +68,7 @@ namespace NFramework.Module.UIModule
             inParentView.AddPromise(deferred);
             var facade = await deferred.Promise;
             var view = inParentView.GetFM<UIM>().CreateView<T>();
-            var component = ViewComponentUtils.CheckAndAdd<ViewSubViewComponent>(inParentView);
+            var component = UIUtils.CheckAndAdd<ViewSubViewComponent>(inParentView);
             return component.ViewRecords.AddSubViewByFacade<T, D>(view, facade, inProvider, inData);
         }
 
@@ -78,14 +78,14 @@ namespace NFramework.Module.UIModule
         #region 有facade和provider
         public static T AddSubViewByFacade<T>(this View inParentView, UIFacade inFacade, IUIFacadeProvider inProvider) where T : View, new()
         {
-            var component = ViewComponentUtils.CheckAndAdd<ViewSubViewComponent>(inParentView);
+            var component = UIUtils.CheckAndAdd<ViewSubViewComponent>(inParentView);
             var view = inParentView.GetFM<UIM>().CreateView<T>();
             return component.ViewRecords.AddSubViewByFacade<T>(view, inFacade, inProvider);
         }
 
         public static T AddSubViewByFacade<T, D>(this View inParentView, UIFacade inFacade, IUIFacadeProvider inProvider, D inData) where T : View, IViewSetData<D>, new()
         {
-            var component = ViewComponentUtils.CheckAndAdd<ViewSubViewComponent>(inParentView);
+            var component = UIUtils.CheckAndAdd<ViewSubViewComponent>(inParentView);
             var view = inParentView.GetFM<UIM>().CreateView<T>();
             return component.ViewRecords.AddSubViewByFacade<T, D>(view, inFacade, inProvider, inData);
         }
@@ -110,13 +110,13 @@ namespace NFramework.Module.UIModule
         #region 有view和facade和provider
         public static T AddSubViewByFacade<T>(this View inParentView, T inView, UIFacade inFacade, IUIFacadeProvider inProvider) where T : View
         {
-            var component = ViewComponentUtils.CheckAndAdd<ViewSubViewComponent>(inParentView);
+            var component = UIUtils.CheckAndAdd<ViewSubViewComponent>(inParentView);
             return component.ViewRecords.AddSubViewByFacade<T>(inView, inFacade, inProvider);
         }
 
         public static T AddSubViewByFacade<T, D>(this View inParentView, T inView, UIFacade inFacade, IUIFacadeProvider inProvider, D inData) where T : View, IViewSetData<D>, new()
         {
-            var component = ViewComponentUtils.CheckAndAdd<ViewSubViewComponent>(inParentView);
+            var component = UIUtils.CheckAndAdd<ViewSubViewComponent>(inParentView);
             return component.ViewRecords.AddSubViewByFacade<T, D>(inView, inFacade, inProvider, inData);
         }
 
@@ -137,7 +137,7 @@ namespace NFramework.Module.UIModule
 
         public static T RemoveSubView<T>(this View inParentView, T inView) where T : View
         {
-            var component = ViewComponentUtils.CheckAndAdd<ViewSubViewComponent>(inParentView);
+            var component = UIUtils.CheckAndAdd<ViewSubViewComponent>(inParentView);
             if (component.ViewRecords.TryRemove(inView))
             {
 

@@ -8,13 +8,6 @@ namespace NFramework.Module.UIModule
     /// </summary>
     public class UIFacadeProviderDynamic : IUIFacadeProvider
     {
-        private IResLoader _resLoader;
-
-        public UIFacadeProviderDynamic(IResLoader inResLoader)
-        {
-            _resLoader = inResLoader;
-        }
-
         public UIFacade Alloc<T>() where T : View
         {
             return null;
@@ -25,20 +18,16 @@ namespace NFramework.Module.UIModule
             return Promise<UIFacade>.NewDeferred();
         }
 
-        public UIFacade Alloc(ViewConfig inConfig)
+        public UIFacade Alloc(string inViewID)
         {
             return null;
-        }
-
-        public Promise<UIFacade> AllocAsync(ViewConfig inConfig)
-        {
-            return Promise<UIFacade>.Resolved(null);
         }
 
         public Promise<UIFacade> AllocAsync(string inViewID)
         {
             return Promise<UIFacade>.Resolved(null);
         }
+
 
         public void Free(UIFacade inUIFacade)
         {
@@ -54,4 +43,5 @@ namespace NFramework.Module.UIModule
             throw new System.NotImplementedException();
         }
     }
+
 }

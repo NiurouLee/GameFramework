@@ -14,12 +14,13 @@ namespace NFramework.Module.UIModule
         /// Layer
         /// </summary>
         /// <returns></returns>
-        public UIlayer Layer => (UIlayer)this.Set.Low;
+        public ushort Layer => this.Set.Low;
         public bool IsWindow => this.Set.GetBit(31);
+        public bool IsFixedLayer => this.Set.GetBit(30);
 
-        public void SetLayer(UIlayer inLayer)
+        public void SetLayer(ushort inLayer)
         {
-            this.Set.Low = (ushort)inLayer;
+            this.Set.Low = inLayer;
         }
         public void SetWindow(bool inWindow)
         {

@@ -24,7 +24,7 @@ namespace NFramework.Module.UIModule
     {
         public static void AddPromise<T>(this View inView, T inPromise) where T : Proto.Promises.ICancelable
         {
-            var component = ViewComponentUtils.CheckAndAdd<ViewPromiseComponent>(inView);
+            var component = UIUtils.CheckAndAdd<ViewPromiseComponent>(inView);
             component.PromiseRecords.TryAdd(inPromise);
         }
     }

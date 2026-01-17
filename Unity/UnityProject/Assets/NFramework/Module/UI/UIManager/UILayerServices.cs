@@ -4,22 +4,19 @@ using UnityEngine;
 
 namespace NFramework.Module.UIModule
 {
-    public class UILayerServices
+    public abstract class UILayerServices
     {
         public static short OneUiSortOder = 50;
-        private UIlayer layer;
         private GameObject go;
         public GameObject Go => go;
         public int BaseOrder { get; private set; }
         private List<Window> stack;
         private UIM uIM;
 
-        public UILayerServices(UIM inUIM, UIlayer inLayer, GameObject inGo)
+        public UILayerServices(UIM inUIM, GameObject inGo)
         {
             this.uIM = inUIM;
-            this.layer = inLayer;
             this.go = inGo;
-            BaseOrder = (int)inLayer * 1000;
             stack = new List<Window>();
         }
 
@@ -36,5 +33,28 @@ namespace NFramework.Module.UIModule
             }
             return false;
         }
+        public void PushWindow(Window inWindow)
+        {
+            stack.Add(inWindow);
+        }
+        public void PopWindow(Window inWindow)
+        {
+            stack.Remove(inWindow);
+        }
     }
+
+    public class UIStackLayerServices : UILayerServices
+    {
+        public UIStackLayerServices(UIM inUIM, GameObject inGo) : base(inUIM, inGo)
+        {
+        }
+    }
+
+    public class UIFixedLayerServices : UILayerServices
+    {
+        public UIFixedLayerServices(UIM inUIM, GameObject inGo) : base(inUIM, inGo)
+        {
+        }
+    }
+
 }

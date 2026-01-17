@@ -1,6 +1,6 @@
 ﻿using System;
-using NFramework.Module.ResModule;
 using Proto.Promises;
+using NFramework.Core;
 using NFramework.Module.LogModule;
 
 namespace NFramework.Module.UIModule
@@ -12,13 +12,10 @@ namespace NFramework.Module.UIModule
     public enum WindowRequestStage : Byte
     {
         Construct = 0,
-        CacheInitData = 1,
-        ConstructWindow = 2,
-        ConstructWindowDone = 3,
+        Cache = 1,
         FacadeLoading = 4,
         FacadeLoaded = 5,
-        LayerServicesChecking = 6,
-        SetupData = 7,
+        Layer = 6,
         WindowAwake = 8,
         WindowOpen = 8,
         windowOpenAnim = 9,
@@ -31,7 +28,7 @@ namespace NFramework.Module.UIModule
     /// <summary>
     /// 把打开一个UI封装成Request
     /// </summary>
-    public class WindowRequest : IEquatable<WindowRequest>
+    public abstract class WindowRequest : NObject, IEquatable<WindowRequest>
     {
         public string Name { get; private set; }
         public ViewConfig Config { get; private set; }
@@ -39,6 +36,7 @@ namespace NFramework.Module.UIModule
         public Window CacheWindowObj { get; private set; }
         public UIFacade CacheFacadeObj { get; private set; }
         public System.Object CacheViewDataObj { get; private set; }
+        public IUIFacadeProvider CacheProviderObj { get; private set; }
 
         public WindowRequest(ViewConfig inConfig)
         {
@@ -113,19 +111,24 @@ namespace NFramework.Module.UIModule
             this.CacheViewDataObj = inViewData;
         }
 
+        public virtual void CacheProvider(IUIFacadeProvider inProvider)
+        {
+            if (inProvider == null)
+            {
+                Framework.Instance.GetModule<LoggerM>()?.ErrStack($"WindowRequest set Provider Err,inProvider is null:WindowName{this.Name}");
+            }
+            if (this.CacheProviderObj != null)
+            {
+                Framework.Instance.GetModule<LoggerM>()?.ErrStack($"WindowRequest set Provider Err,Provider dont is null:WindowName{this.Name}");
+            }
+            this.CacheProviderObj = inProvider;
+        }
+
         public bool Equals(WindowRequest other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
             return Name == other.Name;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj is null) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
-            return Equals((WindowRequest)obj);
         }
 
         public override int GetHashCode()
@@ -156,36 +159,121 @@ namespace NFramework.Module.UIModule
         internal void Cancel()
         {
         }
+
+        public abstract void Awake();
+
+        public virtual void Show()
+        {
+            this.CacheWindowObj.Show();
+        }
     }
 
-    public class WindowRequest<I> : WindowRequest where I : class
+
+    public class WindowRequestByWindow : WindowRequest
     {
-        public WindowRequest(ViewConfig inConfig) : base(inConfig)
+        public WindowRequestByWindow(ViewConfig inConfig) : base(inConfig)
+        {
+        }
+
+        public void Setup(Window inWindow)
+        {
+            base.CacheWindow(inWindow);
+        }
+
+        public override void Awake()
+        {
+            var inWindow = this.CacheWindowObj;
+            inWindow.SetUIFacade(this.CacheFacadeObj, this.CacheProviderObj);
+            inWindow.Awake();
+        }
+
+        public override void Show()
+        {
+            var inWindow = this.CacheWindowObj;
+            inWindow.Show();
+        }
+    }
+
+    public class WindowRequestByData<TD> : WindowRequest where TD : class
+    {
+
+        public TD ViewData => this.CacheViewDataObj as TD;
+        public WindowRequestByData(ViewConfig inConfig) : base(inConfig)
         {
         }
         public override void SetupViewData()
         {
-            if (this.CacheWindowObj is IViewSetData<I> viewSetData)
+            if (this.CacheViewDataObj != null && this.CacheWindowObj != null && this.CacheWindowObj is IViewSetData<TD> viewSetData)
             {
-                viewSetData.SetData(this.CacheViewDataObj as I);
+                viewSetData.SetData(this.CacheViewDataObj as TD);
             }
+        }
+
+        public virtual void Cache<TD>(Window inWindow, TD inViewData)
+        {
+            base.CacheViewData(inViewData);
+            base.CacheWindow(inWindow);
+        }
+
+        public override void Awake()
+        {
+            var inWindow = this.CacheWindowObj;
+            inWindow.SetUIFacade(this.CacheFacadeObj, this.CacheProviderObj);
+            this.SetupViewData();
+            inWindow.Awake();
         }
     }
 
-    public class WindowRequest<T, I> : WindowRequest<I> where T : Window, IViewSetData<I>, new() where I : class
+    public class WindowRequest<TW, TD> : WindowRequest where TW : Window where TD : class
     {
-        public T Window { get; private set; }
+        public TW Window => base.CacheWindowObj as TW;
+        public TD ViewData => this.CacheViewDataObj as TD;
         public WindowRequest(ViewConfig inConfig) : base(inConfig)
         {
         }
 
-        public override void CacheWindow(Window inWindow)
+        public override void SetupViewData()
         {
-            base.CacheWindow(inWindow);
-            if (inWindow is T window)
+            if (this.CacheViewDataObj != null && this.CacheWindowObj != null && this.CacheWindowObj is IViewSetData<TD> viewSetData)
             {
-                this.Window = window;
+                viewSetData.SetData(this.CacheViewDataObj as TD);
             }
         }
+
+        public virtual void Cache<TW, TD>(TW inWindow, TD inViewData) where TW : Window where TD : class
+        {
+            base.CacheViewData(inViewData);
+            base.CacheWindow(inWindow);
+        }
+
+        public override void Awake()
+        {
+            var inWindow = this.CacheWindowObj;
+            inWindow.SetUIFacade(this.CacheFacadeObj, this.CacheProviderObj);
+            this.SetupViewData();
+            inWindow.Awake();
+        }
     }
+
+    public class WindowRequestByWindow<TW> : WindowRequest where TW : Window
+    {
+        public TW Window => base.CacheWindowObj as TW;
+        public WindowRequestByWindow(ViewConfig inConfig) : base(inConfig)
+        {
+        }
+
+        public virtual void Cache<TW>(TW inWindow) where TW : Window
+        {
+            base.CacheWindow(inWindow);
+        }
+
+        public override void Awake()
+        {
+            var inWindow = this.CacheWindowObj;
+            inWindow.SetUIFacade(this.CacheFacadeObj, this.CacheProviderObj);
+            this.SetupViewData();
+            inWindow.Awake();
+        }
+    }
+
 }

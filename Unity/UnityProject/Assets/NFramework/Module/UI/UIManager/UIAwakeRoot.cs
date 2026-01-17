@@ -30,7 +30,6 @@ namespace NFramework.Module.UIModule
             var _go = UnityEngine.Resources.Load<GameObject>("UIROOT");
             var _root = UnityEngine.Object.Instantiate(_go);
             this.AwakeRoot(_root);
-            this.AwakeLayer(uiCanvas);
         }
 
         public void AwakeRoot(GameObject inRoot)
@@ -45,6 +44,18 @@ namespace NFramework.Module.UIModule
             eventSystem = uiRoot.GetComponentInChildren<EventSystem>();
             scaler = this.uiCanvas.GetOrAddComponent<CanvasScaler>();
         }
+
+        public void AwakeLayer()
+        {
+            var fixedLayerGo = new UnityEngine.GameObject("FixedLayer");
+            fixedLayerGo.transform.SetParent(this.uiRoot.transform);
+            var fixedLayerServices = new UIFixedLayerServices(this, fixedLayerGo);
+            var stackLayerGo = new UnityEngine.GameObject("StackLayer");
+            stackLayerGo.transform.SetParent(this.uiRoot.transform);
+            var stackLayerServices = new UIStackLayerServices(this, stackLayerGo);
+        }
+
+        
 
     }
 }

@@ -3,46 +3,59 @@ using Proto.Promises;
 
 namespace NFramework.Module.UIModule
 {
-    public class ViewResLoadComponent : ViewComponent
+    /// <summary>
+    /// 资源加载组件，这个
+    /// </summary>
+    public class ViewResLoadComponent : ViewComponent, IResLoader
     {
         public ResLoadRecords ResLoadRecords { get; private set; }
+
+        public T Load<T>(string inAssetID) where T : UnityEngine.Object
+        {
+
+            return ResLoadRecords.Load<T>(inAssetID);
+        }
+
+        public Promise<T> LoadAsync<T>(string inAssetID) where T : UnityEngine.Object
+        {
+            return ResLoadRecords.LoadAsync<T>(inAssetID);
+        }
+
+        public void Free<T>(T inObj) where T : UnityEngine.Object
+        {
+            ResLoadRecords.Free(inObj);
+        }
     }
 
     public static class ViewResLoadComponentExtensions
     {
         public static T LoadRes<T>(this View inView, string inAssetID) where T : UnityEngine.Object
         {
-            if (inView is Container container)
+            if (UIUtils.GetUp<Container>(inView, out var container))
             {
-                var loaderComponent = ViewComponentUtils.CheckAndAdd<ViewResLoadComponent>(container);
-                return loaderComponent.ResLoadRecords.Load<T>(inAssetID);
+                var loaderComponent = UIUtils.CheckAndAdd<ViewResLoadComponent>(container);
+                return loaderComponent.Load<T>(inAssetID);
             }
-
-            var parent = inView.Parent;
-            if (parent == null || parent == inView)
-            {
-                return null;
-            }
-
-            while (parent != null)
-            {
-                if (parent is Container containerP)
-                {
-                    return containerP.LoadRes<T>(inAssetID);
-                }
-                parent = parent.Parent;
-            }
-            return null;
+            throw new System.Exception("view dont have container");
         }
-        public static Promise<T> LoadResAsync<T>(this Container inContainer, string inAssetID) where T : UnityEngine.Object
+        public static Promise<T> LoadResAsync<T>(this View inView, string inAssetID) where T : UnityEngine.Object
         {
-            var component = ViewComponentUtils.CheckAndAdd<ViewResLoadComponent>(inContainer);
-            return component.ResLoadRecords.LoadAsync<T>(inAssetID);
+            if (UIUtils.GetUp<Container>(inView, out var container))
+            {
+                var component = UIUtils.CheckAndAdd<ViewResLoadComponent>(container);
+                return component.LoadAsync<T>(inAssetID);
+            }
+            throw new System.Exception("view dont have container");
         }
-        public static void FreeRes<T>(this Container inContainer, T inObj) where T : UnityEngine.Object
+        public static void FreeRes<T>(this View inView, T inObj) where T : UnityEngine.Object
         {
-            var component = ViewComponentUtils.CheckAndAdd<ViewResLoadComponent>(inContainer);
-            component.ResLoadRecords.Free(inObj);
+            if (UIUtils.GetUp<Container>(inView, out var container))
+            {
+                var component = UIUtils.CheckAndAdd<ViewResLoadComponent>(container);
+                component.Free(inObj);
+            }
+            throw new System.Exception("view dont have container");
+
         }
     }
 }
