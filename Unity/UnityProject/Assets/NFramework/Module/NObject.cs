@@ -8,7 +8,7 @@ namespace NFramework.Module
 
     public abstract class NObject
     {
-        public TM GetM<TM>() where TM : FrameworkModule
+        public TM GetM<TM>() where TM : FrameworkModule, new()
         {
             return NFROOT.I.G<TM>();
         }

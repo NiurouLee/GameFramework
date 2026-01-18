@@ -27,6 +27,9 @@ namespace NFramework.Module.UIModule
             this.Set.SetBit(31, inWindow);
         }
 
-
+        public void SetFixedLayer(bool inFixedLayer)
+        {
+            this.Set.SetBit(30, inFixedLayer);
+        }
     }
 }

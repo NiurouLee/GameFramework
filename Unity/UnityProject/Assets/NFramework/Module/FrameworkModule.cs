@@ -3,7 +3,7 @@ using NFramework.Module.EntityModule;
 
 namespace NFramework.Module
 {
-    public class FrameworkModule : Entity, IAwakeSystem, IDestroySystem
+    public class FrameworkModule : Entity
     {
         public virtual void Awake()
         {

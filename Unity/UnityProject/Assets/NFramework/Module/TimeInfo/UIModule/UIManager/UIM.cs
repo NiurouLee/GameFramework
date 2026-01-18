@@ -8,6 +8,9 @@ namespace NFramework.Module.UIModule
     {
         public ViewConfigServices ConfigServices { get; private set; }
 
+        /// <summary>
+        /// 初始化ViewConfig绑定关系（手动指定）
+        /// </summary>
         public void AwakeTypeCfg(List<Tuple<Type, string, ViewConfig>> inCfgList)
         {
             this.ConfigServices = new ViewConfigServices();
@@ -17,10 +20,36 @@ namespace NFramework.Module.UIModule
             }
         }
 
-        public Promise<T> Open<T>()
+        /// <summary>
+        /// 自动初始化ViewConfig绑定关系（从JSON加载并使用ViewTypeRegistry匹配View类型）
+        /// </summary>
+        public void AwakeTypeCfgAuto()
         {
-            var result = Promise<T>.NewDeferred();
-            return result.Promise;
+            this.ConfigServices = new ViewConfigServices();
+            
+            // 初始化ViewConfigReader
+            ViewConfigReader.Initialize();
+            
+            // 获取所有ViewConfig
+            var configMap = ViewConfigReader.GetAllViewConfigs();
+            
+            // 建立绑定关系：ViewConfig.ID (脚本名称) -> View类型 -> ViewConfig
+            foreach (var kvp in configMap)
+            {
+                string configID = kvp.Key; // 这是脚本名称，比如 "GameUILoginView"
+                ViewConfig config = kvp.Value;
+                
+                // 从ViewTypeRegistry获取View类型（从生成的静态字典中读取）
+                Type viewType = ViewTypeRegistry.GetViewType(configID);
+                if (viewType != null)
+                {
+                    this.ConfigServices.AddViewConfig(viewType, configID, config);
+                }
+                else
+                {
+                    UnityEngine.Debug.LogWarning($"未找到View类型: {configID}，请确保已生成ViewTypeRegistryAuto.Generated.cs文件");
+                }
+            }
         }
 
         public ViewConfig GetViewConfig<T>(T inView) where T : View

@@ -143,8 +143,7 @@ namespace NFramework.Module.IDGeneratorModule
 
         private ushort unitIdValue;
         private uint lastUnitIdTime;
-
-        public IDGeneratorM()
+        public override void Awake()
         {
             long epoch1970tick = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).Ticks / 10000;
             this.epoch2020 = new DateTime(2020, 1, 1, 0, 0, 0, DateTimeKind.Utc).Ticks / 10000 - epoch1970tick;

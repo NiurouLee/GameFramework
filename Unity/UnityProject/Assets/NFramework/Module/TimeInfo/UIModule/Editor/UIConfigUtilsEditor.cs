@@ -7,29 +7,89 @@ namespace NFramework.Module.UIModule
 
     public class UIConfigUtilsEditor
     {
-        public static Dictionary<string, ViewConfig> m_ViewConfigDic = new Dictionary<string, ViewConfig>();
+        // 使用GameObject的InstanceID作为key，确保每个UIFacade实例都有独立的ViewConfig
+        public static Dictionary<int, ViewConfig> m_ViewConfigDic = new Dictionary<int, ViewConfig>();
+        
         public static ViewConfig GetViewConfig(UnityEngine.Object target)
         {
             UIFacade _uiFacade = (UIFacade)target;
             
-            // 如果ID为空，使用GameObject的InstanceID作为临时key
-            string key = string.IsNullOrEmpty(_uiFacade.ID) ? 
-                $"temp_{_uiFacade.gameObject.GetInstanceID()}" : _uiFacade.ID;
+            // 使用GameObject的InstanceID作为key，确保每个实例都有独立的ViewConfig
+            int instanceID = _uiFacade.gameObject.GetInstanceID();
             
-            if (m_ViewConfigDic.TryGetValue(key, out var config))
+            if (m_ViewConfigDic.TryGetValue(instanceID, out var config))
             {
-                // 如果ID发生了变化，更新配置的ID
-                if (!string.IsNullOrEmpty(_uiFacade.ID) && config.ID != _uiFacade.ID)
-                {
-                    config.ID = _uiFacade.ID;
-                }
                 return config;
             }
 
+            // 创建新的ViewConfig实例
             var _config = new ViewConfig();
-            _config.ID = _uiFacade.ID;
-            m_ViewConfigDic.Add(key, _config);
+            
+            // 尝试从JSON文件加载配置
+            LoadViewConfigFromJson(_config, _uiFacade);
+            
+            m_ViewConfigDic.Add(instanceID, _config);
             return _config;
+        }
+
+        /// <summary>
+        /// 从JSON文件加载ViewConfig配置
+        /// </summary>
+        private static void LoadViewConfigFromJson(ViewConfig config, UIFacade uiFacade)
+        {
+            // 先设置默认值
+            config.ID = uiFacade.ID;
+            
+            // 尝试从JSON文件加载
+            string jsonFolderPath = "Assets/ConfigData/UI";
+            string jsonFilePath = System.IO.Path.Combine(jsonFolderPath, "ViewConfigs.json");
+            
+            if (System.IO.File.Exists(jsonFilePath))
+            {
+                try
+                {
+                    string json = System.IO.File.ReadAllText(jsonFilePath);
+                    ViewConfigsContainer container = UnityEngine.JsonUtility.FromJson<ViewConfigsContainer>(json);
+                    
+                    if (container != null && container.Configs != null)
+                    {
+                        // 查找匹配的配置（使用脚本名称或ID）
+                        string configID = uiFacade.ID;
+                        foreach (var data in container.Configs)
+                        {
+                            if (data.ID == configID)
+                            {
+                                config.ID = data.ID;
+                                config.AssetID = data.AssetID;
+                                config.SetLayer(data.Layer);
+                                config.SetWindow(data.IsWindow);
+                                config.SetFixedLayer(data.IsFixedLayer);
+                                return;
+                            }
+                        }
+                    }
+                }
+                catch
+                {
+                    // 加载失败，使用默认值
+                }
+            }
+        }
+
+        [System.Serializable]
+        private class ViewConfigData
+        {
+            public string ID;
+            public string AssetID;
+            public ushort Layer;
+            public bool IsWindow;
+            public bool IsFixedLayer;
+        }
+
+        [System.Serializable]
+        private class ViewConfigsContainer
+        {
+            public System.Collections.Generic.List<ViewConfigData> Configs = new System.Collections.Generic.List<ViewConfigData>();
         }
 
         public static void SaveViewConfig(UnityEngine.Object target)

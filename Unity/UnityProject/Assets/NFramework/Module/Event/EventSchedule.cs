@@ -3,7 +3,7 @@ using NFramework.Core.Collections;
 
 namespace NFramework.Module.EventModule
 {
-    public partial class EventSchedule : IEventRegister
+    public partial class EventSchedule : NObject, IEventRegister
     {
         private readonly UnOrderMultiMapLink<System.Type, BaseRegister> m_EventHandler;
 

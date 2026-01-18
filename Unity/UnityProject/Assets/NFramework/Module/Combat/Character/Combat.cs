@@ -122,7 +122,7 @@ namespace NFramework.Module.Combat
 
 
         //行动
-        public T AttachAction<T>() where T : Entity, IActionAbility
+        public T AttachAction<T>() where T : Entity, IActionAbility, new()
         {
             var action = AddChild<T>();
             action.AddComponent<ActionComponent, Type>(typeof(T));

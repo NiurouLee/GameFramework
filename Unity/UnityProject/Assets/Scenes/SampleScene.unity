@@ -176,9 +176,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 536638886}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dabb03d72b64af84f8016369b72c6ec5, type: 3}
+  m_Script: {fileID: 11500000, guid: 497bf8dd2ba81c447932d79a1cfec5ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  autoRefresh: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

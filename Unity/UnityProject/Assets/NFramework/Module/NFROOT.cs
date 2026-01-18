@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using NFramework.Module.EntityModule;
+using NFramework.Module.IDGeneratorModule;
+using NFramework.Module.TimeInfoModule;
 
 namespace NFramework.Module
 {
@@ -52,13 +55,54 @@ namespace NFramework.Module
             EngineLoop.Instance.StopCoroutine(coroutine);
         }
 
+
+        public static void AwakeRoot()
+        {
+            m_Instance = Entity.CreateRoot<NFROOT>();
+            m_Instance.RegisterEngineLoop();
+            var ins = Instance;
+            NFROOT.Instance.Awake();
+
+        }
+        /// <summary>
+        /// 按类型存储
+        /// </summary>
+        public Dictionary<Type, FrameworkModule> m_modulesDict;
+        public HashSet<FrameworkModule> m_modules;
+
+        public void Awake()
+        {
+            this.m_modulesDict = new Dictionary<Type, FrameworkModule>();
+            this.m_modules = new HashSet<FrameworkModule>()
+            {
+                new EntitySystemM(),
+                new TimeInfoM(),
+                new IDGeneratorM(),
+            };
+            foreach (var module in this.m_modules)
+            {
+                this.m_modulesDict.Add(module.GetType(), module);
+            }
+            EngineLoop.Instance.OnEndOfFrameUpdateList.Add(this.LateAddChild);
+
+        }
+
+        private void LateAddChild(float deltaTime)
+        {
+            foreach (var module in this.m_modules)
+            {
+                this.AddChild(module);
+            }
+            EngineLoop.Instance.OnEndOfFrameUpdateList.Remove(this.LateAddChild);
+        }
+
         public static NFROOT Instance
         {
             get
             {
                 if (m_Instance == null)
                 {
-                    m_Instance = Entity.Create<NFROOT>();
+                    m_Instance = Entity.CreateRoot<NFROOT>();
                     m_Instance.RegisterEngineLoop();
                 }
 
@@ -66,30 +110,19 @@ namespace NFramework.Module
             }
         }
 
-        /// <summary>
-        /// 按类型存储
-        /// </summary>
-        public Dictionary<Type, FrameworkModule> m_modulesDict;
 
-        public void Awake()
-        {
-            this.m_modulesDict = new Dictionary<Type, FrameworkModule>();
-        }
-
-
-        public T G<T>() where T : FrameworkModule
+        public T G<T>() where T : FrameworkModule, new()
         {
             return GetModule<T>();
         }
 
-        public T GetModule<T>() where T : FrameworkModule
+        public T GetModule<T>() where T : FrameworkModule, new()
         {
             if (m_modulesDict.TryGetValue(typeof(T), out var module))
             {
                 return (T)module;
             }
-
-            return null;
+            return this.AddChild<T>();
         }
 
         private void RegisterEngineLoop()

@@ -485,7 +485,6 @@ namespace NFramework.Module.EntityModule
             }
 
             component.IsFromPool = isFromPool;
-            component.IsRoot = true;
             component.Id = NFROOT.Instance.GetModule<IDGeneratorM>().GenerateInstanceId();
             return component;
         }
@@ -505,10 +504,24 @@ namespace NFramework.Module.EntityModule
             NFROOT.Instance.GetModule<EntitySystemM>().Awake(component);
             NFROOT.Instance.GetModule<EntitySystemM>().Start(component);
             component.IsFromPool = isFromPool;
-            component.IsRoot = true;
             component.Id = NFROOT.Instance.GetModule<IDGeneratorM>().GenerateInstanceId();
             return component as T;
         }
+
+
+
+
+        public static T CreateRoot<T>() where T : Entity, new()
+        {
+            Entity component;
+            component = new T();
+            component.IsFromPool = false;
+            component.IsRoot = true;
+            component.Id = long.MaxValue;
+            return component as T;
+        }
+
+
 
 
         public Entity AddComponent(Entity component)
@@ -615,6 +628,21 @@ namespace NFramework.Module.EntityModule
             return component as K;
         }
 
+        /// <summary>
+        /// 这个只允许Root使用
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="component"></param>
+        /// <returns></returns>
+        public T AddChild<T>(T component) where T : Entity, new()
+        {
+            component.Id = NFROOT.Instance.GetModule<IDGeneratorM>().GenerateId();
+            component.Parent = this;
+
+            NFROOT.Instance.GetModule<EntitySystemM>().Awake(component);
+            NFROOT.Instance.GetModule<EntitySystemM>().Start(component);
+            return component;
+        }
 
         public Entity AddChild(Type entityType, bool isFromPool = false)
         {
@@ -649,7 +677,7 @@ namespace NFramework.Module.EntityModule
             return child;
         }
 
-        public T AddChild<T, A>(T inT, A inA) where T : Entity, IAwakeSystem<A>
+        public T AddChild<T, A>(T inT, A inA) where T : Entity, IAwakeSystem<A>, new()
         {
             inT.Id = NFROOT.Instance.GetModule<IDGeneratorM>().GenerateId();
             inT.Parent = this;
@@ -658,10 +686,9 @@ namespace NFramework.Module.EntityModule
             return inT;
         }
 
-        public T AddChild<T>(bool isFromPool = false) where T : Entity
+        public T AddChild<T>(bool isFromPool = false) where T : Entity, new()
         {
-            Type type = typeof(T);
-            T component = (T)Entity.Create(type, isFromPool);
+            T component = (T)Entity.Create<T>(isFromPool);
             component.Id = NFROOT.Instance.GetModule<IDGeneratorM>().GenerateId();
             component.Parent = this;
 

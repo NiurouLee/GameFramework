@@ -11,17 +11,16 @@ namespace NFramework.Module.UIModule
         public static bool CheckName(UnityEngine.Object target, int index, string name)
         {
             UIFacade _uiFacade = (UIFacade)target;
-            var editorData = UIFacadeInspector.GetEditorData(_uiFacade);
-            if (editorData == null || editorData.Components == null) return true;
+            if (_uiFacade == null || _uiFacade.m_UIElements == null) return true;
             
-            for (int i = 0; i < editorData.Components.Length; i++)
+            for (int i = 0; i < _uiFacade.m_UIElements.Count; i++)
             {
                 if (i == index)
                 {
                     continue;
                 }
-                UIComponent _c = editorData.Components[i];
-                if (_c != null && _c.Name == name)
+                var element = _uiFacade.m_UIElements[i];
+                if (element != null && element.Name == name)
                 {
                     return false;
                 }

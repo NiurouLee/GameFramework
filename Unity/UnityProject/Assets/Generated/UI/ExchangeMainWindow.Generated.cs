@@ -8,7 +8,7 @@ namespace NFramework.Module.UIModule
 {
     public partial class ExchangeMainWindow
     {
-        public UnityEngine.UI.Image Image => Facade.m_RuntimeInputComponents[0] as UnityEngine.UI.Image;
-        public NFramework.Module.UIModule.NButton GameObject => Facade.m_RuntimeInputComponents[1] as NFramework.Module.UIModule.NButton;
+        public UnityEngine.UI.Image Image => Facade.Components[0] as UnityEngine.UI.Image;
+        public NFramework.Module.UIModule.NButton GameObject => Facade.Components[1] as NFramework.Module.UIModule.NButton;
     }
 }
