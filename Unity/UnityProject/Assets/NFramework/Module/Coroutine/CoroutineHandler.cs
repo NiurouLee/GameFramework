@@ -33,13 +33,13 @@ namespace NFramework.Module.Coroutine
         {
             if (Running)
             {
-                NFROOT.Instance.GetModule<LoggerM>()?.Log?.E("当前协程未完成");
+                NFROOT.Instance.GetModule<LoggerM>()?.Log?.Print("当前协程未完成");
                 return;
             }
 
             if (Coroutine == null)
             {
-                NFROOT.Instance.GetModule<LoggerM>()?.Log?.E("协程未指定");
+                NFROOT.Instance.GetModule<LoggerM>()?.Log?.Print("协程未指定");
                 return;
             }
 

@@ -26,19 +26,19 @@ namespace NFramework.Module.UIModule
         public void AwakeTypeCfgAuto()
         {
             this.ConfigServices = new ViewConfigServices();
-            
+
             // 初始化ViewConfigReader
             ViewConfigReader.Initialize();
-            
+
             // 获取所有ViewConfig
             var configMap = ViewConfigReader.GetAllViewConfigs();
-            
+
             // 建立绑定关系：ViewConfig.ID (脚本名称) -> View类型 -> ViewConfig
             foreach (var kvp in configMap)
             {
                 string configID = kvp.Key; // 这是脚本名称，比如 "GameUILoginView"
                 ViewConfig config = kvp.Value;
-                
+
                 // 从ViewTypeRegistry获取View类型（从生成的静态字典中读取）
                 Type viewType = ViewTypeRegistry.GetViewType(configID);
                 if (viewType != null)
@@ -89,8 +89,13 @@ namespace NFramework.Module.UIModule
             {
                 throw new Exception($"ViewConfig {inViewConfig.ID} not found");
             }
+
             return Activator.CreateInstance(type) as View;
         }
 
+        public string MappingAssetID(string inAssetID)
+        {
+            return "UI/" + inAssetID;
+        }
     }
 }

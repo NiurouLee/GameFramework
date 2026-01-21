@@ -1,3 +1,4 @@
+using NFramework.Module.LogModule;
 using GameObject = UnityEngine.GameObject;
 using Vector3 = UnityEngine.Vector3;
 using UnityEngine;
@@ -21,6 +22,8 @@ namespace NFramework.Module.UIModule
 
         public override void Awake()
         {
+            GetM<LoggerM>().Error?.Print("UIM Awake");
+            this.AwakeTypeCfgAuto();
             base.Awake();
             var _go = UnityEngine.Resources.Load<GameObject>("UIROOT");
             var _root = UnityEngine.Object.Instantiate(_go);

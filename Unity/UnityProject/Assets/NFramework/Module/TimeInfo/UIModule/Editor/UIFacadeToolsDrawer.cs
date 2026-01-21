@@ -23,7 +23,7 @@ namespace NFramework.Module.UIModule
             SirenixEditorGUI.BeginBoxHeader();
             foldout = EditorGUILayout.Foldout(foldout, "工具栏", true);
             SirenixEditorGUI.EndBoxHeader();
-            
+
             if (foldout)
             {
                 SirenixEditorGUI.InfoMessageBox("使用以下工具来管理UI元素和配置");
@@ -35,7 +35,8 @@ namespace NFramework.Module.UIModule
                 {
                     // 自动收集按钮
                     GUI.backgroundColor = new Color(0.7f, 1f, 0.7f);
-                    if (GUILayout.Button(new GUIContent("自动收集子对象", "自动收集GameObject下的所有IUIComponent组件"), GUILayout.Height(22)))
+                    if (GUILayout.Button(new GUIContent("自动收集子对象", "自动收集GameObject下的所有IUIComponent组件"),
+                            GUILayout.Height(22)))
                     {
                         AutoCollectChildComponents(facade, onDataChanged);
                     }
@@ -87,6 +88,39 @@ namespace NFramework.Module.UIModule
                     }
 
                     GUI.backgroundColor = Color.white;
+                }
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.Space(3);
+
+                // 第四行工具按钮
+                EditorGUILayout.BeginHorizontal();
+                {
+                    // 打开脚本按钮
+                    if (!string.IsNullOrEmpty(facade.m_ScriptName))
+                    {
+                        string logicFolderPath = "Assets/Scripts/UI";
+                        string logicFilePath = Path.Combine(logicFolderPath, facade.m_ScriptName + ".cs");
+                        bool logicFileExists = File.Exists(logicFilePath);
+
+                        EditorGUI.BeginDisabledGroup(!logicFileExists);
+                        GUI.backgroundColor = new Color(0.7f, 1f, 1f);
+                        if (GUILayout.Button(new GUIContent("打开 Logic 脚本", "打开对应的逻辑脚本文件"), GUILayout.Height(22)))
+                        {
+                            Object scriptAsset = AssetDatabase.LoadAssetAtPath<Object>(logicFilePath);
+                            if (scriptAsset != null)
+                            {
+                                AssetDatabase.OpenAsset(scriptAsset);
+                            }
+                            else
+                            {
+                                Debug.LogError($"找不到脚本文件: {logicFilePath}");
+                            }
+                        }
+
+                        GUI.backgroundColor = Color.white;
+                        EditorGUI.EndDisabledGroup();
+                    }
                 }
                 EditorGUILayout.EndHorizontal();
             }
@@ -160,6 +194,7 @@ namespace NFramework.Module.UIModule
                 {
                     facade.m_UIElements.Clear();
                 }
+
                 EditorUtility.SetDirty(facade);
                 onDataChanged?.Invoke();
             }
@@ -230,6 +265,10 @@ namespace NFramework.Module.UIModule
             string generatedFilePath = Path.Combine(generatedFolderPath, scriptName + ".Generated.cs");
             WriteGeneratedFile(generatedFilePath, scriptName, facade);
 
+            // 0. 保存ViewConfig (确保ViewTypeRegistryAuto能读取到最新的配置)
+            ViewConfig viewConfig = UIConfigUtilsEditor.GetViewConfig(facade);
+            UIFacadeViewConfigDrawer.SaveViewConfigToJson(facade, viewConfig);
+
             // 2. 生成 Logic 文件 (如果不存在)
             string logicFolderPath = "Assets/Scripts/UI";
             if (!Directory.Exists(logicFolderPath)) Directory.CreateDirectory(logicFolderPath);
@@ -239,14 +278,6 @@ namespace NFramework.Module.UIModule
             if (!logicFileExists)
             {
                 WriteLogicFile(logicFilePath, scriptName);
-            }
-
-            // 3. 生成ViewTypeRegistry映射表
-            if (!ViewTypeRegistryGenerator.GenerateRegistryClass(out string genErrorMessage))
-            {
-                EditorUtility.DisplayDialog("警告",
-                    $"脚本已生成，但生成类型注册表失败：\n{genErrorMessage}",
-                    "确定");
             }
 
             AssetDatabase.Refresh();
@@ -278,7 +309,8 @@ namespace NFramework.Module.UIModule
                     if (element != null && element.Component != null && !string.IsNullOrEmpty(element.Name))
                     {
                         string typeName = element.Component.GetType().FullName;
-                        sb.AppendLine($"        public {typeName} {element.Name} => Facade.Components[{i}] as {typeName};");
+                        sb.AppendLine(
+                            $"        public {typeName} {element.Name} => Facade.Components[{i}] as {typeName};");
                     }
                 }
             }

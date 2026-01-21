@@ -62,12 +62,13 @@ namespace NFramework.Module
             m_Instance.RegisterEngineLoop();
             var ins = Instance;
             NFROOT.Instance.Awake();
-
         }
+
         /// <summary>
         /// 按类型存储
         /// </summary>
         public Dictionary<Type, FrameworkModule> m_modulesDict;
+
         public HashSet<FrameworkModule> m_modules;
 
         public void Awake()
@@ -83,8 +84,8 @@ namespace NFramework.Module
             {
                 this.m_modulesDict.Add(module.GetType(), module);
             }
-            EngineLoop.Instance.OnEndOfFrameUpdateList.Add(this.LateAddChild);
 
+            EngineLoop.Instance.OnEndOfFrameUpdateList.Add(this.LateAddChild);
         }
 
         private void LateAddChild(float deltaTime)
@@ -93,6 +94,7 @@ namespace NFramework.Module
             {
                 this.AddChild(module);
             }
+
             EngineLoop.Instance.OnEndOfFrameUpdateList.Remove(this.LateAddChild);
         }
 
@@ -118,11 +120,14 @@ namespace NFramework.Module
 
         public T GetModule<T>() where T : FrameworkModule, new()
         {
-            if (m_modulesDict.TryGetValue(typeof(T), out var module))
+            var type = typeof(T);
+            if (m_modulesDict.TryGetValue(type, out var module))
             {
                 return (T)module;
             }
-            return this.AddChild<T>();
+            module = this.AddChild<T>();
+            m_modulesDict.Add(type, module);
+            return (T)module;
         }
 
         private void RegisterEngineLoop()

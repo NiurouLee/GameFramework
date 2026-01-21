@@ -14,7 +14,9 @@ namespace NFramework.Module.UIModule
         /// </summary>
         public static Dictionary<Type, string> TypeToConfigIDMap = new Dictionary<Type, string>
         {
-           
+            { typeof(ExchangeGiftpack), "ExchangeGiftpack" },
+            { typeof(ExchangeWeekcard2), "ExchangeWeekcard2" },
+            { typeof(ExchangeWeekcard), "ExchangeWeekcard" },
         };
     }
 }

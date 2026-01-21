@@ -489,7 +489,7 @@ namespace NFramework.Module.EntityModule
             return component;
         }
 
-        public static T Create<T>(bool isFromPool = false) where T : Entity, new()
+        private static T Create<T>(bool isFromPool = false) where T : Entity, new()
         {
             Entity component;
             if (isFromPool)
@@ -501,14 +501,12 @@ namespace NFramework.Module.EntityModule
                 component = new T();
             }
 
-            NFROOT.Instance.GetModule<EntitySystemM>().Awake(component);
-            NFROOT.Instance.GetModule<EntitySystemM>().Start(component);
             component.IsFromPool = isFromPool;
             component.Id = NFROOT.Instance.GetModule<IDGeneratorM>().GenerateInstanceId();
+            NFROOT.Instance.GetModule<EntitySystemM>().Awake(component);
+            NFROOT.Instance.GetModule<EntitySystemM>().Start(component);
             return component as T;
         }
-
-
 
 
         public static T CreateRoot<T>() where T : Entity, new()
@@ -520,8 +518,6 @@ namespace NFramework.Module.EntityModule
             component.Id = long.MaxValue;
             return component as T;
         }
-
-
 
 
         public Entity AddComponent(Entity component)
@@ -689,13 +685,10 @@ namespace NFramework.Module.EntityModule
         public T AddChild<T>(bool isFromPool = false) where T : Entity, new()
         {
             T component = (T)Entity.Create<T>(isFromPool);
-            component.Id = NFROOT.Instance.GetModule<IDGeneratorM>().GenerateId();
             component.Parent = this;
-
-            NFROOT.Instance.GetModule<EntitySystemM>().Awake(component);
-            NFROOT.Instance.GetModule<EntitySystemM>().Start(component);
             return component;
         }
+
 
         public T AddChild<T, A>(A a, bool isFromPool = false) where T : Entity, IAwakeSystem<A>
         {

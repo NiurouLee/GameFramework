@@ -20,7 +20,7 @@ namespace NFramework.Module.UIModule
             SirenixEditorGUI.BeginBoxHeader();
             foldout = EditorGUILayout.Foldout(foldout, "View配置", true);
             SirenixEditorGUI.EndBoxHeader();
-            
+
             if (foldout)
             {
                 if (viewConfig == null)
@@ -137,8 +137,8 @@ namespace NFramework.Module.UIModule
                     if (!string.IsNullOrEmpty(duplicateConfigID))
                     {
                         if (EditorUtility.DisplayDialog("层级重复警告",
-                            $"层级 {newLayer} 已被配置 '{duplicateConfigID}' 使用，是否继续？",
-                            "继续", "取消"))
+                                $"层级 {newLayer} 已被配置 '{duplicateConfigID}' 使用，是否继续？",
+                                "继续", "取消"))
                         {
                             viewConfig.SetLayer(newLayer);
                         }
@@ -150,11 +150,13 @@ namespace NFramework.Module.UIModule
                 }
 
                 // 显示层级冲突提示
-                string configIDForCheck = !string.IsNullOrEmpty(facade.m_ScriptName) ? facade.m_ScriptName : viewConfig.ID;
+                string configIDForCheck =
+                    !string.IsNullOrEmpty(facade.m_ScriptName) ? facade.m_ScriptName : viewConfig.ID;
                 string conflictInfo = ViewConfigManager.GetLayerConflictInfo(viewConfig.Layer, configIDForCheck);
                 if (!string.IsNullOrEmpty(conflictInfo))
                 {
-                    EditorGUILayout.HelpBox($"⚠ 层级冲突: 层级 {viewConfig.Layer} 已被以下配置使用: {conflictInfo}", MessageType.Warning);
+                    EditorGUILayout.HelpBox($"⚠ 层级冲突: 层级 {viewConfig.Layer} 已被以下配置使用: {conflictInfo}",
+                        MessageType.Warning);
                 }
             }
             else
@@ -197,10 +199,13 @@ namespace NFramework.Module.UIModule
                     GUI.backgroundColor = new Color(0.8f, 1f, 0.8f);
                     bool canSave = !string.IsNullOrEmpty(facade.m_ScriptName);
                     EditorGUI.BeginDisabledGroup(!canSave);
-                    if (GUILayout.Button(new GUIContent("保存ViewConfig", canSave ? "保存ViewConfig到JSON文件并生成读取类" : "脚本名称为空，无法保存"), GUILayout.Height(25)))
+                    if (GUILayout.Button(
+                            new GUIContent("保存ViewConfig", canSave ? "保存ViewConfig到JSON文件并生成读取类" : "脚本名称为空，无法保存"),
+                            GUILayout.Height(25)))
                     {
                         SaveViewConfigToJson(facade, viewConfig);
                     }
+
                     EditorGUI.EndDisabledGroup();
 
                     GUI.backgroundColor = Color.white;
@@ -224,11 +229,12 @@ namespace NFramework.Module.UIModule
             }
         }
 
-        private static void SaveViewConfigToJson(UIFacade facade, ViewConfig viewConfig)
+        public static void SaveViewConfigToJson(UIFacade facade, ViewConfig viewConfig)
         {
             if (string.IsNullOrEmpty(facade.m_ScriptName))
             {
-                EditorUtility.DisplayDialog("错误", "脚本名称为空，无法保存ViewConfig！\n\n请先在\"基本信息\"中填写：\n- 模块名称\n- UI名称\n\n系统会自动生成脚本名称。", "确定");
+                EditorUtility.DisplayDialog("错误",
+                    "脚本名称为空，无法保存ViewConfig！\n\n请先在\"基本信息\"中填写：\n- 模块名称\n- UI名称\n\n系统会自动生成脚本名称。", "确定");
                 return;
             }
 
@@ -239,7 +245,8 @@ namespace NFramework.Module.UIModule
             UpdateViewConfigAssetID(facade, viewConfig);
 
             // 保存ViewConfig
-            if (!ViewConfigManager.SaveViewConfig(viewConfig, facade.m_ScriptName, viewConfig.AssetID, out string errorMessage))
+            if (!ViewConfigManager.SaveViewConfig(viewConfig, facade.m_ScriptName, viewConfig.AssetID,
+                    out string errorMessage))
             {
                 EditorUtility.DisplayDialog("错误", errorMessage, "确定");
                 return;

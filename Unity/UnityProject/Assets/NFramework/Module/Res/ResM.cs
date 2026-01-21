@@ -24,6 +24,7 @@ namespace NFramework.Module.ResModule
             {
                 return Resources.Load(path) as T;
             }
+
             return null;
         }
 
@@ -40,23 +41,22 @@ namespace NFramework.Module.ResModule
             return deferred.Promise;
         }
 
-
-
         public Promise<T> LoadAsyncAndInstantiate<T>(string inAssetID) where T : UnityEngine.Object
         {
             var deferred = Promise.NewDeferred<T>();
             var asyncOperation = Resources.LoadAsync<T>(inAssetID);
             asyncOperation.completed += (asyncOperation) =>
-               {
-                   var assetOperation = asyncOperation as ResourceRequest;
-                   var result = assetOperation.asset as T;
-                   var _object = UnityEngine.Object.Instantiate(result);
-                   deferred.Resolve(_object);
-               };
+            {
+                var assetOperation = asyncOperation as ResourceRequest;
+                var result = assetOperation.asset as T;
+                var _object = UnityEngine.Object.Instantiate(result);
+                deferred.Resolve(_object);
+            };
             return deferred.Promise;
         }
 
+        public void Free<T>(T inObject) where T : UnityEngine.Object
+        {
+        }
     }
-
 }
-

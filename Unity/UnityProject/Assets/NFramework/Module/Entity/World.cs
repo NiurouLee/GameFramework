@@ -8,11 +8,5 @@ namespace NFramework.Module.EntityModule
 {
     public class World : Entity
     {
-        public static World Create()
-        {
-            var world = Entity.Create<World>();
-            return world;
-        }
-
     }
 }

@@ -18,6 +18,6 @@ public class APP : MonoBehaviour
     private IEnumerator Test()
     {
         yield return new WaitForSeconds(1);
-        NFROOT.I.GetModule<UIM>().OpenAsync<ExWindow>();
+        NFROOT.I.GetModule<UIM>().OpenAsync<ExchangeWeekcard>();
     }
 }

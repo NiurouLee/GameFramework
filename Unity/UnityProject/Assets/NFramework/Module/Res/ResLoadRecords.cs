@@ -11,18 +11,17 @@ namespace NFramework.Module.ResModule
     {
         public void Free<T>(T inObj) where T : Object
         {
-            throw new System.NotImplementedException();
+            this.GetM<ResM>().Free(inObj);
         }
 
         public T Load<T>(string inAssetID) where T : Object
         {
-            throw new System.NotImplementedException();
+            return this.GetM<ResM>().Load<T>(inAssetID);
         }
 
         public Promise<T> LoadAsync<T>(string inAssetID) where T : Object
         {
-            throw new System.NotImplementedException();
+            return this.GetM<ResM>().LoadAsync<T>(inAssetID);
         }
-
     }
 }
