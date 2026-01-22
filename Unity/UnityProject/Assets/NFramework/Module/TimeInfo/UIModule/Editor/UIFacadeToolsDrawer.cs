@@ -258,49 +258,50 @@ namespace NFramework.Module.UIModule
 
             string scriptName = facade.m_ScriptName;
 
-            // 1. 生成 Generated 文件 (总是覆盖)
-            string generatedFolderPath = "Assets/Generated/UI";
-            if (!Directory.Exists(generatedFolderPath)) Directory.CreateDirectory(generatedFolderPath);
-
-            string generatedFilePath = Path.Combine(generatedFolderPath, scriptName + ".Generated.cs");
-            WriteGeneratedFile(generatedFilePath, scriptName, facade);
-
-            // 0. 保存ViewConfig (确保ViewTypeRegistryAuto能读取到最新的配置)
+            // 获取ViewConfig以确定是否是Window
             ViewConfig viewConfig = UIConfigUtilsEditor.GetViewConfig(facade);
+            bool isWindow = viewConfig != null && viewConfig.IsWindow;
+
+            // 0. 保存ViewConfig
             UIFacadeViewConfigDrawer.SaveViewConfigToJson(facade, viewConfig);
 
-            // 2. 生成 Logic 文件 (如果不存在)
+            // 清理旧的 .Generated.cs 文件 (如果存在)
+            string generatedFolderPath = "Assets/Generated/UI";
+            string generatedFilePath = Path.Combine(generatedFolderPath, scriptName + ".Generated.cs");
+            if (File.Exists(generatedFilePath))
+            {
+                // 尝试删除
+                try
+                {
+                    AssetDatabase.DeleteAsset(generatedFilePath);
+                }
+                catch
+                {
+                    // 如果AssetDatabase删除失败（例如文件未导入），尝试系统删除
+                    if (File.Exists(generatedFilePath)) File.Delete(generatedFilePath);
+                }
+            }
+
+            // 1. 生成 Logic 文件 (包含了属性生成的逻辑)
             string logicFolderPath = "Assets/Scripts/UI";
             if (!Directory.Exists(logicFolderPath)) Directory.CreateDirectory(logicFolderPath);
 
             string logicFilePath = Path.Combine(logicFolderPath, scriptName + ".cs");
-            bool logicFileExists = File.Exists(logicFilePath);
-            if (!logicFileExists)
-            {
-                WriteLogicFile(logicFilePath, scriptName);
-            }
+            WriteLogicFile(logicFilePath, scriptName, facade, isWindow);
 
             AssetDatabase.Refresh();
 
-            string msg = $"脚本生成完毕！\n\n生成文件: {generatedFilePath}";
-            if (!logicFileExists) msg += $"\n逻辑文件: {logicFilePath}";
-            else msg += $"\n逻辑文件已存在，未覆盖。";
-
+            string msg = $"脚本生成完毕！\n\n文件: {logicFilePath}";
             EditorUtility.DisplayDialog("成功", msg, "确定");
         }
 
-        private static void WriteGeneratedFile(string filePath, string scriptName, UIFacade facade)
+        private static void WriteLogicFile(string filePath, string scriptName, UIFacade facade, bool isWindow)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("using UnityEngine;");
-            sb.AppendLine("using NFramework.Module.UIModule;");
-            sb.AppendLine("");
-            sb.AppendLine("// 自动生成代码，请勿手动修改");
-            sb.AppendLine("namespace NFramework.Module.UIModule");
-            sb.AppendLine("{");
-            sb.AppendLine($"    public partial class {scriptName}");
-            sb.AppendLine("    {");
+            string baseClass = isWindow ? "Window" : "View";
+            string componentRegionStart = "        #region UI Components (Auto Generated)";
+            string componentRegionEnd = "        #endregion";
 
+            StringBuilder propertiesSb = new StringBuilder();
             if (facade.m_UIElements != null)
             {
                 for (int i = 0; i < facade.m_UIElements.Count; i++)
@@ -309,34 +310,77 @@ namespace NFramework.Module.UIModule
                     if (element != null && element.Component != null && !string.IsNullOrEmpty(element.Name))
                     {
                         string typeName = element.Component.GetType().FullName;
-                        sb.AppendLine(
+                        propertiesSb.AppendLine(
                             $"        public {typeName} {element.Name} => Facade.Components[{i}] as {typeName};");
                     }
                 }
             }
 
-            sb.AppendLine("    }");
-            sb.AppendLine("}");
-            File.WriteAllText(filePath, sb.ToString());
-        }
+            string propertiesCode = propertiesSb.ToString();
 
-        private static void WriteLogicFile(string filePath, string scriptName)
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("using UnityEngine;");
-            sb.AppendLine("using NFramework.Module.UIModule;");
-            sb.AppendLine("");
-            sb.AppendLine("namespace NFramework.Module.UIModule");
-            sb.AppendLine("{");
-            sb.AppendLine($"    public partial class {scriptName} : View");
-            sb.AppendLine("    {");
-            sb.AppendLine("        protected override void OnAwake()");
-            sb.AppendLine("        {");
-            sb.AppendLine("            base.OnAwake();");
-            sb.AppendLine("        }");
-            sb.AppendLine("    }");
-            sb.AppendLine("}");
-            File.WriteAllText(filePath, sb.ToString());
+            if (!File.Exists(filePath))
+            {
+                // 新建文件
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine("using UnityEngine;");
+                sb.AppendLine("using NFramework.Module.UIModule;");
+                sb.AppendLine("");
+                sb.AppendLine("namespace NFramework.Module.UIModule");
+                sb.AppendLine("{");
+                sb.AppendLine($"    public partial class {scriptName} : {baseClass}");
+                sb.AppendLine("    {");
+                sb.AppendLine(componentRegionStart);
+                sb.Append(propertiesCode);
+                sb.AppendLine(componentRegionEnd);
+                sb.AppendLine("");
+                sb.AppendLine("        protected override void OnAwake()");
+                sb.AppendLine("        {");
+                sb.AppendLine("            base.OnAwake();");
+                sb.AppendLine("        }");
+                sb.AppendLine("    }");
+                sb.AppendLine("}");
+                File.WriteAllText(filePath, sb.ToString());
+            }
+            else
+            {
+                // 更新现有文件
+                string content = File.ReadAllText(filePath);
+
+                // 1. 更新继承关系
+                // 简单的正则替换，假设格式是 "class ScriptName : BaseClass"
+                string patternInheritance = $@"class\s+{scriptName}\s*:\s*\w+";
+                string replacementInheritance = $"class {scriptName} : {baseClass}";
+
+                if (System.Text.RegularExpressions.Regex.IsMatch(content, patternInheritance))
+                {
+                    content = System.Text.RegularExpressions.Regex.Replace(content, patternInheritance,
+                        replacementInheritance);
+                }
+
+                // 2. 更新组件属性
+                string newBlock = componentRegionStart + "\n" + propertiesCode + componentRegionEnd;
+                string regionPattern = @"\s*#region UI Components \(Auto Generated\)[\s\S]*?#endregion";
+
+                if (System.Text.RegularExpressions.Regex.IsMatch(content, regionPattern))
+                {
+                    content = System.Text.RegularExpressions.Regex.Replace(content, regionPattern, "\n" + newBlock);
+                }
+                else
+                {
+                    // 没有Region，尝试插入到类定义开始处
+                    int classIndex = content.IndexOf($"class {scriptName}");
+                    if (classIndex != -1)
+                    {
+                        int braceIndex = content.IndexOf('{', classIndex);
+                        if (braceIndex != -1)
+                        {
+                            content = content.Insert(braceIndex + 1, "\n" + newBlock + "\n");
+                        }
+                    }
+                }
+
+                File.WriteAllText(filePath, content);
+            }
         }
 
         private static void SaveComponent(UIFacade facade)

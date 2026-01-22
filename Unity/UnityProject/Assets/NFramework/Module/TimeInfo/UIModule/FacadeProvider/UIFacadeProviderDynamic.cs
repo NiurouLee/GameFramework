@@ -1,63 +1,69 @@
 using Proto.Promises;
 using NFramework.Module.ResModule;
+using UnityEngine;
 
 namespace NFramework.Module.UIModule
 {
-    public interface IUIFacadeProviderDynamic
-    {
-        UIFacade Alloc<T>() where T : View;
-        UIFacade Alloc(string inViewID);
-        Promise<UIFacade>.Deferred AllocAsync<T>() where T : View;
-        Promise<UIFacade> AllocAsync(string inViewID);
-        void Destroy();
-        void Free(UIFacade inUIFacade);
-    }
-
     /// <summary>
     /// uiFacade 提供者
     /// </summary>
-    public class UIFacadeProviderDynamic : IUIFacadeProvider, IUIFacadeProviderDynamic
+    public class UIFacadeProviderDynamic : ViewComponent, IUIFacadeProvider
     {
         private IResLoader m_ResLoader;
 
-        public UIFacadeProviderDynamic(IResLoader inResLoader)
+        public override void Awake(View inView)
         {
-            m_ResLoader = inResLoader;
+            base.Awake(inView);
+            m_ResLoader = ViewUtils.CheckAndAdd<ViewResLoadComponent>(inView);
         }
 
         public UIFacade Alloc<T>() where T : View
         {
-            return null;
-        }
-
-        public Promise<UIFacade>.Deferred AllocAsync<T>() where T : View
-        {
-            return Promise<UIFacade>.NewDeferred();
+            var viewConfig = this.GetM<UIM>().GetViewConfig<T>();
+            var viewID = viewConfig.ID;
+            return this.Alloc(viewID);
         }
 
         public UIFacade Alloc(string inViewID)
         {
-            return null;
+            var viewConfig = this.GetM<UIM>().GetViewConfig(inViewID);
+            var assetId = viewConfig.AssetID;
+            var go = this.m_ResLoader.Load<GameObject>(assetId);
+            var goIns = Object.Instantiate(go);
+            return goIns.GetComponent<UIFacade>();
         }
 
-        public Promise<UIFacade> AllocAsync(string inViewID)
+        public Promise<UIFacade>.Deferred AllocAsync<T>() where T : View
         {
-            return Promise<UIFacade>.Resolved(null);
+            var viewConfig = this.GetM<UIM>().GetViewConfig<T>();
+            var viewId = viewConfig.ID;
+            var deferred = this.AllocAsync(viewId);
+            return deferred;
         }
 
-
-        public void Free(UIFacade inUIFacade)
+        public Promise<UIFacade>.Deferred AllocAsync(string inViewID)
         {
+            var viewConfig = this.GetM<UIM>().GetViewConfig(inViewID);
+            var assetId = viewConfig.AssetID;
+            var deferred = Promise<UIFacade>.NewDeferred();
+            this.InstantiateAsync(assetId, deferred);
+            return deferred;
+        }
+
+        private async void InstantiateAsync(string inAssetID, Promise<UIFacade>.Deferred inDeferred)
+        {
+            this.View.AddPromise(inDeferred);
+            var go = await this.m_ResLoader.LoadAsync<GameObject>(inAssetID);
+            var goIns = Object.Instantiate(go);
+            inDeferred.Resolve(goIns.GetComponent<UIFacade>());
         }
 
         public void Destroy()
         {
-            throw new System.NotImplementedException();
         }
 
-        Promise<UIFacade>.Deferred IUIFacadeProvider.AllocAsync(string inViewID)
+        public void Free(UIFacade inUIFacade)
         {
-            throw new System.NotImplementedException();
         }
     }
 }

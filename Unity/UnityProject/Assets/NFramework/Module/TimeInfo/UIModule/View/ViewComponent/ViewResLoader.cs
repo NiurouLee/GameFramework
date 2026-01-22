@@ -10,6 +10,12 @@ namespace NFramework.Module.UIModule
     {
         public ResLoadRecords ResLoadRecords { get; private set; }
 
+        public override void Awake(View inView)
+        {
+            base.Awake(inView);
+            this.ResLoadRecords = new ResLoadRecords();
+        }
+
         private string MappingAssetID(string inAssetID)
         {
             return this.GetM<UIM>().MappingAssetID(inAssetID);
@@ -32,14 +38,15 @@ namespace NFramework.Module.UIModule
             ResLoadRecords.Free(inObj);
         }
     }
+    
 
     public static class ViewResLoadComponentExtensions
     {
         public static T LoadRes<T>(this View inView, string inAssetID) where T : UnityEngine.Object
         {
-            if (UIUtils.GetUp<Container>(inView, out var container))
+            if (ViewUtils.GetContainer<Container>(inView, out var container))
             {
-                var loaderComponent = UIUtils.CheckAndAdd<ViewResLoadComponent>(container);
+                var loaderComponent = ViewUtils.CheckAndAdd<ViewResLoadComponent>(container);
                 return loaderComponent.Load<T>(inAssetID);
             }
 
@@ -48,9 +55,9 @@ namespace NFramework.Module.UIModule
 
         public static Promise<T> LoadResAsync<T>(this View inView, string inAssetID) where T : UnityEngine.Object
         {
-            if (UIUtils.GetUp<Container>(inView, out var container))
+            if (ViewUtils.GetContainer<Container>(inView, out var container))
             {
-                var component = UIUtils.CheckAndAdd<ViewResLoadComponent>(container);
+                var component = ViewUtils.CheckAndAdd<ViewResLoadComponent>(container);
                 return component.LoadAsync<T>(inAssetID);
             }
 
@@ -59,9 +66,9 @@ namespace NFramework.Module.UIModule
 
         public static void FreeRes<T>(this View inView, T inObj) where T : UnityEngine.Object
         {
-            if (UIUtils.GetUp<Container>(inView, out var container))
+            if (ViewUtils.GetContainer<Container>(inView, out var container))
             {
-                var component = UIUtils.CheckAndAdd<ViewResLoadComponent>(container);
+                var component = ViewUtils.CheckAndAdd<ViewResLoadComponent>(container);
                 component.Free(inObj);
             }
 

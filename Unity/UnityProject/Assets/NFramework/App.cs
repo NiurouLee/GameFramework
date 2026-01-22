@@ -15,9 +15,12 @@ public class APP : MonoBehaviour
 
         this.StartCoroutine(this.Test());
     }
+
     private IEnumerator Test()
     {
         yield return new WaitForSeconds(1);
-        NFROOT.I.GetModule<UIM>().OpenAsync<ExchangeWeekcard>();
+        var result = NFROOT.I.GetModule<UIM>().OpenAsync<ExchangeWeekcard>();
+        yield return result;
+        result.Forget();
     }
 }

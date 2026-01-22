@@ -6,6 +6,7 @@ namespace NFramework.Module.UIModule
     public class ViewPromiseComponent : ViewComponent
     {
         private PromiseRecords m_promiseRecords;
+
         public PromiseRecords PromiseRecords
         {
             get
@@ -15,6 +16,7 @@ namespace NFramework.Module.UIModule
                     m_promiseRecords = GetM<ObjectPoolM>().Alloc<PromiseRecords>();
                     m_promiseRecords.Awake();
                 }
+
                 return m_promiseRecords;
             }
         }
@@ -24,8 +26,9 @@ namespace NFramework.Module.UIModule
     {
         public static void AddPromise<T>(this View inView, T inPromise) where T : Proto.Promises.ICancelable
         {
-            var component = UIUtils.CheckAndAdd<ViewPromiseComponent>(inView);
+            var component = ViewUtils.CheckAndAdd<ViewPromiseComponent>(inView);
             component.PromiseRecords.TryAdd(inPromise);
         }
     }
 }
+

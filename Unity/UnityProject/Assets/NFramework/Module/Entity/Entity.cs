@@ -437,6 +437,13 @@ namespace NFramework.Module.EntityModule
             return (K)(object)component;
         }
 
+        public bool TryGetComponent<K>(out K outComponent)
+        {
+            var result = GetComponent<K>();
+            outComponent = result;
+            return result != null;
+        }
+
         public List<K> GetComponents<K>()
         {
             if (this.components == null)

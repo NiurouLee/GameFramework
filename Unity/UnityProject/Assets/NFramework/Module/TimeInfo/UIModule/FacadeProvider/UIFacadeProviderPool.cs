@@ -27,6 +27,7 @@ namespace NFramework.Module.UIModule
         {
             return null;
         }
+
         public void Destroy()
         {
         }
@@ -45,6 +46,5 @@ namespace NFramework.Module.UIModule
         {
             throw new System.NotImplementedException();
         }
-
     }
 }

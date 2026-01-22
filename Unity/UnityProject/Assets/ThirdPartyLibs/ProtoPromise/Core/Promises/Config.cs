@@ -1,4 +1,5 @@
 ﻿// define PROTO_PROMISE_DEBUG_ENABLE to enable debugging options in RELEASE mode. define PROTO_PROMISE_DEBUG_DISABLE to disable debugging options in DEBUG mode.
+
 #if PROTO_PROMISE_DEBUG_ENABLE || (!PROTO_PROMISE_DEBUG_DISABLE && DEBUG)
 #define PROMISE_DEBUG
 #else
@@ -26,10 +27,12 @@ namespace Proto.Promises
             /// Don't track any causality traces.
             /// </summary>
             None,
+
             /// <summary>
             /// Track causality only when Deferred.Reject is called.
             /// </summary>
             Rejections,
+
             /// <summary>
             /// Track causality when Deferred.Reject is called and every time a promise is created or a delegate is added to a promise (i.e. with .Then).
             /// <para/>
@@ -53,10 +56,8 @@ namespace Proto.Promises
             // Object pooling disabled in DEBUG mode to prevent thread race conditions when validating for circular awaits.
             public static bool ObjectPoolingEnabled
             {
-                [MethodImpl(Internal.InlineOption)]
-                get => false;
-                [MethodImpl(Internal.InlineOption)]
-                set { }
+                [MethodImpl(Internal.InlineOption)] get => false;
+                [MethodImpl(Internal.InlineOption)] set { }
             }
 #else
             public static bool ObjectPoolingEnabled
@@ -72,15 +73,14 @@ namespace Proto.Promises
             /// <summary>
             /// Set how causality is traced in DEBUG mode. Causality traces are readable from an UnhandledException's Stacktrace property.
             /// </summary>
-#if PROMISE_DEBUG
+#if PROMISE_DEBUG||UNITY_EDITOR
             public static TraceLevel DebugCausalityTracer
             {
-                [MethodImpl(Internal.InlineOption)]
-                get => s_debugCausalityTracer;
-                [MethodImpl(Internal.InlineOption)]
-                set => s_debugCausalityTracer = value;
+                [MethodImpl(Internal.InlineOption)] get => s_debugCausalityTracer;
+                [MethodImpl(Internal.InlineOption)] set => s_debugCausalityTracer = value;
             }
-            private static TraceLevel s_debugCausalityTracer = TraceLevel.Rejections;
+
+            private static TraceLevel s_debugCausalityTracer = TraceLevel.All;
 #else
             public static TraceLevel DebugCausalityTracer
             {
@@ -99,11 +99,10 @@ namespace Proto.Promises
             /// </remarks>
             public static Action<UnhandledException> UncaughtRejectionHandler
             {
-                [MethodImpl(Internal.InlineOption)]
-                get => s_uncaughtRejectionHandler;
-                [MethodImpl(Internal.InlineOption)]
-                set => s_uncaughtRejectionHandler = value;
+                [MethodImpl(Internal.InlineOption)] get => s_uncaughtRejectionHandler;
+                [MethodImpl(Internal.InlineOption)] set => s_uncaughtRejectionHandler = value;
             }
+
             private static Action<UnhandledException> s_uncaughtRejectionHandler;
 
             /// <summary>
@@ -118,11 +117,10 @@ namespace Proto.Promises
             /// </example>
             public static SynchronizationContext ForegroundContext
             {
-                [MethodImpl(Internal.InlineOption)]
-                get => s_foregroundContext;
-                [MethodImpl(Internal.InlineOption)]
-                set => s_foregroundContext = value;
+                [MethodImpl(Internal.InlineOption)] get => s_foregroundContext;
+                [MethodImpl(Internal.InlineOption)] set => s_foregroundContext = value;
             }
+
             private static SynchronizationContext s_foregroundContext;
 
             /// <summary>
@@ -130,11 +128,10 @@ namespace Proto.Promises
             /// </summary>
             public static SynchronizationContext BackgroundContext
             {
-                [MethodImpl(Internal.InlineOption)]
-                get => s_backgroundContext;
-                [MethodImpl(Internal.InlineOption)]
-                set => s_backgroundContext = value;
+                [MethodImpl(Internal.InlineOption)] get => s_backgroundContext;
+                [MethodImpl(Internal.InlineOption)] set => s_backgroundContext = value;
             }
+
             private static SynchronizationContext s_backgroundContext;
 
             /// <summary>
@@ -145,8 +142,7 @@ namespace Proto.Promises
             /// </remarks>
             public static bool AsyncFlowExecutionContextEnabled
             {
-                [MethodImpl(Internal.InlineOption)]
-                get => s_asyncFlowExecutionContextEnabled;
+                [MethodImpl(Internal.InlineOption)] get => s_asyncFlowExecutionContextEnabled;
                 [MethodImpl(Internal.InlineOption)]
                 set
                 {
@@ -154,23 +150,25 @@ namespace Proto.Promises
                     {
                         ThrowCannotDisableAsyncFlow();
                     }
+
                     s_asyncFlowExecutionContextEnabled = true;
                 }
             }
+
             // Internal so that tests can disable it directly.
             internal static bool s_asyncFlowExecutionContextEnabled;
 
             [MethodImpl(MethodImplOptions.NoInlining)]
             private static void ThrowCannotDisableAsyncFlow()
-                => throw new InvalidOperationException("Cannot disable AsyncFlowExecutionContext. It may only be enabled.");
+                => throw new InvalidOperationException(
+                    "Cannot disable AsyncFlowExecutionContext. It may only be enabled.");
 
             /// <summary>
             /// The default <see cref="TimerFactory"/> to use for time-based methods when one is not provided.
             /// </summary>
             public static TimerFactory DefaultTimerFactory
             {
-                [MethodImpl(Internal.InlineOption)]
-                get => s_defaultTimeProvider;
+                [MethodImpl(Internal.InlineOption)] get => s_defaultTimeProvider;
                 [MethodImpl(Internal.InlineOption)]
                 set
                 {
@@ -178,9 +176,11 @@ namespace Proto.Promises
                     {
                         ThrowNullTimerFactory();
                     }
+
                     s_defaultTimeProvider = value;
                 }
             }
+
             private static TimerFactory s_defaultTimeProvider = TimerFactory.System;
 
             [MethodImpl(MethodImplOptions.NoInlining)]

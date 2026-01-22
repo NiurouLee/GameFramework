@@ -15,7 +15,7 @@ public class UIFacadeInspector : OdinEditor
     private bool m_FoldUIElementsList = true;
     private bool m_FoldTools = true;
     private bool m_FoldViewConfig = false;
-    
+
     // 跟踪当前target的实例ID，用于检测prefab切换
     private int m_LastTargetInstanceID = -1;
 
@@ -29,9 +29,9 @@ public class UIFacadeInspector : OdinEditor
     protected override void OnDisable()
     {
         base.OnDisable();
-        
+
         if (m_UIFacade == null) return;
-        
+
         // 保存折叠状态
         SaveFoldoutStates();
 
@@ -43,7 +43,7 @@ public class UIFacadeInspector : OdinEditor
     {
         // 检测target是否变化（切换prefab时）
         if (target == null) return;
-        
+
         int currentInstanceID = target.GetInstanceID();
         if (currentInstanceID != m_LastTargetInstanceID)
         {
@@ -52,7 +52,7 @@ public class UIFacadeInspector : OdinEditor
             m_UIFacade = (UIFacade)target;
             Initialize();
         }
-        
+
         if (m_UIFacade == null) return;
 
         // 绘制标题
@@ -83,15 +83,15 @@ public class UIFacadeInspector : OdinEditor
         // 加载折叠状态
         LoadFoldoutStates();
 
+        // 确保脚本名称和ID是最新的
+        GenerateScriptNameAndID();
+
         // 初始化 ViewConfig
         m_ViewConfig = UIConfigUtilsEditor.GetViewConfig(m_UIFacade);
         InitializeViewConfig();
-        
+
         // 从JSON文件加载配置（如果存在）
         LoadViewConfigFromJson();
-        
-        // 确保脚本名称和ID是最新的
-        GenerateScriptNameAndID();
     }
 
     /// <summary>
@@ -143,14 +143,14 @@ public class UIFacadeInspector : OdinEditor
             m_ViewConfig.SetWindow(false);
         }
     }
-    
+
     /// <summary>
     /// 更新ViewConfig的ID（使用脚本名称）
     /// </summary>
     private void UpdateViewConfigID()
     {
         if (m_ViewConfig == null) return;
-        
+
         if (!string.IsNullOrEmpty(m_UIFacade.m_ScriptName))
         {
             if (m_ViewConfig.ID != m_UIFacade.m_ScriptName)
@@ -187,7 +187,7 @@ public class UIFacadeInspector : OdinEditor
     private void LoadFoldoutStates()
     {
         if (m_UIFacade == null) return;
-        
+
         string foldKey = $"UIFacadeFolds_{m_UIFacade.GetInstanceID()}";
         m_FoldBasicInfo = EditorPrefs.GetBool(foldKey + "_Basic", true);
         m_FoldUIElementsList = EditorPrefs.GetBool(foldKey + "_UIElements", true);
@@ -201,7 +201,7 @@ public class UIFacadeInspector : OdinEditor
     private void SaveFoldoutStates()
     {
         if (m_UIFacade == null) return;
-        
+
         string foldKey = $"UIFacadeFolds_{m_UIFacade.GetInstanceID()}";
         EditorPrefs.SetBool(foldKey + "_Basic", m_FoldBasicInfo);
         EditorPrefs.SetBool(foldKey + "_UIElements", m_FoldUIElementsList);
@@ -221,7 +221,7 @@ public class UIFacadeInspector : OdinEditor
         public string ScriptName = "";
         public string ID = "";
     }
-    
+
     public static EditorData GetEditorData(UIFacade facade)
     {
         if (facade == null) return null;

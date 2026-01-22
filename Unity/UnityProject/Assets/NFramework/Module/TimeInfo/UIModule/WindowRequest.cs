@@ -11,8 +11,9 @@ namespace NFramework.Module.UIModule
     [Flags]
     public enum WindowRequestStage : Byte
     {
-        Construct = 0,
-        Cache = 1,
+        None = 0,
+        Construct = 1,
+        Cache = 2,
         FacadeLoading = 4,
         FacadeLoaded = 5,
         Layer = 6,
@@ -47,20 +48,20 @@ namespace NFramework.Module.UIModule
 
             this.Config = inConfig;
             this.Name = inConfig.ID;
-            SetStage(WindowRequestStage.Construct);
         }
 
         public void SetStage(WindowRequestStage inStage)
         {
             if (inStage == this.Stage)
             {
-                NFROOT.Instance.GetModule<LoggerM>()?.ErrStack($"WindowRequest Err:Stage Repeat,WindowName：{this.Name}");
-
+                NFROOT.Instance.GetModule<LoggerM>()
+                    ?.ErrStack($"WindowRequest Err:Stage Repeat,WindowName：{this.Name}");
             }
 
             if (inStage < this.Stage)
             {
-                NFROOT.Instance.GetModule<LoggerM>()?.ErrStack($"WindowRequest Err:Stage Inverse,WindowName：{this.Name}");
+                NFROOT.Instance.GetModule<LoggerM>()
+                    ?.ErrStack($"WindowRequest Err:Stage Inverse,WindowName：{this.Name}");
             }
 
             this.Stage = inStage;
@@ -70,12 +71,14 @@ namespace NFramework.Module.UIModule
         {
             if (inWindow == null)
             {
-                NFROOT.Instance.GetModule<LoggerM>()?.ErrStack($"WindowRequest set Window Err,inWindow is null:WindowName{this.Name}");
+                NFROOT.Instance.GetModule<LoggerM>()
+                    ?.ErrStack($"WindowRequest set Window Err,inWindow is null:WindowName{this.Name}");
             }
 
             if (this.CacheWindowObj != null)
             {
-                NFROOT.Instance.GetModule<LoggerM>()?.ErrStack($"WindowRequest set Window Err,Window dont is null:WindowName{this.Name}");
+                NFROOT.Instance.GetModule<LoggerM>()
+                    ?.ErrStack($"WindowRequest set Window Err,Window dont is null:WindowName{this.Name}");
             }
 
             this.CacheWindowObj = inWindow;
@@ -86,12 +89,14 @@ namespace NFramework.Module.UIModule
         {
             if (inFacade == null)
             {
-                NFROOT.Instance.GetModule<LoggerM>()?.ErrStack($"WindowRequest set Facade Err,inFacade is null:WindowName{this.Name}");
+                NFROOT.Instance.GetModule<LoggerM>()
+                    ?.ErrStack($"WindowRequest set Facade Err,inFacade is null:WindowName{this.Name}");
             }
 
             if (this.CacheFacadeObj != null)
             {
-                NFROOT.Instance.GetModule<LoggerM>()?.ErrStack($"WindowRequest set Facade Err,Facade dont is null:WindowName{this.Name}");
+                NFROOT.Instance.GetModule<LoggerM>()
+                    ?.ErrStack($"WindowRequest set Facade Err,Facade dont is null:WindowName{this.Name}");
             }
 
             this.CacheFacadeObj = inFacade;
@@ -102,12 +107,16 @@ namespace NFramework.Module.UIModule
         {
             if (inViewData == null)
             {
-                NFROOT.Instance.GetModule<LoggerM>()?.ErrStack($"WindowRequest set ViewData Err,inViewData is null:WindowName{this.Name}");
+                NFROOT.Instance.GetModule<LoggerM>()
+                    ?.ErrStack($"WindowRequest set ViewData Err,inViewData is null:WindowName{this.Name}");
             }
+
             if (this.CacheViewDataObj != null)
             {
-                NFROOT.Instance.GetModule<LoggerM>()?.ErrStack($"WindowRequest set ViewData Err,ViewData dont is null:WindowName{this.Name}");
+                NFROOT.Instance.GetModule<LoggerM>()
+                    ?.ErrStack($"WindowRequest set ViewData Err,ViewData dont is null:WindowName{this.Name}");
             }
+
             this.CacheViewDataObj = inViewData;
         }
 
@@ -115,12 +124,16 @@ namespace NFramework.Module.UIModule
         {
             if (inProvider == null)
             {
-                NFROOT.Instance.GetModule<LoggerM>()?.ErrStack($"WindowRequest set Provider Err,inProvider is null:WindowName{this.Name}");
+                NFROOT.Instance.GetModule<LoggerM>()
+                    ?.ErrStack($"WindowRequest set Provider Err,inProvider is null:WindowName{this.Name}");
             }
+
             if (this.CacheProviderObj != null)
             {
-                NFROOT.Instance.GetModule<LoggerM>()?.ErrStack($"WindowRequest set Provider Err,Provider dont is null:WindowName{this.Name}");
+                NFROOT.Instance.GetModule<LoggerM>()
+                    ?.ErrStack($"WindowRequest set Provider Err,Provider dont is null:WindowName{this.Name}");
             }
+
             this.CacheProviderObj = inProvider;
         }
 
@@ -138,7 +151,6 @@ namespace NFramework.Module.UIModule
 
         public virtual void SetupViewData()
         {
-
         }
 
 
@@ -196,14 +208,16 @@ namespace NFramework.Module.UIModule
 
     public class WindowRequestByData<TD> : WindowRequest where TD : class
     {
-
         public TD ViewData => this.CacheViewDataObj as TD;
+
         public WindowRequestByData(ViewConfig inConfig) : base(inConfig)
         {
         }
+
         public override void SetupViewData()
         {
-            if (this.CacheViewDataObj != null && this.CacheWindowObj != null && this.CacheWindowObj is IViewSetData<TD> viewSetData)
+            if (this.CacheViewDataObj != null && this.CacheWindowObj != null &&
+                this.CacheWindowObj is IViewSetData<TD> viewSetData)
             {
                 viewSetData.SetData(this.CacheViewDataObj as TD);
             }
@@ -228,13 +242,15 @@ namespace NFramework.Module.UIModule
     {
         public TW Window => base.CacheWindowObj as TW;
         public TD ViewData => this.CacheViewDataObj as TD;
+
         public WindowRequest(ViewConfig inConfig) : base(inConfig)
         {
         }
 
         public override void SetupViewData()
         {
-            if (this.CacheViewDataObj != null && this.CacheWindowObj != null && this.CacheWindowObj is IViewSetData<TD> viewSetData)
+            if (this.CacheViewDataObj != null && this.CacheWindowObj != null &&
+                this.CacheWindowObj is IViewSetData<TD> viewSetData)
             {
                 viewSetData.SetData(this.CacheViewDataObj as TD);
             }
@@ -258,6 +274,7 @@ namespace NFramework.Module.UIModule
     public class WindowRequestByWindow<TW> : WindowRequest where TW : Window
     {
         public TW Window => base.CacheWindowObj as TW;
+
         public WindowRequestByWindow(ViewConfig inConfig) : base(inConfig)
         {
         }
@@ -275,5 +292,4 @@ namespace NFramework.Module.UIModule
             inWindow.Awake();
         }
     }
-
 }

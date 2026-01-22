@@ -6,6 +6,7 @@ namespace NFramework.Module.UIModule
     public class EventRecordsComponent : ViewComponent
     {
         private EventRecords m_viewEventRecords;
+
         public EventRecords Event
         {
             get
@@ -16,6 +17,7 @@ namespace NFramework.Module.UIModule
                     m_viewEventRecords.Awake();
                     m_viewEventRecords.SetSchedule(NFROOT.Instance.GetModule<EventM>().D);
                 }
+
                 return m_viewEventRecords;
             }
         }
@@ -35,37 +37,38 @@ namespace NFramework.Module.UIModule
     {
         public static void Subscribe<T>(this View inView, RefAction<T> callback) where T : IEvent
         {
-            var component = UIUtils.CheckAndAdd<EventRecordsComponent>(inView);
+            var component = ViewUtils.CheckAndAdd<EventRecordsComponent>(inView);
             component.Event.Subscribe<T>(callback);
         }
 
         public static void Subscribe<T>(this View inView, RefAction<T> callback, RefFunc<T> condition) where T : IEvent
         {
-            var component = UIUtils.CheckAndAdd<EventRecordsComponent>(inView);
+            var component = ViewUtils.CheckAndAdd<EventRecordsComponent>(inView);
             component.Event.Subscribe<T>(callback, condition);
         }
 
         public static void Subscribe<T>(this View inView, RefAction<T> callback, string channel) where T : IEvent
         {
-            var component = UIUtils.CheckAndAdd<EventRecordsComponent>(inView);
+            var component = ViewUtils.CheckAndAdd<EventRecordsComponent>(inView);
             component.Event.Subscribe<T>(callback, channel);
         }
 
         public static void UnSubscribe<T>(this View inView, RefAction<T> callback) where T : IEvent
         {
-            var component = UIUtils.CheckAndAdd<EventRecordsComponent>(inView);
+            var component = ViewUtils.CheckAndAdd<EventRecordsComponent>(inView);
             component.Event.UnSubscribe<T>(callback);
         }
 
-        public static void UnSubscribe<T>(this View inView, RefAction<T> callback, RefFunc<T> condition) where T : IEvent
+        public static void UnSubscribe<T>(this View inView, RefAction<T> callback, RefFunc<T> condition)
+            where T : IEvent
         {
-            var component = UIUtils.CheckAndAdd<EventRecordsComponent>(inView);
+            var component = ViewUtils.CheckAndAdd<EventRecordsComponent>(inView);
             component.Event.UnSubscribe<T>(callback, condition);
         }
 
         public static void UnSubscribe<T>(this View inView, RefAction<T> callback, string channel) where T : IEvent
         {
-            var component = UIUtils.CheckAndAdd<EventRecordsComponent>(inView);
+            var component = ViewUtils.CheckAndAdd<EventRecordsComponent>(inView);
             component.Event.UnSubscribe<T>(callback, channel);
         }
     }

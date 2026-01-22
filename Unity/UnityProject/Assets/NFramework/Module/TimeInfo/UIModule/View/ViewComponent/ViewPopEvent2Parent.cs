@@ -24,7 +24,7 @@ namespace NFramework.Module.UIModule
             }
         }
 
-        public bool RegisterSubEvent<T>(UI2ParentEvent<T> inHandle) where T : IView2ParentEvent
+        public bool RegisterSubEvent<T>(View2ParentEvent<T> inHandle) where T : IView2ParentEvent
         {
             var eventType = typeof(T);
             if (Delegates.TryGetValue(eventType, out var @delegate))
@@ -48,6 +48,7 @@ namespace NFramework.Module.UIModule
                     component._OnChildPopEvent(ref inEvent);
                     return;
                 }
+
                 parent = parent.Parent;
             }
         }
@@ -62,7 +63,7 @@ namespace NFramework.Module.UIModule
             {
                 var eventType = typeof(T);
                 if (this.Delegates.TryGetValue(eventType, out var @delegate) &&
-                    @delegate is UI2ParentEvent<T> func)
+                    @delegate is View2ParentEvent<T> func)
                 {
                     if (func.Invoke(ref inEvent))
                     {
@@ -71,6 +72,7 @@ namespace NFramework.Module.UIModule
                 }
             }
         }
+
         public override void OnDestroy()
         {
             if (m_ViewDelegates != null)
@@ -80,18 +82,20 @@ namespace NFramework.Module.UIModule
                 m_ViewDelegates = null;
             }
         }
-
     }
+
     public static class ViewPopEvent2ParentComponentExtensions
     {
-        public static bool RegisterSubEvent<T>(this View inView, UI2ParentEvent<T> inHandle) where T : IView2ParentEvent
+        public static bool RegisterSubEvent<T>(this View inView, View2ParentEvent<T> inHandle)
+            where T : IView2ParentEvent
         {
-            var component = UIUtils.CheckAndAdd<ViewPopEvent2ParentComponent>(inView);
+            var component = ViewUtils.CheckAndAdd<ViewPopEvent2ParentComponent>(inView);
             return component.RegisterSubEvent(inHandle);
         }
+
         public static void PopEvent2Parent<T>(this View inView, ref T inEvent) where T : IView2ParentEvent
         {
-            var component = UIUtils.CheckAndAdd<ViewPopEvent2ParentComponent>(inView);
+            var component = ViewUtils.CheckAndAdd<ViewPopEvent2ParentComponent>(inView);
             component.PopEvent2Parent(ref inEvent);
         }
     }

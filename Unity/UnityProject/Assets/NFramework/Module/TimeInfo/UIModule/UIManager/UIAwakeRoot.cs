@@ -55,15 +55,15 @@ namespace NFramework.Module.UIModule
         }
 
 
-        public void __WindowSetUpLayer(ViewConfig inViewConfig, Window inWindow)
+        public void __WindowSetUpLayer(ViewConfig inViewConfig, Window inWindow,UIFacade inFacade)
         {
             if (inViewConfig.IsFixedLayer)
             {
-                this.fixedLayer.PushWindow(inWindow, inViewConfig);
+                this.fixedLayer.PushWindow(inWindow, inViewConfig,inFacade);
             }
             else
             {
-                this.stackLayer.PushWindow(inWindow, inViewConfig);
+                this.stackLayer.PushWindow(inWindow, inViewConfig,inFacade);
             }
         }
 

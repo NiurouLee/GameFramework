@@ -9,7 +9,6 @@ namespace NFramework.Module.UIModule
         public static short OneUiSortOder = 50;
         private GameObject go;
         public GameObject Go => go;
-        public int BaseOrder { get; private set; }
         protected List<Window> stack;
         protected Dictionary<string, Window> windowMap;
         protected UIM UIM;
@@ -33,7 +32,7 @@ namespace NFramework.Module.UIModule
             return false;
         }
 
-        public abstract void PushWindow(Window inWindow, ViewConfig inViewConfig);
+        public abstract void PushWindow(Window inWindow, ViewConfig inViewConfig, UIFacade inFacade);
         public abstract void PopWindow(ViewConfig inViewConfig);
     }
 
@@ -46,11 +45,12 @@ namespace NFramework.Module.UIModule
             orders = new List<int>(1000);
         }
 
-        public override void PushWindow(Window inWindow, ViewConfig inViewConfig)
+        public override void PushWindow(Window inWindow, ViewConfig inViewConfig, UIFacade inFacade)
         {
             this.stack.Add(inWindow);
             this.windowMap.Add(inViewConfig.ID, inWindow);
-            var canvas = inWindow.RectTransform.GetOrAddComponent<Canvas>();
+            var canvas = inFacade.GetOrAddComponent<Canvas>();
+            inFacade.transform.SetParent(this.Go.transform);
             this.orders.Sort();
             var currentMax = this.orders[^1];
             canvas.sortingOrder = currentMax + OneUiSortOder;
@@ -76,11 +76,12 @@ namespace NFramework.Module.UIModule
         {
         }
 
-        public override void PushWindow(Window inWindow, ViewConfig inViewConfig)
+        public override void PushWindow(Window inWindow, ViewConfig inViewConfig, UIFacade inFacade)
         {
             stack.Add(inWindow);
             this.windowMap.Add(inViewConfig.ID, inWindow);
-            var canvas = inWindow.RectTransform.GetOrAddComponent<Canvas>();
+            inFacade.transform.SetParent(this.Go.transform);
+            var canvas = inFacade.GetOrAddComponent<Canvas>();
             canvas.sortingOrder = inViewConfig.Layer;
         }
 

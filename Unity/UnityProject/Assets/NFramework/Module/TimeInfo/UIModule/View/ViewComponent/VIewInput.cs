@@ -2,20 +2,16 @@ using System;
 
 namespace NFramework.Module.UIModule
 {
-    public class ViewInput : ViewComponent
+    public class ViewInputComponent : ViewComponent
     {
-
-
     }
 
     public static class ViewInputComponentExtension
     {
-        public static void BindInput<T>(this View inView, T inComponent, Action<T> inCallback) where T : IUIInputComponent, IUIInputTrigger<T>
+        public static void BindInput<T>(this View inView, T inComponent, Action<T> inCallback)
+            where T : IUIInputComponent, IUIInputTrigger<T>
         {
-            var component = UIUtils.CheckAndAdd<ViewInput>(inView);
-            // component.BindInput<T>(inCallback);
+            var component = ViewUtils.CheckAndAdd<ViewInputComponent>(inView);
         }
-
-
     }
 }

@@ -1,0 +1,8 @@
+UnobservedPromiseException: A Promise's resources were garbage collected without it being awaited. You must await, return, or forget each promise. Proto.Promises.Internal+PromiseRefBase+DeferredPromise`1[Proto.Promises.Internal+VoidResult]
+Rethrow as UnhandledExceptionInternal: An exception was not handled. -- This exception's Stacktrace contains the causality trace of all async callbacks that ran.
+NFramework.Module.UIModule.UIM._OpenAsync[TW] (NFramework.Module.UIModule.ViewConfig inViewConfig) (at Assets/NFramework/Module/TimeInfo/UIModule/UIManager/UIOpenPrivate.cs:104)
+NFramework.Module.UIModule.UIM.OpenAsync[T] () (at Assets/NFramework/Module/TimeInfo/UIModule/UIManager/UIOpenPublic.cs:11)
+APP+<Test>d__1.MoveNext () (at Assets/NFramework/App.cs:21)
+UnityEngine.SetupCoroutine.InvokeMoveNext (System.Collections.IEnumerator enumerator, System.IntPtr returnValueAddress) (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/Coroutines.cs:17)
+UnityEngine.Debug:LogException(Exception)
+Proto.Promises.PromiseBehaviour:Update() (at Assets/ThirdPartyLibs/ProtoPromise/UnityHelpers/2018.3/Internal/PromiseBehaviour.cs:187)
