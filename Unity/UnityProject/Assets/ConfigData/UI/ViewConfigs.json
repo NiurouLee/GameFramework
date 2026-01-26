@@ -2,16 +2,16 @@
     "Configs": [
         {
             "ID": "ExchangeGiftpack",
-            "AssetID": "DemoWindow",
+            "AssetID": "WindowGiftPack",
             "Layer": 0,
-            "IsWindow": false,
+            "IsWindow": true,
             "IsFixedLayer": false
         },
         {
             "ID": "ExchangeWeekcard2",
-            "AssetID": "DemoWindow2 1",
+            "AssetID": "WindowWeekCard2",
             "Layer": 0,
-            "IsWindow": false,
+            "IsWindow": true,
             "IsFixedLayer": false
         },
         {
@@ -19,6 +19,20 @@
             "AssetID": "DemoWindow2",
             "Layer": 0,
             "IsWindow": true,
+            "IsFixedLayer": false
+        },
+        {
+            "ID": "CommonPlayeavatori",
+            "AssetID": "PlayerAvatorItem",
+            "Layer": 0,
+            "IsWindow": false,
+            "IsFixedLayer": false
+        },
+        {
+            "ID": "CommonPlayeavator",
+            "AssetID": "PlayerAvatorItem",
+            "Layer": 0,
+            "IsWindow": false,
             "IsFixedLayer": false
         }
     ]

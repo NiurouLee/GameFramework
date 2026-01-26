@@ -1,10 +1,11 @@
-using NFramework.Core.Live;
 using UnityEngine;
-using NFramework.Core.Collections;
 
 namespace NFramework.Module.UIModule
 {
-    public partial class View : UIObject, IAwakeSystem, IDestroySystem
+    /// <summary>
+    /// View禁止使用Eneity的声明周期
+    /// </summary>
+    public partial class View : UIObject
     {
         public RectTransform RectTransform { get; private set; }
         public void Awake()

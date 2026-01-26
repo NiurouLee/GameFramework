@@ -1,8 +1,6 @@
-using System;
 using NFramework;
 using NFramework.Module;
 using NFramework.Module.UIModule;
-using NFramework.Test;
 using UnityEngine;
 using System.Collections;
 

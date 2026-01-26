@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3298106790607545586}
   - component: {fileID: 8966938584986441891}
   m_Layer: 0
-  m_Name: DemoWindow2
+  m_Name: WindowWeekCard2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50,13 +50,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88a87ee5f71ed6b4cb6c96f261971b18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: exchange.week_card
+  ID: exchange.week_card2
   Components: []
   m_ModuleName: Exchange
   m_SubModuleName: 
-  m_UIName: WeekCard
+  m_UIName: WeekCard2
   m_EnableSubModule: 0
-  m_ScriptName: ExchangeWeekcard
+  m_ScriptName: ExchangeWeekcard2
 --- !u!1 &2104724411446943283
 GameObject:
   m_ObjectHideFlags: 0

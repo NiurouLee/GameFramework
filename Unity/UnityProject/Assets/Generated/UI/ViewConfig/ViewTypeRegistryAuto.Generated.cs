@@ -17,6 +17,8 @@ namespace NFramework.Module.UIModule
             { typeof(ExchangeGiftpack), "ExchangeGiftpack" },
             { typeof(ExchangeWeekcard2), "ExchangeWeekcard2" },
             { typeof(ExchangeWeekcard), "ExchangeWeekcard" },
+            { typeof(CommonPlayeavatori), "CommonPlayeavatori" },
+            { typeof(CommonPlayeavator), "CommonPlayeavator" },
         };
     }
 }

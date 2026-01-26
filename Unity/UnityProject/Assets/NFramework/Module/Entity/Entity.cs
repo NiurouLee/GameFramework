@@ -488,7 +488,7 @@ namespace NFramework.Module.EntityModule
             }
             else
             {
-                component = Activator.CreateInstance(type) as Entity;
+                component = CreateOnly(type);
             }
 
             component.IsFromPool = isFromPool;
@@ -505,7 +505,7 @@ namespace NFramework.Module.EntityModule
             }
             else
             {
-                component = new T();
+                component = Entity.CreateOnly<T>();
             }
 
             component.IsFromPool = isFromPool;
@@ -518,12 +518,26 @@ namespace NFramework.Module.EntityModule
 
         public static T CreateRoot<T>() where T : Entity, new()
         {
-            Entity component;
-            component = new T();
+            var component = CreateOnly<T>();
             component.IsFromPool = false;
             component.IsRoot = true;
             component.Id = long.MaxValue;
             return component as T;
+        }
+
+        /// <summary>
+        /// 所有的创建都走这里，方便打点测试，这个函数不走Eneity的声明周期。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static T CreateOnly<T>() where T : Entity, new()
+        {
+            return new T();
+        }
+
+        public static Entity CreateOnly(Type type)
+        {
+            return Activator.CreateInstance(type) as Entity;
         }
 
 

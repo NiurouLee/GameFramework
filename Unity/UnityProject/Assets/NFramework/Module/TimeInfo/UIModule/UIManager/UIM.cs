@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using NFramework.Module.EntityModule;
 using Proto.Promises;
 
 namespace NFramework.Module.UIModule
@@ -79,7 +80,7 @@ namespace NFramework.Module.UIModule
 
         public T CreateView<T>() where T : View, new()
         {
-            return new T();
+            return Entity.CreateOnly<T>();
         }
 
         public View CreateView(ViewConfig inViewConfig)
@@ -90,7 +91,7 @@ namespace NFramework.Module.UIModule
                 throw new Exception($"ViewConfig {inViewConfig.ID} not found");
             }
 
-            return Activator.CreateInstance(type) as View;
+            return Entity.CreateOnly(type) as View;
         }
 
         public string MappingAssetID(string inAssetID)
