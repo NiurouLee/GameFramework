@@ -1,12 +1,11 @@
-using Sirenix.OdinInspector;
+using NFramework.Module.EntityModule;
 using UnityEngine;
 
 namespace Logic
 {
-    public sealed class CombatEntity
+    public sealed class CombatEntity : Entity
     {
         public GameObject HeroObject { get; set; }
         public Transform ModelTrans { get; set; }
-        public healthPointComponent CurrentHealth{get; private set;}
     }
 }
