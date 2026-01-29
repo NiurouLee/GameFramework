@@ -32,7 +32,7 @@ namespace NFramework.Module.Combat
     }
 
     [CreateAssetMenu(fileName = "技能配置", menuName = "技能|状态/技能配置")]
-    public class SkillConfigObject : SerializedScriptableObject
+    public class AbilityConfigObject : SerializedScriptableObject
     {
         [LabelText("技能Id")]
         public int Id;
@@ -130,7 +130,7 @@ namespace NFramework.Module.Combat
             {
                 string guid = UnityEditor.Selection.assetGUIDs[0];
                 string assetPath = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
-                var config = UnityEditor.AssetDatabase.LoadAssetAtPath<SkillConfigObject>(assetPath);
+                var config = UnityEditor.AssetDatabase.LoadAssetAtPath<AbilityConfigObject>(assetPath);
                 if (config != this)
                 {
                     return;

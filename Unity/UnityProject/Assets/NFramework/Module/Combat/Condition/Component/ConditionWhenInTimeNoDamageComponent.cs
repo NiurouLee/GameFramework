@@ -12,13 +12,13 @@ namespace NFramework.Module.Combat
         public void Awake(long a)
         {
             time = a;
-            parent.GetParent<Combat>().ListenActionPoint(ActionPointType.PostReceiveDamage, WhenReceiveDamage);
+            parent.GetParent<CombatEntity>().ListenActionPoint(ActionPointType.PostReceiveDamage, WhenReceiveDamage);
         }
 
         public void Destroy()
         {
             NFROOT.Instance.GetModule<TimerM>().RemoveTimer(noDamageTime);
-            parent.GetParent<Combat>().UnListenActionPoint(ActionPointType.PostReceiveDamage, WhenReceiveDamage);
+            parent.GetParent<CombatEntity>().UnListenActionPoint(ActionPointType.PostReceiveDamage, WhenReceiveDamage);
         }
 
         public void StartListen(Action whenNoDamageInTimeCallback)

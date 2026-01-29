@@ -10,7 +10,7 @@ namespace NFramework.Module.Combat
     {
         public CureEffect CureEffect => (CureEffect)GetParent<AbilityEffect>().effect;
         public string CureValueFormula => CureEffect.CureValueFormula;
-        public Combat Owner => GetParent<AbilityEffect>().Owner;
+        public CombatEntity Owner => GetParent<AbilityEffect>().Owner;
         public int GetCureValue()
         {
             return Mathf.CeilToInt(ExpressionUtil.Evalue<float>(CureValueFormula, GetParent<AbilityEffect>().GetParamsDict()));

@@ -3,11 +3,18 @@ using UnityEngine;
 
 namespace NFramework.Module.Combat
 {
+    /// <summary>
+    /// 主动技能预览组建，预览功能不是所有游戏都有，也可以动态开启，关闭，类似于英雄联盟的非智能施法的预览。
+    /// </summary>
     public class SpellSkillComponent : Entity
     {
-        public Combat Combat => GetParent<Combat>();
+        public CombatEntity Combat => GetParent<CombatEntity>();
 
-        public void Spell(SkillAbility spellSkill)
+        /// <summary>
+        /// 预览技能
+        /// </summary>
+        /// <param name="spellSkill"></param>
+        public void Spell(Ability spellSkill)
         {
             if (Combat.SpellingSkillExecution != null)
             {
@@ -20,7 +27,7 @@ namespace NFramework.Module.Combat
             }
         }
 
-        public void SpellWithTarget(SkillAbility spellSkill, Combat target)
+        public void SpellWithTarget(Ability spellSkill, CombatEntity target)
         {
             if (Combat.SpellingSkillExecution != null)
             {
@@ -36,7 +43,7 @@ namespace NFramework.Module.Combat
             }
         }
 
-        public void SpellWithPoint(SkillAbility spellSKill, Vector3 point)
+        public void SpellWithPoint(Ability spellSKill, Vector3 point)
         {
             if (Combat.SpellingSkillExecution != null) return;
             spellSKill.Owner.TransformComponent.Rotation = Quaternion.LookRotation(point - spellSKill.Owner.TransformComponent.Position);

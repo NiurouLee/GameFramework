@@ -22,7 +22,7 @@ namespace NFramework.Module.Combat
         {
             currentType = inType;
             bool isLoop = currentType == AnimationType.Idle || currentType == AnimationType.Walk ? true : false;
-            var syncAnimation = new SyncAnimation(GetParent<Combat>().Id, inType, speed, isLoop);
+            var syncAnimation = new SyncAnimation(GetParent<CombatEntity>().Id, inType, speed, isLoop);
             NFROOT.Instance.GetModule<EventM>().D.Publish(ref syncAnimation);
         }
 

@@ -51,7 +51,7 @@ namespace NFramework.Module.Combat
         }
 
 
-        public void TryAssignAllEffectToTarget(Combat target)
+        public void TryAssignAllEffectToTarget(CombatEntity target)
         {
             if (AbilityEffectList.Count > 0)
             {
@@ -62,7 +62,7 @@ namespace NFramework.Module.Combat
             }
         }
 
-        public void TryAssignAllEffectToTarget(Combat target, IActionExecution actionExecution)
+        public void TryAssignAllEffectToTarget(CombatEntity target, IActionExecution actionExecution)
         {
             if (AbilityEffectList.Count > 0)
             {
@@ -73,7 +73,7 @@ namespace NFramework.Module.Combat
             }
         }
 
-        public void TryAssignAllEffectToTarget(Combat target, IAbilityExecution abilityExecution)
+        public void TryAssignAllEffectToTarget(CombatEntity target, IAbilityExecution abilityExecution)
         {
             if (AbilityEffectList.Count > 0)
             {
@@ -84,7 +84,7 @@ namespace NFramework.Module.Combat
             }
         }
 
-        public void TryAssignAllEffectToTarget(Combat target, AbilityItem abilityItem)
+        public void TryAssignAllEffectToTarget(CombatEntity target, AbilityItem abilityItem)
         {
             if (AbilityEffectList.Count > 0)
             {
@@ -95,7 +95,7 @@ namespace NFramework.Module.Combat
             }
         }
 
-        public void TryAssignEffectToTargetByIndex(Combat target, int index)
+        public void TryAssignEffectToTargetByIndex(CombatEntity target, int index)
         {
             AbilityEffectList[index].TryAssignEffectToTarget(target);
         }

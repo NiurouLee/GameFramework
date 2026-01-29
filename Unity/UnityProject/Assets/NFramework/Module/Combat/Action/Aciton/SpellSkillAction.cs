@@ -4,10 +4,18 @@ using UnityEngine;
 
 namespace NFramework.Module.Combat
 {
+    /// <summary>
+    /// 预览释放技能组件
+    /// </summary>
     public class SpellSkillActionAbility : Entity, IActionAbility
     {
-        public Combat Owner => GetParent<Combat>();
+        public CombatEntity Owner => GetParent<CombatEntity>();
 
+        /// <summary>
+        /// 构造一个预览Action
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns></returns>
         public bool TryMakeAction(out SpellSkillAction action)
         {
             if (!Enable)
@@ -24,28 +32,37 @@ namespace NFramework.Module.Combat
         }
     }
 
+    /// <summary>
+    /// 预览行为
+    /// </summary>
     public class SpellSkillAction : Entity, IActionExecution, IUpdateSystem
     {
-        public SkillAbility SkillAbility { get; set; }
+        public Ability SkillAbility { get; set; }
         public SkillExecution SkillExecution { get; set; }
-        public Combat InputTarget { get; set; }
+        public CombatEntity InputTarget { get; set; }
         public Vector3 InputPoint;
         public float InputDirection;
         public Entity ActionAbility { get; set; }
         public EffectAssignAction SourceAssignAction { get; set; }
-        public Combat Creator { get; set; }
-        public Combat Target { get; set; }
+        public CombatEntity Creator { get; set; }
+        public CombatEntity Target { get; set; }
 
         public void FinishAction()
         {
             Dispose();
         }
 
+        /// <summary>
+        /// 预览前处理
+        /// </summary>
         private void PreProcess()
         {
             Creator.TriggerActionPoint(ActionPointType.PreSpell, this);
         }
-
+        /// <summary>
+        /// 开始预览
+        /// </summary>
+        /// <param name="actionOccupy"></param>
         public void SpellSkill(bool actionOccupy = true)
         {
             PreProcess();

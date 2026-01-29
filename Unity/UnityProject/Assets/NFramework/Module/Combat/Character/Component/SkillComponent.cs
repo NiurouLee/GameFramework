@@ -7,17 +7,17 @@ namespace NFramework.Module.Combat
 {
     public class SkillComponent : Entity
     {
-        public Combat Combat => GetParent<Combat>();
-        public Dictionary<int, SkillAbility> skillDict = new Dictionary<int, SkillAbility>();
-        public SkillAbility AttachSkill(int skillId)
+        public CombatEntity Combat => GetParent<CombatEntity>();
+        public Dictionary<int, Ability> skillDict = new Dictionary<int, Ability>();
+        public Ability AttachSkill(int skillId)
         {
-            SkillConfigObject skillConfigObject = NFROOT.I.G<ResM>().Load<SkillConfigObject>(string.Empty);
+            AbilityConfigObject skillConfigObject = NFROOT.I.G<ResM>().Load<AbilityConfigObject>(string.Empty);
             if (skillConfigObject == null)
             {
                 return null;
             }
 
-            var skill = Combat.AttachAbility<SkillAbility>(skillConfigObject);
+            var skill = Combat.AttachAbility<Ability>(skillConfigObject);
             if (!skillDict.ContainsKey(skill.SkillConfigObject.Id))
             {
                 skillDict.Add(skill.SkillConfigObject.Id, skill);
@@ -25,7 +25,7 @@ namespace NFramework.Module.Combat
             return skill;
         }
 
-        public SkillAbility GetSkill(int skillId)
+        public Ability GetSkill(int skillId)
         {
             if (skillDict.TryGetValue(skillId, out var skill))
             {

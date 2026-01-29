@@ -7,7 +7,7 @@ namespace NFramework.Module.Combat
 {
     public class StatusComponent : Entity
     {
-        public Combat Combat => GetParent<Combat>();
+        public CombatEntity Combat => GetParent<CombatEntity>();
         public List<StatusAbility> statusList = new List<StatusAbility>();
 
         public UnOrderMultiMapVector<int, StatusAbility> statusDict = new UnOrderMultiMapVector<int, StatusAbility>();

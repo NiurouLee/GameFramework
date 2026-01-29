@@ -8,7 +8,7 @@ namespace NFramework.Module.Combat
     {
         public Effect Effect => GetParent<AbilityEffect>().effect;
         public ActionPointType ActionPointType => Effect.ActionPointType;
-        public Combat Owner => GetParent<AbilityEffect>().Owner;
+        public CombatEntity Owner => GetParent<AbilityEffect>().Owner;
 
         public void Awake()
         {

@@ -5,7 +5,7 @@ namespace NFramework.Module.Combat
 {
     public class AbilityEffectAddStatusComponent : Entity
     {
-        public Combat Owner => GetParent<AbilityEffect>().Owner;
+        public CombatEntity Owner => GetParent<AbilityEffect>().Owner;
 
         public void OnAssignEffect(EffectAssignAction effectAssignAction)
         {

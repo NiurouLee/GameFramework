@@ -6,7 +6,7 @@ namespace NFramework.Module.Combat
 
     public class DamageBloodSuckComponent : Entity, IAwakeSystem, IDestroySystem
     {
-        public Combat Owner => GetParent<Combat>();
+        public CombatEntity Owner => GetParent<CombatEntity>();
         public void Awake()
         {
             Owner.ListenActionPoint(ActionPointType.PostCauseDamage, OnCauseDamage);

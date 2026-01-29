@@ -10,7 +10,7 @@ namespace NFramework.Module.Combat
     {
         public Effect effect;
         public Entity OwnerAbility => (Entity)Parent;
-        public Combat Owner => ((IAbility)OwnerAbility).Owner;
+        public CombatEntity Owner => ((IAbility)OwnerAbility).Owner;
 
         public void Awake(Effect a)
         {
@@ -99,7 +99,7 @@ namespace NFramework.Module.Combat
             TryAssignEffectToOwner();
         }
 
-        public void TryAssignEffectToTarget(Combat target)
+        public void TryAssignEffectToTarget(CombatEntity target)
         {
             if (Owner.EffectAssignActionAbility.TryMakeAction(out var action))
             {
@@ -110,7 +110,7 @@ namespace NFramework.Module.Combat
             }
         }
 
-        public void TryAssignEffectToTarget(Combat target, IActionExecution actionExecution)
+        public void TryAssignEffectToTarget(CombatEntity target, IActionExecution actionExecution)
         {
             if (Owner.EffectAssignActionAbility.TryMakeAction(out var action))
             {
@@ -122,7 +122,7 @@ namespace NFramework.Module.Combat
             }
         }
 
-        public void TryAssignEffectToTarget(Combat target, IAbilityExecution abilityExecution)
+        public void TryAssignEffectToTarget(CombatEntity target, IAbilityExecution abilityExecution)
         {
             if (Owner.EffectAssignActionAbility.TryMakeAction(out var action))
             {
@@ -134,7 +134,7 @@ namespace NFramework.Module.Combat
             }
         }
 
-        public void TryAssignEffectToTarget(Combat target, AbilityItem abilityItem)
+        public void TryAssignEffectToTarget(CombatEntity target, AbilityItem abilityItem)
         {
             if (Owner.EffectAssignActionAbility.TryMakeAction(out var action))
             {

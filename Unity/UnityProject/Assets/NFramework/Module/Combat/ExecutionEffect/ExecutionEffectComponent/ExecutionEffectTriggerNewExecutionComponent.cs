@@ -4,7 +4,7 @@ namespace NFramework.Module.Combat
 {
     public class ExecutionEffectTriggerNewExecutionComponent : Entity
     {
-        public Combat Owner => GetParent<SkillExecution>().Owner;
+        public CombatEntity Owner => GetParent<SkillExecution>().Owner;
 
         public void OnTriggerExecutionEffect(ExecutionEffect executionEffect)
         {
@@ -14,7 +14,7 @@ namespace NFramework.Module.Combat
                 return;
             }
             var parentExecution = parent.GetParent<SkillExecution>();
-            var execution = parentExecution.Owner.AddChild<SkillExecution, SkillAbility>(parentExecution.SkillAbility);
+            var execution = parentExecution.Owner.AddChild<SkillExecution, Ability>(parentExecution.SkillAbility);
             execution.executionConfigObject = executionObject;
             execution.InputPoint = parentExecution.InputPoint;
             execution.InputDirection = parentExecution.InputDirection;

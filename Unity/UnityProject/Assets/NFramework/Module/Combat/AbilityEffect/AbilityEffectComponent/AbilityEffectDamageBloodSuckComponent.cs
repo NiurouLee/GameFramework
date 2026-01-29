@@ -5,7 +5,7 @@ namespace NFramework.Module.Combat
 {
     public class AbilityEffectDamageBloodSuckComponent : Entity, IAwakeSystem, IDestroySystem
     {
-        public Combat Owner => GetParent<AbilityEffect>().Owner;
+        public CombatEntity Owner => GetParent<AbilityEffect>().Owner;
         public void Awake()
         {
             Owner.DamageActionAbility.AddComponent<DamageBloodSuckComponent>();

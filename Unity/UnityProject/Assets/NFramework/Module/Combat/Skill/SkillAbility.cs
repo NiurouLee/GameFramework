@@ -5,16 +5,16 @@ using NFramework.Module.ResModule;
 
 namespace NFramework.Module.Combat
 {
-    public class SkillAbility : Entity, IAbility, IAwakeSystem<System.Object>
+    public class Ability : Entity, IAbility, IAwakeSystem<System.Object>
     {
         public bool Spelling { get; set; }
-        public Combat Owner => GetParent<Combat>();
-        public SkillConfigObject SkillConfigObject;
+        public CombatEntity Owner => GetParent<CombatEntity>();
+        public AbilityConfigObject SkillConfigObject;
         public ExecutionConfigObject ExecutionConfigObject;
         private List<StatusAbility> m_StatusList = new List<StatusAbility>();
         public void Awake(object a)
         {
-            SkillConfigObject = a as SkillConfigObject;
+            SkillConfigObject = a as AbilityConfigObject;
             AddComponent<AbilityEffectComponent, List<Effect>>(SkillConfigObject.EffectList);
             ExecutionConfigObject = NFROOT.I.G<ResM>().Load<ExecutionConfigObject>(string.Empty);
         }
@@ -56,7 +56,7 @@ namespace NFramework.Module.Combat
 
         public Entity CreateExecution()
         {
-            var execution = Owner.AddChild<SkillExecution, SkillAbility>(this);
+            var execution = Owner.AddChild<SkillExecution, Ability>(this);
             execution.executionConfigObject = ExecutionConfigObject;
             execution.LoadExecutionEffect();
             return execution;

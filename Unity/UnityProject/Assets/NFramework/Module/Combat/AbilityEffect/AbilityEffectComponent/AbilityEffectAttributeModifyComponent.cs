@@ -10,7 +10,7 @@ namespace NFramework.Module.Combat
         public AttributeModifyEffect AttributeModifyEffect => (AttributeModifyEffect)GetParent<AbilityEffect>().effect;
         public string NumericValueFormula => AttributeModifyEffect.NumericValueFormula;
         public AttributeType AttributeType => AttributeModifyEffect.AttributeType;
-        public Combat Owner => GetParent<AbilityEffect>().Owner;
+        public CombatEntity Owner => GetParent<AbilityEffect>().Owner;
         public float value;
 
         public void Awake()

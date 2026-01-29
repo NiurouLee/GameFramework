@@ -6,15 +6,15 @@ namespace NFramework.Module.Combat
 {
     public static class FiltrationTarget
     {
-        public static Combat GetTarget(TransformComponent transformComponent, float distance, TagType tagType = TagType.Enemy)
+        public static CombatEntity GetTarget(TransformComponent transformComponent, float distance, TagType tagType = TagType.Enemy)
         {
-            List<Combat> list = NFROOT.I.G<CombatM>().CombatContext.GetCombatListByTag(tagType);
+            List<CombatEntity> list = NFROOT.I.G<CombatM>().CombatContext.GetCombatListByTag(tagType);
             if (list.Count == 0)
             {
                 return null;
             }
             float minPos = distance;
-            Combat target = null;
+            CombatEntity target = null;
             foreach (var item in list)
             {
                 float temp = Vector3.Distance(item.TransformComponent.Position, transformComponent.Position);
@@ -28,16 +28,16 @@ namespace NFramework.Module.Combat
             return target;
         }
 
-        public static List<Combat> GetTargetList(TransformComponent transformComponent, float distance, TagType tagType = TagType.Enemy)
+        public static List<CombatEntity> GetTargetList(TransformComponent transformComponent, float distance, TagType tagType = TagType.Enemy)
         {
-            List<Combat> targetList = new List<Combat>();
-            List<Combat> list = NFROOT.I.G<CombatM>().CombatContext.GetCombatListByTag(tagType);
+            List<CombatEntity> targetList = new List<CombatEntity>();
+            List<CombatEntity> list = NFROOT.I.G<CombatM>().CombatContext.GetCombatListByTag(tagType);
             if (list.Count == 0)
             {
                 return null;
             }
 
-            foreach (Combat item in list)
+            foreach (CombatEntity item in list)
             {
                 if (IsIncludeTarget(transformComponent, item.TransformComponent))
                 {

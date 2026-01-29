@@ -10,7 +10,7 @@ namespace NFramework.Module.Combat
         public Effect Effect => GetParent<AbilityEffect>().effect;
         public string ConditionValueFromula => ParseParams(Effect.ConditioNValueFormula, GetParent<AbilityEffect>().GetParamsDict());
         public ConditionType ConditionType => Effect.ConditionType;
-        public Combat Owner => GetParent<AbilityEffect>().Owner;
+        public CombatEntity Owner => GetParent<AbilityEffect>().Owner;
 
         public void Awake()
         {

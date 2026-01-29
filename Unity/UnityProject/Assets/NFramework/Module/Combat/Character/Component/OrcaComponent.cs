@@ -15,8 +15,8 @@ namespace NFramework.Module.Combat
         public Agent agent;
         public int ID => agent.id_;
 
-        public AttributeComponent AttributeComponent => GetParent<Combat>().GetComponent<AttributeComponent>();
-        public TransformComponent TransformComponent => GetParent<Combat>().GetComponent<TransformComponent>();
+        public AttributeComponent AttributeComponent => GetParent<CombatEntity>().GetComponent<AttributeComponent>();
+        public TransformComponent TransformComponent => GetParent<CombatEntity>().GetComponent<TransformComponent>();
 
         public void Awake()
         {

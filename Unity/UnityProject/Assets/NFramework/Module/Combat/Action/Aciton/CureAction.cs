@@ -5,7 +5,7 @@ namespace NFramework.Module.Combat
     public class CureActionAbility : Entity, IActionAbility
     {
         public bool Enable { get; set; }
-        public Combat Owner => GetParent<Combat>();
+        public CombatEntity Owner => GetParent<CombatEntity>();
 
         public bool TryMakeAction(out CureAction action)
         {
@@ -28,8 +28,8 @@ namespace NFramework.Module.Combat
         public int CureValue;
         public Entity ActionAbility { get; set; }
         public EffectAssignAction SourceAssignAction { get; set; }
-        public Combat Creator { get; set; }
-        public Combat Target { get; set; }
+        public CombatEntity Creator { get; set; }
+        public CombatEntity Target { get; set; }
         public void FinishAction()
         {
             Dispose();

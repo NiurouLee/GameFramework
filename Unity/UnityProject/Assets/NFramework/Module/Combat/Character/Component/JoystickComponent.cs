@@ -7,7 +7,7 @@ namespace NFramework.Module.Combat
     public class JoystickComponent : Entity, IFixedUpdateSystem
     {
 
-        public Combat Combat => GetParent<Combat>();
+        public CombatEntity Combat => GetParent<CombatEntity>();
         public TransformComponent TransformComponent => Combat.TransformComponent;
         public AnimationComponent AnimationComponent => Combat.AnimationComponent;
         public float speed => Combat.AttributeComponent.MoveSpeed.Value;

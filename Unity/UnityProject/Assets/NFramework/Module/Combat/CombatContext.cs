@@ -2,42 +2,44 @@ using System.Collections.Generic;
 using NFramework.Core.Collections;
 using NFramework.Core.Live;
 using NFramework.Module.EntityModule;
+using Org.BouncyCastle.Asn1.Misc;
+using UnityEngine;
 
 namespace NFramework.Module.Combat
 {
     public class CombatContext : Entity, IAwakeSystem
     {
-        public Dictionary<long, Combat> combatDic = new();
+        public Dictionary<long, CombatEntity> combatDic = new();
         public Dictionary<long, AbilityItem> abilityItemDict = new();
 
         public void Awake()
         {
 
         }
-        public Combat AddCombat(long inID, CombatTagType inTagType)
+        public CombatEntity AddCombat(long inID, CombatTagType inTagType)
         {
-            Combat combat = AddChild<Combat>();
+            CombatEntity combat = AddChild<CombatEntity>();
             combat.AddComponent<CombatTagComponent, CombatTagType>(inTagType);
             combatDic.Add(inID, combat);
             return combat;
         }
 
-        public Combat GetCombat(long inID)
+        public CombatEntity GetCombat(long inID)
         {
-            combatDic.TryGetValue(inID, out Combat combat);
+            combatDic.TryGetValue(inID, out CombatEntity combat);
             return combat;
         }
 
         public void RemoveCombat(long inID)
         {
-            if (combatDic.TryGetValue(inID, out Combat combat))
+            if (combatDic.TryGetValue(inID, out CombatEntity combat))
             {
                 this.RemoveChild(combat.Id);
                 combatDic.Remove(inID);
             }
         }
 
-        public void GetCombatByTag(CombatTagType inTagType, ref List<Combat> outCombatList)
+        public void GetCombatByTag(CombatTagType inTagType, ref List<CombatEntity> outCombatList)
         {
             foreach (var combat in combatDic)
             {
@@ -74,9 +76,9 @@ namespace NFramework.Module.Combat
             return abilityItem;
         }
 
-        public List<Combat> GetCombatListByTag(TagType tagType)
+        public List<CombatEntity> GetCombatListByTag(TagType tagType)
         {
-            List<Combat> list = new List<Combat>();
+            List<CombatEntity> list = new List<CombatEntity>();
             foreach (var combat in combatDic.Values)
             {
                 if (combat.TagComponent.tagType == tagType)
@@ -86,6 +88,13 @@ namespace NFramework.Module.Combat
             }
             return list;
         }
+
+
+        #region  Debug
+        public Dictionary<GameObject, CombatEntity> GameObject2Entity { get; set; } = new Dictionary<GameObject, CombatEntity>();
+        public Dictionary<GameObject, AbilityItem> GameObject2AbilityItems { get; set; } = new Dictionary<GameObject, AbilityItem>();
+
+        #endregion
     }
 
 }

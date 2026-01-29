@@ -4,7 +4,7 @@ namespace NFramework.Module.Combat
 {
     public class ExecutionEffectSpawnCollisionComponent : Entity
     {
-        public Combat Owner => GetParent<SkillExecution>().Owner;
+        public CombatEntity Owner => GetParent<SkillExecution>().Owner;
 
         public void OnTriggerExecutionEffect(ExecutionEffect executionEffect)
         {

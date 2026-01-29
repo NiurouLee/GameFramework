@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace NFramework.Module.Combat
 {
-    public class Combat : Entity, IAwakeSystem
+    public class CombatEntity : Entity, IAwakeSystem
     {
         public HealthPoint CurrentHealth;
         public ActionControlType ActionControlType;
@@ -156,12 +156,12 @@ namespace NFramework.Module.Combat
         }
 
 
-        public SkillAbility AttachSkill(int skillId)
+        public Ability AttachSkill(int skillId)
         {
             return GetComponent<SkillComponent>().AttachSkill(skillId);
         }
 
-        public SkillAbility GetSkill(int skillId)
+        public Ability GetSkill(int skillId)
         {
             return GetComponent<SkillComponent>().GetSkill(skillId);
         }

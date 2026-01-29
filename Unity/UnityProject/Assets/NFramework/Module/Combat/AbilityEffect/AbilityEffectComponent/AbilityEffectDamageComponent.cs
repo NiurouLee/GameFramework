@@ -9,7 +9,7 @@ namespace NFramework.Module.Combat
     {
         public DamageEffect DamageEffect => GetParent<AbilityEffect>().effect as DamageEffect;
         public string DamageValueFormula => DamageEffect.DamageValueFormula;
-        public Combat Owner => GetParent<AbilityEffect>().Owner;
+        public CombatEntity Owner => GetParent<AbilityEffect>().Owner;
         public int GetDamageValue()
         {
 

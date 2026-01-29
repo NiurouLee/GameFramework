@@ -7,7 +7,7 @@ namespace NFramework.Module.Combat
 {
     public class ExecutionEffectFiltrationTargetComponent : Entity
     {
-        public Combat Owner => GetParent<SkillExecution>().Owner;
+        public CombatEntity Owner => GetParent<SkillExecution>().Owner;
 
         public void OnTriggerExecutionEffect(ExecutionEffect executionEffect)
         {
@@ -18,7 +18,7 @@ namespace NFramework.Module.Combat
             parentExecution.TargetList.AddRange(list);
             list.Dispose();
         }
-        public List<Combat> SelectCombat(ExecuteClipData executeClipData)
+        public List<CombatEntity> SelectCombat(ExecuteClipData executeClipData)
         {
             return FiltrationTarget.GetTargetList(Owner.TransformComponent, executeClipData.actionEventData.Distance, executeClipData.actionEventData.TagType);
         }

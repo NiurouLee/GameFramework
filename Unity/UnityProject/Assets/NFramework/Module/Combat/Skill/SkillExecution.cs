@@ -8,18 +8,21 @@ using UnityEngine;
 
 namespace NFramework.Module.Combat
 {
-    public class SkillExecution : Entity, IAbilityExecution, IAwakeSystem<SkillAbility>
+    /// <summary>
+    /// 技能执行体，执行体就是控制角色表现和技能表现的，包括角色的动作、移动、变身等表现的，以及技能生成碰撞体等表现。
+    /// </summary>
+    public class SkillExecution : Entity, IAbilityExecution, IAwakeSystem<Ability>
     {
         public Entity Ability { get; set; }
-        public Combat Owner => GetParent<Combat>();
-        public SkillAbility SkillAbility => (SkillAbility)Ability;
+        public CombatEntity Owner => GetParent<CombatEntity>();
+        public Ability SkillAbility => (Ability)Ability;
         public ExecutionConfigObject executionConfigObject;
-        public List<Combat> TargetList = new List<Combat>();
+        public List<CombatEntity> TargetList = new List<CombatEntity>();
         public Vector3 InputPoint;
         public float InputDirection;
         public bool ActionOccupy = true;
 
-        public void Awake(SkillAbility a)
+        public void Awake(Ability a)
         {
             Ability = a;
         }
@@ -32,7 +35,7 @@ namespace NFramework.Module.Combat
 
         public void BeginExecute()
         {
-            GetParent<Combat>().SpellingSkillExecution = this;
+            GetParent<CombatEntity>().SpellingSkillExecution = this;
             if (SkillAbility != null)
             {
                 SkillAbility.Spelling = true;
@@ -43,7 +46,7 @@ namespace NFramework.Module.Combat
         public void EndExecute()
         {
             TargetList.Clear();
-            GetParent<Combat>().SpellingSkillExecution = null;
+            GetParent<CombatEntity>().SpellingSkillExecution = null;
             if (SkillAbility != null)
             { SkillAbility.Spelling = false; }
             Dispose();

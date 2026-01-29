@@ -7,7 +7,7 @@ namespace NFramework.Module.Combat
 {
     public partial class ItemAbility : Entity, IAbility, IAwakeSystem<System.Object>
     {
-        public Combat Owner => GetParent<Combat>();
+        public CombatEntity Owner => GetParent<CombatEntity>();
         public ItemConfigObject itemConfigObject;
         private List<StatusAbility> _statusList = new List<StatusAbility>();
         public void Awake(object a)

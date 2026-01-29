@@ -5,7 +5,7 @@ namespace NFramework.Module.Combat
     public class SpellItemActionAbility : Entity, IActionAbility
     {
         public bool Enable { get; set; }
-        public Combat Owner => GetParent<Combat>();
+        public CombatEntity Owner => GetParent<CombatEntity>();
 
         public bool TryMakeAction(out SpellItemAction action)
         {
@@ -29,8 +29,8 @@ namespace NFramework.Module.Combat
         public SpellItemActionAbility ItemAbility;
         public Entity ActionAbility { get; set; }
         public EffectAssignAction SourceAssignAction { get; set; }
-        public Combat Creator { get; set; }
-        public Combat Target { get; set; }
+        public CombatEntity Creator { get; set; }
+        public CombatEntity Target { get; set; }
 
         public void FinishAction()
         {

@@ -8,7 +8,7 @@ namespace NFramework.Module.Combat
 {
     public class ExecutionComponent : Entity
     {
-        public Combat Combat => GetParent<Combat>();
+        public CombatEntity Combat => GetParent<CombatEntity>();
         public Dictionary<int, ExecutionConfigObject> executionDict = new Dictionary<int, ExecutionConfigObject>();
 
         public ExecutionConfigObject AttachExecution(int executionID)

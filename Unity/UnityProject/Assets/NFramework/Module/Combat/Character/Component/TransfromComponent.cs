@@ -86,11 +86,11 @@ namespace NFramework.Module.Combat
             {
                 Rotation = Quaternion.Euler(0, 0, 0);
             }
-            GetParent<Combat>().OrcaComponent.Set2DTarget(target);
+            GetParent<CombatEntity>().OrcaComponent.Set2DTarget(target);
         }
         public void SyncTransform()
         {
-            var syncTransform = new SyncTransform(GetParent<Combat>().Id, _position, _rotation, _localScale);
+            var syncTransform = new SyncTransform(GetParent<CombatEntity>().Id, _position, _rotation, _localScale);
             NFROOT.I.G<EventM>().D.Fire(ref syncTransform);
 
         }

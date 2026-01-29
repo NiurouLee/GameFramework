@@ -10,8 +10,8 @@ namespace NFramework.Module.Combat
     public partial class StatusAbility : Entity, IAbility, IAwakeSystem<StatusConfigObject>, IAwakeSystem<System.Object>
     {
         public bool Enable { get; set; }
-        public Combat Owner => GetParent<Combat>();
-        public Combat Creator;
+        public CombatEntity Owner => GetParent<CombatEntity>();
+        public CombatEntity Creator;
 
         public StatusConfigObject StatusConfigObject;
         public Dictionary<string, string> paramsDict;

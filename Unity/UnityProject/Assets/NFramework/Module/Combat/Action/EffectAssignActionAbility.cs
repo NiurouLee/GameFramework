@@ -5,7 +5,7 @@ namespace NFramework.Module.Combat
     public class EffectAssignActionAbility : Entity, IActionAbility
     {
         public new bool Enable { get; set; }
-        public Combat Owner => GetParent<Combat>();
+        public CombatEntity Owner => GetParent<CombatEntity>();
         public bool TryMakeAction(out EffectAssignAction action)
         {
             if (!Enable)
@@ -32,8 +32,8 @@ namespace NFramework.Module.Combat
         public AbilityItem AbilityItem;
         public Entity ActionAbility { get; set; }
         public EffectAssignAction SourceAssignAction { get; set; }
-        public Combat Creator { get; set; }
-        public Combat Target { get; set; }
+        public CombatEntity Creator { get; set; }
+        public CombatEntity Target { get; set; }
 
         private void PreProcess()
         {

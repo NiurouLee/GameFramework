@@ -9,7 +9,7 @@ namespace NFramework.Module.Combat
 {
     public class ItemComponent : Entity
     {
-        public Combat Combat => GetParent<Combat>();
+        public CombatEntity Combat => GetParent<CombatEntity>();
         public Dictionary<int, ItemAbility> ItemDict = new Dictionary<int, ItemAbility>();
 
         public ItemAbility AttachItem(int itemID)
