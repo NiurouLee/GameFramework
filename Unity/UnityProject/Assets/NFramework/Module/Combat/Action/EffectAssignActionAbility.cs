@@ -2,6 +2,9 @@ using NFramework.Module.EntityModule;
 
 namespace NFramework.Module.Combat
 {
+    /// <summary>
+    /// 效果分配能力
+    /// </summary>
     public class EffectAssignActionAbility : Entity, IActionAbility
     {
         public new bool Enable { get; set; }

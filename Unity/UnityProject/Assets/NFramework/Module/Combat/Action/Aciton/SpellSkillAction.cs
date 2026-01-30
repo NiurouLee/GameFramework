@@ -66,12 +66,13 @@ namespace NFramework.Module.Combat
         public void SpellSkill(bool actionOccupy = true)
         {
             PreProcess();
-            SkillExecution = (SkillExecution)SkillAbility.CreateExecution();
 
-            SkillExecution.ActionOccupy = actionOccupy;
+            //预览如果成功选择了目标，那就创建ability的Execution
             if (InputTarget != null)
             {
                 SkillExecution.TargetList.Add(InputTarget);
+                SkillExecution = (SkillExecution)SkillAbility.CreateExecution();
+                SkillExecution.ActionOccupy = actionOccupy;
             }
             SkillExecution.InputPoint = this.InputPoint;
             SkillExecution.InputDirection = InputDirection;
@@ -93,11 +94,6 @@ namespace NFramework.Module.Combat
         private void PostProcess()
         {
             Creator.TriggerActionPoint(ActionPointType.PostSpell, this);
-        }
-
-        public void Update(float deltaTime)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

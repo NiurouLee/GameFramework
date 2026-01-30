@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace NFramework.Module.Combat
 {
+    /// <summary>
+    /// 一个战斗单元，根据需求挂载不同的Ability
+    /// </summary>
     public class CombatEntity : Entity, IAwakeSystem
     {
         public HealthPoint CurrentHealth;
@@ -59,7 +62,7 @@ namespace NFramework.Module.Combat
             SpellItemActionAbility = AttachAction<SpellItemActionAbility>();
 
             DamageActionAbility = AttachAction<DamageActionAbility>();
-            
+
             CureActionAbility = AttachAction<CureActionAbility>();
 
             OrcaComponent.AddAgent2D(TransformComponent.Position);

@@ -145,6 +145,10 @@ namespace NFramework.Module.Combat
                 action.ApplyEffectAssign();
             }
         }
+        /// <summary>
+        ///  增加一个效果
+        /// </summary>
+        /// <param name="action"></param>
         public void StartAssignEffect(EffectAssignAction action)
         {
             if (effect is AddStatusEffect)

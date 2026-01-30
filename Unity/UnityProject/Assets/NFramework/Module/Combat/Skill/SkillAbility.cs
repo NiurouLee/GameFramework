@@ -54,6 +54,10 @@ namespace NFramework.Module.Combat
             Dispose();
         }
 
+        /// <summary>
+        /// 创建执行体
+        /// </summary>
+        /// <returns></returns>
         public Entity CreateExecution()
         {
             var execution = Owner.AddChild<SkillExecution, Ability>(this);
