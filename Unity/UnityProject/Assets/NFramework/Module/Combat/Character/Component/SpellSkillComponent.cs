@@ -4,7 +4,7 @@ using UnityEngine;
 namespace NFramework.Module.Combat
 {
     /// <summary>
-    /// 主动技能预览组建，预览功能不是所有游戏都有，也可以动态开启，关闭，类似于英雄联盟的非智能施法的预览。
+    /// 施法组件
     /// </summary>
     public class SpellSkillComponent : Entity
     {

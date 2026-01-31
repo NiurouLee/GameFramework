@@ -11,8 +11,9 @@ namespace NFramework.Module.Combat
         Skill,
         Buff,
     }
-
-
+    /// <summary>
+    /// 受伤能力
+    /// </summary>
     public class DamageActionAbility : Entity, IActionAbility
     {
         public bool Enable { get; set; }

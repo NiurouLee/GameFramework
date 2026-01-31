@@ -14,12 +14,21 @@ namespace NFramework.Module.Combat
     {
         public HealthPoint CurrentHealth;
         public ActionControlType ActionControlType;
+        /// <summary>
+        /// 效果分配能力
+        /// </summary>
         public EffectAssignActionAbility EffectAssignActionAbility;
+        /// <summary>
+        /// 添加状态能力
+        /// </summary>
         public AddStatusActionAbility AddStatusActionAbility;
         public SpellSkillActionAbility SpellSkillActionAbility;
         public SpellItemActionAbility SpellItemActionAbility;
         public DamageActionAbility DamageActionAbility;
         public CureActionAbility CureActionAbility;
+
+
+        
         public SkillExecution SpellingSkillExecution;
         public TransformComponent TransformComponent => GetComponent<TransformComponent>();
         public OrcaComponent OrcaComponent => GetComponent<OrcaComponent>();

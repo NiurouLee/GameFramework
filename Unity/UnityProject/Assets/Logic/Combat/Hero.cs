@@ -31,13 +31,14 @@ namespace Logic.Combat
         public bool SkillPlaying { get; set; }
         private int combatContextId = 1;
         private CombatContext combatContext;
+    
+        private SkillComponent SkillComponent;
         void Start()
         {
             Instance = this;
             this.combatContext = NFROOT.Instance.GetM<CombatM>().CreateCombatContext(combatContextId);
             this.CombatEntity = this.combatContext.AddChild<CombatEntity>();
             this.combatContext.GameObject2Entity.Add(this.gameObject, CombatEntity);
-
 
             this.CombatEntity.CurrentHealth.Minus(30000);
             // var allConfigs = ConfigHelper.GetAll<AbilityConfigObject>().Values.ToArray();
@@ -52,15 +53,32 @@ namespace Logic.Combat
                 var skillid = config.Id;
                 if (skillid == 3001)
                 {
-
+                    continue;
                 }
-                var aiblity = CombatEntity.GetComponent<SkillComponent>().AttachSkill(config.Id);
-                if(skillid==1001)CombatEntity.
-
+                var SkillComponent = CombatEntity.GetComponent<SkillComponent>();
+                SkillComponent = this.SkillComponent;
+                var aiblity = SkillComponent.AttachSkill(config.Id);
+                if (skillid == 1001) SkillComponent.BindSkillInput(KeyCode.Q, skillid);
+                if (skillid == 1002) SkillComponent.BindSkillInput(KeyCode.W, skillid);
+                if (skillid == 1003) SkillComponent.BindSkillInput(KeyCode.E, skillid);
+                if (skillid == 1004) SkillComponent.BindSkillInput(KeyCode.R, skillid);
             }
+
         }
 
-        public void 
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                SkillComponent.TryUseSkill(KeyCode.Q);
+            }
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                CombatEntity.GetComponent<SkillComponent>().TryUseSkill(KeyCode.W);
+            }
+            if (Input.GetKeyDown(KeyCode.E))
+        }
+
     }
 
 

@@ -2,6 +2,9 @@ using NFramework.Module.EntityModule;
 
 namespace NFramework.Module.Combat
 {
+    /// <summary>
+    /// 使用物品能力
+    /// </summary>
     public class SpellItemActionAbility : Entity, IActionAbility
     {
         public bool Enable { get; set; }
@@ -23,7 +26,9 @@ namespace NFramework.Module.Combat
         }
     }
 
-
+    /// <summary>
+    /// 使用物品行为
+    /// </summary>
     public class SpellItemAction : Entity, IActionExecution
     {
         public SpellItemActionAbility ItemAbility;

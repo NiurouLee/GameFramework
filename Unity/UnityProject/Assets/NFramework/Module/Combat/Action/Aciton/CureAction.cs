@@ -2,6 +2,9 @@ using NFramework.Module.EntityModule;
 
 namespace NFramework.Module.Combat
 {
+    /// <summary>
+    /// 治疗能力
+    /// </summary>
     public class CureActionAbility : Entity, IActionAbility
     {
         public bool Enable { get; set; }
@@ -23,6 +26,9 @@ namespace NFramework.Module.Combat
         }
     }
 
+    /// <summary>
+    /// 治疗行为
+    /// </summary>
     public class CureAction : Entity, IActionExecution
     {
         public int CureValue;
