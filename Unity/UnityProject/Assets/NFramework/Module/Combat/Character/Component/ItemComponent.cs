@@ -14,7 +14,7 @@ namespace NFramework.Module.Combat
 
         public ItemAbility AttachItem(int itemID)
         {
-            ItemConfigObject itemConfigObject = NFROOT.I.G<ResM>().Load<ItemConfigObject>(string.Empty);
+            ItemConfigObject itemConfigObject = null;//= NFROOT.I.G<ResM>().Load<ItemConfigObject>(string.Empty);
             if (itemConfigObject == null)
             {
                 return null;

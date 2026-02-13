@@ -56,7 +56,6 @@ namespace NFramework.Module.ResModule
             var resPath = this.Address(inAssetID);
             var handler = this.Createhandler(resPath);
             var yooAssetHandle = _package.LoadAssetAsync<T>(resPath);
-            handler.YooAssetHandle = yooAssetHandle;
             yooAssetHandle.Completed += (handle) =>
             {
                 if (handle.IsDone && handle.AssetObject != null)

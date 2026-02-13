@@ -37,8 +37,12 @@ namespace NFramework.Module.UIModule
         {
             ResLoadRecords.Free(inObj);
         }
+        public void Free(string inAssetID)
+        {
+            ResLoadRecords.Free(inAssetID);
+        }
     }
-    
+
 
     public static class ViewResLoadComponentExtensions
     {

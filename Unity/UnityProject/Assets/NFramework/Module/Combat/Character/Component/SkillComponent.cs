@@ -16,7 +16,7 @@ namespace NFramework.Module.Combat
         public Dictionary<KeyCode, int> skillInputDict = new Dictionary<KeyCode, int>();
         public Ability AttachSkill(int skillId)
         {
-            AbilityConfigObject skillConfigObject = NFROOT.I.G<ResM>().Load<AbilityConfigObject>(string.Empty);
+            AbilityConfigObject skillConfigObject = null;//= NFROOT.I.G<ResM>().Load<AbilityConfigObject>(string.Empty);
             if (skillConfigObject == null)
             {
                 return null;
