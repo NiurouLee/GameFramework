@@ -8,7 +8,7 @@ namespace NFramework.Module.UIModule
     /// <summary>
     /// 用于记录子view,这一层直接受 有view,有provider,有facade
     /// </summary>
-    public class SubViewRecords : BaseRecordsSet<View>, IFreeToPool
+    public class SubViewRecords : BaseRecordSet<View>, IFreeToPool
     {
         private View m_orderView;
 

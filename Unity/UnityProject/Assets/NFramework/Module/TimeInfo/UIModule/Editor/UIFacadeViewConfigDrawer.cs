@@ -87,7 +87,7 @@ namespace NFramework.Module.UIModule
             {
                 EditorGUILayout.LabelField("配置ID:", GUILayout.Width(80));
                 string configID = !string.IsNullOrEmpty(facade.m_ScriptName) ? facade.m_ScriptName : "未设置（请先填写脚本名称）";
-                EditorGUILayout.LabelField(configID, SirenixGUIStyles.RightAlignedGreyMiniLabel);
+                EditorGUILayout.LabelField(configID, EditorStyles.label, GUILayout.MinWidth(120));
             }
             EditorGUILayout.EndHorizontal();
 
@@ -107,7 +107,7 @@ namespace NFramework.Module.UIModule
                 EditorGUILayout.LabelField("资源ID:", GUILayout.Width(80));
                 UpdateViewConfigAssetID(facade, viewConfig);
                 string displayAssetID = !string.IsNullOrEmpty(viewConfig.AssetID) ? viewConfig.AssetID : "未设置";
-                EditorGUILayout.LabelField(displayAssetID, SirenixGUIStyles.RightAlignedGreyMiniLabel);
+                EditorGUILayout.LabelField(displayAssetID, EditorStyles.label, GUILayout.MinWidth(120));
             }
             EditorGUILayout.EndHorizontal();
         }

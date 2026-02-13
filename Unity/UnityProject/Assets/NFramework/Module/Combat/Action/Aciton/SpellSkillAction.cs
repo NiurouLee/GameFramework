@@ -95,5 +95,9 @@ namespace NFramework.Module.Combat
         {
             Creator.TriggerActionPoint(ActionPointType.PostSpell, this);
         }
+
+        public void Update(float deltaTime)
+        {
+        }
     }
 }

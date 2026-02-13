@@ -3,7 +3,7 @@ using NFramework.Core.ObjectPool;
 
 namespace NFramework
 {
-    public class PromiseRecords : BaseRecordsSet<Proto.Promises.ICancelable>, IFreeToPool
+    public class PromiseRecords : BaseRecordSet<Proto.Promises.ICancelable>, IFreeToPool
     {
         public PromiseRecords()
         {

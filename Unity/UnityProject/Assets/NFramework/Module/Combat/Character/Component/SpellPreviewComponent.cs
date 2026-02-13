@@ -17,7 +17,7 @@ namespace NFramework.Module.Combat
             var skillComponent = OwnerEntity.GetComponent<SkillComponent>();
             if(Input.GetKeyDown(KeyCode.Q))
             {
-                c
+                
             }
         }
     }

@@ -68,15 +68,15 @@ namespace Logic.Combat
 
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                SkillComponent.TryUseSkill(KeyCode.Q);
-            }
-            if (Input.GetKeyDown(KeyCode.W))
-            {
-                CombatEntity.GetComponent<SkillComponent>().TryUseSkill(KeyCode.W);
-            }
-            if (Input.GetKeyDown(KeyCode.E))
+            // if (Input.GetKeyDown(KeyCode.Q))
+            // {
+                // SkillComponent.TryUseSkill(KeyCode.Q);
+            // }
+            // if (Input.GetKeyDown(KeyCode.W))
+            // {
+                // CombatEntity.GetComponent<SkillComponent>().TryUseSkill(KeyCode.W);
+            // }
+            // if (Input.GetKeyDown(KeyCode.E))
         }
 
     }

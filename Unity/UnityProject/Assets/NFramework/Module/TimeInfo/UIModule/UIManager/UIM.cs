@@ -90,13 +90,12 @@ namespace NFramework.Module.UIModule
             {
                 throw new Exception($"ViewConfig {inViewConfig.ID} not found");
             }
-
             return Entity.CreateOnly(type) as View;
         }
 
         public string MappingAssetID(string inAssetID)
         {
-            return "UI/" + inAssetID;
+            return inAssetID;
         }
     }
 }

@@ -8,7 +8,8 @@ namespace NFramework.Module.Combat
     {
         public static CombatEntity GetTarget(TransformComponent transformComponent, float distance, TagType tagType = TagType.Enemy)
         {
-            List<CombatEntity> list = NFROOT.I.G<CombatM>().CombatContext.GetCombatListByTag(tagType);
+            // List<CombatEntity> list = NFROOT.I.G<CombatM>().CombatContext.GetCombatListByTag(tagType);
+            List<CombatEntity> list =  null;
             if (list.Count == 0)
             {
                 return null;
@@ -31,7 +32,8 @@ namespace NFramework.Module.Combat
         public static List<CombatEntity> GetTargetList(TransformComponent transformComponent, float distance, TagType tagType = TagType.Enemy)
         {
             List<CombatEntity> targetList = new List<CombatEntity>();
-            List<CombatEntity> list = NFROOT.I.G<CombatM>().CombatContext.GetCombatListByTag(tagType);
+            // List<CombatEntity> list = NFROOT.I.G<CombatM>().CombatContext.GetCombatListByTag(tagType);
+            List<CombatEntity> list = null;
             if (list.Count == 0)
             {
                 return null;
