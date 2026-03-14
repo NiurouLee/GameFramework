@@ -4,28 +4,30 @@ using NFramework.Module.LogModule;
 
 namespace NFramework.Module.Combat
 {
-    public class CombatM : FrameworkModule
+  public class CombatM : FrameworkModule
+  {
+    public Dictionary<int, CombatContext> CombatDic { get; private set; }
+
+    public CombatContext CurrentContext { get; private set; }
+
+    public override void Awake()
     {
-        public Dictionary<int, CombatContext> CombatDic { get; private set; }
-
-        public override void Awake()
-        {
-            CombatDic = new Dictionary<int, CombatContext>();
-            base.Awake();
-        }
-
-        public CombatContext CreateCombatContext(int inID)
-        {
-            if (this.CombatDic.ContainsKey(inID))
-            {
-
-                GetM<LoggerM>().Err("combatContext have ");
-                return null;
-            }
-            var combatContext = this.AddChild<CombatContext>();
-            this.CombatDic.Add(inID, combatContext);
-            return combatContext;
-        }
-
+      CombatDic = new Dictionary<int, CombatContext>();
+      base.Awake();
     }
+
+    public CombatContext CreateCombatContext(int inID)
+    {
+      if (this.CombatDic.ContainsKey(inID))
+      {
+
+        GetM<LoggerM>().Err("combatContext have ");
+        return null;
+      }
+      var combatContext = this.AddChild<CombatContext>();
+      this.CombatDic.Add(inID, combatContext);
+      return combatContext;
+    }
+
+  }
 }
