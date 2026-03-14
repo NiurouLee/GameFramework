@@ -11,6 +11,9 @@ namespace NFramework.Module.UIModule
     /// </summary>
     public static class UIFacadeUIElementsDrawer
     {
+        // 搜索筛选文本
+        private static string m_SearchFilter = "";
+
         /// <summary>
         /// 绘制UI元素列表区域
         /// </summary>
@@ -33,6 +36,11 @@ namespace NFramework.Module.UIModule
 
                 EditorGUILayout.Space(3);
 
+                // 搜索筛选框
+                DrawSearchFilter();
+
+                EditorGUILayout.Space(3);
+
                 // 如果列表为空，显示提示
                 if (facade.m_UIElements.Count == 0)
                 {
@@ -40,10 +48,22 @@ namespace NFramework.Module.UIModule
                 }
                 else
                 {
-                    // 绘制元素列表
+                    // 绘制元素列表（带筛选）
+                    int visibleCount = 0;
                     for (int i = 0; i < facade.m_UIElements.Count; i++)
                     {
-                        DrawUIElement(facade, i, onDataChanged);
+                        // 检查是否匹配搜索条件
+                        if (MatchSearchFilter(facade.m_UIElements[i]))
+                        {
+                            DrawUIElement(facade, i, onDataChanged);
+                            visibleCount++;
+                        }
+                    }
+
+                    // 如果有搜索条件但没有匹配结果
+                    if (!string.IsNullOrEmpty(m_SearchFilter) && visibleCount == 0)
+                    {
+                        SirenixEditorGUI.InfoMessageBox($"没有找到匹配 \"{m_SearchFilter}\" 的元素");
                     }
                 }
             }
@@ -76,6 +96,70 @@ namespace NFramework.Module.UIModule
                 }
             }
             SirenixEditorGUI.EndHorizontalToolbar();
+        }
+
+        /// <summary>
+        /// 绘制搜索筛选框
+        /// </summary>
+        private static void DrawSearchFilter()
+        {
+            EditorGUILayout.BeginHorizontal();
+            {
+                GUILayout.Label("搜索:", GUILayout.Width(40));
+
+                // 搜索输入框
+                EditorGUI.BeginChangeCheck();
+                m_SearchFilter = EditorGUILayout.TextField(m_SearchFilter, EditorStyles.toolbarSearchField);
+
+                // 清除按钮
+                if (!string.IsNullOrEmpty(m_SearchFilter))
+                {
+                    if (GUILayout.Button("×", GUILayout.Width(18), GUILayout.Height(18)))
+                    {
+                        m_SearchFilter = "";
+                        GUI.FocusControl(null);
+                    }
+                }
+            }
+            EditorGUILayout.EndHorizontal();
+
+            // 显示搜索提示
+            if (string.IsNullOrEmpty(m_SearchFilter))
+            {
+                EditorGUILayout.LabelField("", "支持搜索元素名称和组件类型", SirenixGUIStyles.RightAlignedGreyMiniLabel);
+            }
+        }
+
+        /// <summary>
+        /// 检查元素是否匹配搜索条件（模糊搜索）
+        /// </summary>
+        private static bool MatchSearchFilter(UIFacade.UIElement element)
+        {
+            // 如果没有搜索条件，显示所有元素
+            if (string.IsNullOrEmpty(m_SearchFilter))
+                return true;
+
+            if (element == null)
+                return false;
+
+            string filter = m_SearchFilter.ToLower();
+
+            // 搜索元素名称（模糊匹配）
+            if (!string.IsNullOrEmpty(element.Name))
+            {
+                if (element.Name.ToLower().Contains(filter))
+                    return true;
+            }
+
+            // 搜索组件类型名称（模糊匹配）
+            if (element.Component != null)
+            {
+                string typeName = element.Component.GetType().Name.ToLower();
+                if (typeName.Contains(filter))
+                    return true;
+            }
+
+            return false;
         }
 
         private static void DrawUIElement(UIFacade facade, int index, System.Action onDataChanged)

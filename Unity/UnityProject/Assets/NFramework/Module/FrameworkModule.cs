@@ -7,6 +7,7 @@ namespace NFramework.Module
     {
         public virtual void Awake()
         {
+            
         }
 
         public virtual void Destroy()

@@ -17,7 +17,7 @@ namespace NFramework.Module.Combat
             {
                 return GetExecution(executionID);
             }
-            ExecutionConfigObject executionConfigObject = NFROOT.I.G<ResM>().Load<ExecutionConfigObject>(string.Empty);
+            ExecutionConfigObject executionConfigObject = null;//= NFROOT.I.G<ResM>().Load<ExecutionConfigObject>(string.Empty);
             if (executionConfigObject == null)
             {
                 return null;

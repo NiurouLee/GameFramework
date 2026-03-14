@@ -1,5 +1,7 @@
 
 using System;
+using NFramework.Core.Live;
+using NFramework.Module.EntityModule;
 
 namespace NFramework.Module.ResModule
 {
@@ -8,40 +10,45 @@ namespace NFramework.Module.ResModule
         None,
         Loading,
         Loaded,
-        Failed
+        Failed,
+        Cancel,
+        Destroy,
     }
 
-    public class ResHandler
+    public class ResHandler : Entity, IAwakeSystem<string>, IDestroySystem
     {
         public string assetID;
-        public event Action<UnityEngine.Object> OnComplete;
+        public event Action<ResHandler> OnComplete;
+        public System.Object AssetObject { get; private set; }
         public ResHandlerState state { get; private set; }
 
-        public void Awake(string inAssetID, Action<UnityEngine.Object> inOnComplete = null)
+        public void Awake(string inAssetID)
         {
             assetID = inAssetID;
-            OnComplete += inOnComplete;
+            state = ResHandlerState.Loading;
         }
 
         public void SetResult(UnityEngine.Object inObj)
         {
             state = ResHandlerState.Loaded;
-            OnComplete?.Invoke(inObj);
+            this.AssetObject = inObj;
+            OnComplete?.Invoke(this);
         }
-
-        public void SetFailed()
+        public void SetFailed(System.Object inObj)
         {
             state = ResHandlerState.Failed;
-            OnComplete?.Invoke(null);
+            this.AssetObject = inObj;
+            OnComplete?.Invoke(this);
         }
 
         public void Cancel()
         {
+            this.state = ResHandlerState.Cancel;
 
         }
 
-        public void Dispose()
-        { }
-
+        public void Destroy()
+        {
+        }
     }
 }

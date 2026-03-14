@@ -16,7 +16,7 @@ namespace NFramework.Module.Combat
         {
             SkillConfigObject = a as AbilityConfigObject;
             AddComponent<AbilityEffectComponent, List<Effect>>(SkillConfigObject.EffectList);
-            ExecutionConfigObject = NFROOT.I.G<ResM>().Load<ExecutionConfigObject>(string.Empty);
+            // ExecutionConfigObject = NFROOT.I.G<ResM>().Load<ExecutionConfigObject>(string.Empty);
         }
 
         public void ActivateAbility()

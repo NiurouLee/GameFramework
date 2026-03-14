@@ -4,7 +4,7 @@ using NFramework.Module.ObjectPoolModule;
 
 namespace NFramework.Module.EventModule
 {
-    public class EventRecords : BaseRecordsSet<BaseRegister>, IEventRegister, IFreeToPool
+    public class EventRecords : BaseRecordSet<BaseRegister>, IEventRegister, IFreeToPool
     {
         private IEventRegister EventSchedule { get; set; }
         public void SetSchedule(IEventRegister inEventSchedule)

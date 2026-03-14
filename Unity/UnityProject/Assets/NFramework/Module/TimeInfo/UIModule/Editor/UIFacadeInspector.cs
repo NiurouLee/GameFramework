@@ -14,7 +14,7 @@ public class UIFacadeInspector : OdinEditor
     private bool m_FoldBasicInfo = true;
     private bool m_FoldUIElementsList = true;
     private bool m_FoldTools = true;
-    private bool m_FoldViewConfig = false;
+    private bool m_FoldViewConfig = true;
 
     // 跟踪当前target的实例ID，用于检测prefab切换
     private int m_LastTargetInstanceID = -1;
@@ -192,7 +192,7 @@ public class UIFacadeInspector : OdinEditor
         m_FoldBasicInfo = EditorPrefs.GetBool(foldKey + "_Basic", true);
         m_FoldUIElementsList = EditorPrefs.GetBool(foldKey + "_UIElements", true);
         m_FoldTools = EditorPrefs.GetBool(foldKey + "_Tools", true);
-        m_FoldViewConfig = EditorPrefs.GetBool(foldKey + "_View", false);
+        m_FoldViewConfig = EditorPrefs.GetBool(foldKey + "_View", true);
     }
 
     /// <summary>
