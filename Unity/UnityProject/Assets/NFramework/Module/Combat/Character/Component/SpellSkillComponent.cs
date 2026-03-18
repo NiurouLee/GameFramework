@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using NFramework.Module.EntityModule;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace NFramework.Module.Combat
@@ -10,8 +12,29 @@ namespace NFramework.Module.Combat
     {
         public CombatEntity Combat => GetParent<CombatEntity>();
 
+        public Dictionary<int, ExecutionConfigObject> ExecutionConfigObjects = new Dictionary<int, ExecutionConfigObject>();
+
         /// <summary>
-        /// 预览技能
+        /// load ExecutionCfgObject
+        /// </summary>
+        public void LoadExecutionObjects()
+        {
+            var skillComponent = this.Combat.GetComponent<SkillComponent>();
+            foreach (var item in skillComponent.skillDict)
+            {
+                var skill = item.Value;
+                var executionConfigObject = skill.ExecutionConfigObject;
+                if (executionConfigObject != null)
+                {
+                    ExecutionConfigObjects.Add(item.Key, executionConfigObject);
+                }
+            }
+
+        }
+
+
+        /// <summary>
+        /// 释放技能
         /// </summary>
         /// <param name="spellSkill"></param>
         public void Spell(Ability spellSkill)

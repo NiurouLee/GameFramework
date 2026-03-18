@@ -20,12 +20,12 @@ namespace NFramework.Module.Combat
     {
       if (this.CombatDic.ContainsKey(inID))
       {
-
         GetM<LoggerM>().Err("combatContext have ");
         return null;
       }
       var combatContext = this.AddChild<CombatContext>();
       this.CombatDic.Add(inID, combatContext);
+      this.CurrentContext = combatContext;
       return combatContext;
     }
 

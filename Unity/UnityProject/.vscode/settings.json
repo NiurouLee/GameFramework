@@ -58,5 +58,8 @@
     },
     "dotnet.defaultSolution": "UnityProject.sln",
     "git.ignoreLimitWarning": true,
-    "dotrush.roslyn.projectOrSolutionFiles": []
+    "dotrush.roslyn.projectOrSolutionFiles": [],
+    "cSpell.words": [
+        "getparent"
+    ]
 }

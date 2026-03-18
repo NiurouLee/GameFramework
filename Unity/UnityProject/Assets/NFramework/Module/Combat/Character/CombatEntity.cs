@@ -22,20 +22,55 @@ namespace NFramework.Module.Combat
         /// 添加状态能力
         /// </summary>
         public AddStatusActionAbility AddStatusActionAbility;
+        /// <summary>
+        /// 预览释放技能能力
+        /// </summary>
         public SpellSkillActionAbility SpellSkillActionAbility;
+        /// <summary>
+        /// 释放物品能力
+        /// </summary>
         public SpellItemActionAbility SpellItemActionAbility;
+        /// <summary>
+        /// 伤害能力
+        /// </summary>
         public DamageActionAbility DamageActionAbility;
+        /// <summary>
+        /// 治疗能力
+        /// </summary>
         public CureActionAbility CureActionAbility;
-
-
-        
+        /// <summary>
+        /// 技能执行体
+        /// </summary>
         public SkillExecution SpellingSkillExecution;
+        /// <summary>
+        /// Transform
+        /// </summary>
         public TransformComponent TransformComponent => GetComponent<TransformComponent>();
+        /// <summary>
+        ///RVO  
+        /// </summary>
         public OrcaComponent OrcaComponent => GetComponent<OrcaComponent>();
+        /// <summary>
+        /// 动画组件
+        /// </summary>
         public AnimationComponent AnimationComponent => GetComponent<AnimationComponent>();
+        /// <summary>
+        /// 属性组件 类似于AttributeSet
+        /// </summary>
         public AttributeComponent AttributeComponent => GetComponent<AttributeComponent>();
+        /// <summary>
+        /// AABB组件
+        /// </summary>
         public AABBComponent AABBComponent => GetComponent<AABBComponent>();
+        /// <summary>
+        /// 标签组件
+        /// </summary>
         public TagComponent TagComponent => GetComponent<TagComponent>();
+
+        /// <summary>
+        /// 普攻组件
+        /// </summary>
+        public AttackSpellAbility AttackSpellAbility => GetComponent<AttackSpellAbility>();
 
         public void Awake()
         {

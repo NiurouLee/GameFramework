@@ -1,0 +1,13 @@
+// Project-local debug tasks
+//
+// For more documentation on how to configure debug tasks,
+// see: https://zed.dev/docs/debugger
+[
+  {
+    "name": "Attach to Unity",
+    "type": "lldb",
+    "request": "attach",
+    "process_name": "Unity",
+    "preLaunchTask": "Optional: Build Project",
+  },
+]

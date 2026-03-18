@@ -19,8 +19,12 @@ namespace NFramework.Module.Combat
         public ExecutionConfigObject executionConfigObject;
         public List<CombatEntity> TargetList = new List<CombatEntity>();
         public Vector3 InputPoint;
+        public CombatEntity InputTarget;
         public float InputDirection;
+        public float InputRadian { get; set; }
         public bool ActionOccupy = true;
+
+
 
         public void Awake(Ability a)
         {

@@ -3,14 +3,15 @@ using NFramework.Module.UIModule;
 
 namespace NFramework.Module.UIModule
 {
-    public partial class CommonPlayeavator : View
-    {
-        #region UI Components (Auto Generated)
-        #endregion
+  public partial class CommonPlayeavator : View
+  {
+    #region UI Components (Auto Generated)
+    #endregion
 
-        protected override void OnAwake()
-        {
-            base.OnAwake();
-        }
+
+    protected override void OnAwake()
+    {
+      base.OnAwake();
     }
+  }
 }

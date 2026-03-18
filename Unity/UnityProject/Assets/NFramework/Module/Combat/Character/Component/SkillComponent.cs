@@ -7,7 +7,7 @@ using UnityEngine;
 namespace NFramework.Module.Combat
 {
     /// <summary>
-    /// skill管理component
+    /// skill管理component,管理按键->Ability的映射。
     /// </summary>
     public class SkillComponent : Entity
     {

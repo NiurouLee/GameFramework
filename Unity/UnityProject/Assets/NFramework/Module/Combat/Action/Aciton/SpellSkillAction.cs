@@ -5,7 +5,7 @@ using UnityEngine;
 namespace NFramework.Module.Combat
 {
     /// <summary>
-    /// 预览释放技能组件
+    /// 施法组件
     /// </summary>
     public class SpellSkillActionAbility : Entity, IActionAbility
     {
@@ -33,7 +33,7 @@ namespace NFramework.Module.Combat
     }
 
     /// <summary>
-    /// 预览行为
+    /// 施法行为
     /// </summary>
     public class SpellSkillAction : Entity, IActionExecution, IUpdateSystem
     {
