@@ -4,7 +4,7 @@ using NFramework.Module.EntityModule;
 
 namespace NFramework.Module.Combat
 {
-    public class AttackActionAbility : Entity, IActionAbility
+    public class AttackSpellAbility : Entity, IActionAbility
     {
         public bool Enable { get; set; }
         public CombatEntity Owner => GetParent<CombatEntity>();

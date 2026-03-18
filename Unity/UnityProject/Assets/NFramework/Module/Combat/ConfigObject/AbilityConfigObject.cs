@@ -1,3 +1,4 @@
+using System.Reflection.Emit;
 
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,24 @@ namespace NFramework.Module.Combat
         [LabelText("敌方")]
         EnemyTeam = 2,
     }
+
+    public enum SkillTargetSelectType
+    {
+        [LabelText("手动指定")]
+        PlayerSelect,
+
+        [LabelText("碰撞检测")]
+        CollisionSelect,
+
+        [LabelText("条件指定")]
+        ConditionSelect,
+
+        [LabelText("自定义")]
+        Custom,
+
+    }
+
+
 
     [CreateAssetMenu(fileName = "技能配置", menuName = "技能|状态/技能配置")]
     public class AbilityConfigObject : SerializedScriptableObject
