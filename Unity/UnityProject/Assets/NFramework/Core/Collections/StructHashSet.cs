@@ -1,9 +1,10 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace NFramework.Core.Collections
 {
-    public struct StructHashSet<T> : IDisposable //, ISet<T>
+    public struct StructHashSet<T> : IDisposable , ISet<T>
     {
         private HashSet<T> _set;
 
@@ -27,6 +28,72 @@ namespace NFramework.Core.Collections
         public bool Contains(T item) => _set.Contains(item);
         public void CopyTo(T[] array, int arrayIndex) => _set.CopyTo(array, arrayIndex);
         public bool Remove(T item) => _set.Remove(item);
+
+        public void ExceptWith(IEnumerable<T> other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void IntersectWith(IEnumerable<T> other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsProperSubsetOf(IEnumerable<T> other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsProperSupersetOf(IEnumerable<T> other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsSubsetOf(IEnumerable<T> other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsSupersetOf(IEnumerable<T> other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Overlaps(IEnumerable<T> other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool SetEquals(IEnumerable<T> other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SymmetricExceptWith(IEnumerable<T> other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UnionWith(IEnumerable<T> other)
+        {
+            throw new NotImplementedException();
+        }
+
+        void ICollection<T>.Add(T item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
         public int Count => _set.Count;
         public bool IsReadOnly => ((ISet<T>)_set).IsReadOnly;
     }
