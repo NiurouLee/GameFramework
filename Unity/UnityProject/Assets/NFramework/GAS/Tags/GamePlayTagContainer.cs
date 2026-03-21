@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Org.BouncyCastle.Bcpg.Sig;
 using UnityEngine;
 
 namespace NFramework.GAS
@@ -69,11 +70,145 @@ namespace NFramework.GAS
             OnTagChanged?.Invoke();
         }
 
-        public void AddTags(GamePlayTagSet tatSet)
+        public void AddTags(GamePlayTagSet tagSet)
         {
+            if (tagSet.IsEmpty) return;
+            for (int i = 0; i < tagSet.Count; i++)
+            {
+                AddTag(tagSet[i]);
+            }
         }
 
+        public bool RemoveTag(GamePlayTag tag)
+        {
+            if (!tag.IsValid) return false;
+            int hashCode = tag.GetHashCode();
+            if (!_tagCounts.TryGetValue(hashCode, out int oldCount) || oldCount <= 0) return false;
+            int newCount = oldCount - 1;
+            if (newCount <= 0)
+            {
+                _tagCounts.Remove(hashCode);
+                for (int i = _tags.Count - 1; i >= 0; i--)
+                {
+                    if (_tags[i].HashCode == hashCode)
+                    {
+                        _tags.RemoveAt(i);
+                        break;
+                    }
+                }
+                OnTagRemoved?.Invoke(tag);
+            }
+            else
+            {
+                _tagCounts[hashCode] = newCount;
+            }
+            OnTagCountChanged?.Invoke(tag, oldCount, newCount);
+            OnTagChanged?.Invoke();
+            return true;
+        }
 
+        public void RemoveTags(GamePlayTagSet tagSet)
+        {
+            if (tagSet.IsEmpty) return;
+            for (int i = 0; i < tagSet.Count; i++)
+            {
+                RemoveTag(tagSet[i]);
+            }
+        }
+
+        public void Clear()
+        {
+            if (_tags.Count > 0)
+            {
+                foreach (var tag in _tags)
+                {
+                    OnTagRemoved?.Invoke(tag);
+                }
+                _tags.Clear();
+                _tagCounts.Clear();
+                OnTagChanged?.Invoke();
+            }
+        }
+
+        public bool HasTag(GamePlayTag tag)
+        {
+            if (!tag.IsValid || IsEmpty) return false;
+            for (int i = 0; i < _tags.Count; i++)
+            {
+                if (_tags[i].HasTag(tag))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public bool HasTagExact(GamePlayTag tag)
+        {
+            if (!tag.IsValid || IsEmpty) return false;
+            for (int i = 0; i < _tags.Count; i++)
+            {
+                if (_tags[i] == tag)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public bool HasAllTags(GamePlayTagSet other)
+        {
+            if (other.IsEmpty) return true;
+            if (IsEmpty) return false;
+
+            for (int i = 0; i < other.Count; i++)
+            {
+                if (!HasTag(other.Tags[i]))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public bool HasAnyTags(GamePlayTagSet other)
+        {
+            if (this.IsEmpty || other.IsEmpty) return false;
+            for (int i = 0; i < other.Count; i++)
+            {
+                if (HasTag(other.Tags[i]))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool HasNoneTags(GamePlayTagSet other)
+        {
+            return !HasAnyTags(other);
+        }
+
+        public GamePlayTagSet ToTagSet()
+        {
+            return new GamePlayTagSet(_tags);
+        }
+
+        public void SetFormTagSet(GamePlayTagSet tagSet)
+        {
+            Clear();
+            if (!tagSet.IsEmpty)
+            {
+                foreach (var tag in tagSet.Tags)
+                {
+                    AddTag(tag);
+                }
+            }
+        }
+
+        public override string ToString()
+        {
+            if (IsEmpty) return "[]";
+            return $"[{string.Join(", ", _tags.ConvertAll(tag => tag.ToString()))}]";
+        }
 
     }
 }

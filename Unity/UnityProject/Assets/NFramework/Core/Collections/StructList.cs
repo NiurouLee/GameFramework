@@ -14,6 +14,15 @@ namespace NFramework.Core.Collections
             _list.Add(item1);
         }
 
+        public StructList(IList<T> items)
+        {
+            _list = ListPool.Alloc<T>();
+            foreach (var item in items)
+            {
+                _list.Add(item);
+            }
+        }
+
         public StructList(T item1, T item2)
         {
             _list = ListPool.Alloc<T>();
